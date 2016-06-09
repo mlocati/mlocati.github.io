@@ -1,0 +1,11 @@
+title: mlocati - Michele Locati
+email: mlocati@gmail.com
+description: >
+  A kind of personal list of notes for myself.
+  Somebody found these notes quite useful, so I decided to share them.
+baseurl: ""
+url: "https://mlocati.github.io"
+repository: mlocati/mlocati.github.io
+markdown: kramdown
+kramdown: 
+  toc_levels: "2,3" 
