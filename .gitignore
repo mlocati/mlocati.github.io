@@ -3,3 +3,6 @@
 /.sass-cache
 /.jekyll-metadata
 /.project
+/*.cmd
+/*.ssh
+/Gemfile.lock
