@@ -10,12 +10,28 @@ layout: default
 		</div>
 	</header>
 	<div class="row">
-		<div class="col-md-4">
-* TOC
-{:toc}
+		<div class="col-md-4" id="article-toc">
 		</div>
 		<div class="col-md-8">
 			{{ content }}
 		</div>
 	</div>
 </article>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+	var toc = document.getElementById('markdown-toc');
+	if (toc !== null) {
+		document.getElementById('article-toc').appendChild(toc);
+		$(toc)
+		  .css({display: 'block'})
+		  .addClass('nav')
+		  .find('li').addClass('nav-item').end()
+		  .find('a').addClass('nav-link').end()
+		;
+		$(document.body)
+		  .css('position', 'relative')
+		  .scrollspy({ target: '#markdown-toc' })
+	    ;
+	}
+});
+</script>

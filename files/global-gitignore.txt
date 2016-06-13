@@ -1,0 +1,7 @@
+# Ignore Eclipse-specific directories and files
+/.settings/
+/.buildpath
+/.project
+
+# Ignore this directory (I usually place temporary files there)
+/tempWork/

@@ -7,5 +7,26 @@ $fa-font-path: "{{ site.baseurl }}/css/fonts";
 
 @import
         "Font-Awesome/font-awesome.scss",
-        "bootstrap/bootstrap.scss"
+        "bootstrap/bootstrap.scss",
+        "_syntax-highlighting.scss"
 ;
+
+%vertical-rhythm {
+    margin-bottom: 15px;
+}
+
+div.article-toc {
+    display: none;
+}
+
+#wip {
+	position: fixed;
+	left: 50%;
+	top: 50%;
+	width: 420px;
+	height: 44px;
+	margin-left: -210px;
+	margin-top: -22px;
+	transform: rotate(-22.5deg);
+	z-index:65535;
+}

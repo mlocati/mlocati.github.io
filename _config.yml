@@ -6,6 +6,29 @@ description: >
 baseurl: ""
 url: "https://mlocati.github.io"
 repository: mlocati/mlocati.github.io
+
 markdown: kramdown
+
+exclude:
+ - /files/
+ - /Gemfile
+ - /Gemfile.lock
+
 kramdown: 
-  toc_levels: "2,3" 
+  toc_levels: "2,3,4" 
+
+collections:
+  articles:
+    output: true
+defaults:
+  -
+    scope:
+      path: ""
+      type: articles
+    values:
+      layout: article
+
+gems:
+ - jekyll-sitemap
+ - jekyll-seo-tag
+ - jekyll-coffeescript

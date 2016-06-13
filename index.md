@@ -5,7 +5,7 @@ layout: page
 	{% for article in site.articles %}
 		<li>
 			<h2>
-				<a class="article-link" href="{article.url | prepend: site.baseurl }}">{{ article.title }}</a>
+				<a class="article-link" href="{{article.url | prepend: site.baseurl }}">{{ article.title }}</a>
 			</h2>
 		</li>
 	{% endfor %}
