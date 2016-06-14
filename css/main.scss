@@ -74,7 +74,7 @@ div.article-toc {
             color: $link-color;
         }
     }
-    li:first-child a {
-        margin-left: 0;
+    li {
+        padding: 0 10px;
     }
 }
