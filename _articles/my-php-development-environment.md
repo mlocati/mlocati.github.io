@@ -149,11 +149,11 @@ So, download all the **x86 Thread Safe** *zip* versions you want and extract the
 
 At time of writing this, I ended up having these folders:
 
-- `C:\Dev\php-7.0.7-Win32-VC14-x86` > rename to `C:\Dev\PHP7.0`
-- `C:\Dev\php-5.6.22-Win32-VC11-x86` > rename to `C:\Dev\PHP5.6`
-- `C:\Dev\php-5.5.36-Win32-VC11-x86` > rename to `C:\Dev\PHP5.5`
-- `C:\Dev\php-5.4.44-Win32-VC9-x86` > rename to `C:\Dev\PHP5.4`
-- `C:\Dev\php-5.3.29-Win32-VC9-x86` > rename to `C:\Dev\PHP5.3`
+- `C:\Dev\php-7.0.7-Win32-VC14-x86` ⇒ rename to `C:\Dev\PHP7.0`
+- `C:\Dev\php-5.6.22-Win32-VC11-x86` ⇒ rename to `C:\Dev\PHP5.6`
+- `C:\Dev\php-5.5.36-Win32-VC11-x86` ⇒ rename to `C:\Dev\PHP5.5`
+- `C:\Dev\php-5.4.44-Win32-VC9-x86` ⇒ rename to `C:\Dev\PHP5.4`
+- `C:\Dev\php-5.3.29-Win32-VC9-x86` ⇒ rename to `C:\Dev\PHP5.3`
 
 ### xdebug
 
@@ -313,11 +313,11 @@ I always use [TortoiseGit](https://tortoisegit.org/download/), installing it wit
 
 #### Configure TortoiseGit
 
-Simply right click on any folder (the desktop will work too), and choose `TortoiseGit` > `Settings`.
+Simply right click on any folder (the desktop will work too), and choose `TortoiseGit` ⇒ `Settings`.
 
 For the kind of workflow I adopted, I use these settings:
 
-- in the `General` > `Context Menu` tab I choose these items:
+- in the `General` ⇒ `Context Menu` tab I choose these items:
   - `Clone...`
   - `Fetch...`
   - `Push...`
@@ -325,7 +325,7 @@ For the kind of workflow I adopted, I use these settings:
   - `Show log`
   - `Switch/Checkout...`
   - `Create repository here...`
-- In the `General` > `Alternative editor` tab I specify the full path to the Notepad++ executable.
+- In the `General` ⇒ `Alternative editor` tab I specify the full path to the Notepad++ executable.
 - In the `Git` tab I usually:
   - specify the default values in the `global` configuration for `Name` and `Email`
   - disable the `AutoCrLf` option
@@ -342,7 +342,7 @@ For the kind of workflow I adopted, I use these settings:
 
     The `global-gitignore` contains a list of files and directories that should be ignored in every project. [Here's](https://github.com/mlocati/mlocati.github.io/blob/master/files/global-gitignore.txt) the contents of this file.
 - In the `Diff Viewer` tab, in the `Configure the program used for comparing different revisions of files` I specify that I'd like to use the previously installed WinMerge, so I choose `External` and write in the text field `"C:\Program Files (x86)\WinMerge\WinMergeU.exe" /e /x /u /wl /maximize /dl %bname /dr %yname %base %mine`.
-- In the `Diff Viewer` > `Merge Tool` tab, I again choose `External` and write in the text field `"C:\Program Files (x86)\WinMerge\WinMergeU.exe" /e /u %merged`
+- In the `Diff Viewer` ⇒ `Merge Tool` tab, I again choose `External` and write in the text field `"C:\Program Files (x86)\WinMerge\WinMergeU.exe" /e /u %merged`
 
 
 
@@ -368,9 +368,64 @@ Please remark that you can re-create the public key from a private key you creat
 
 
 
+### Contributing to 3rd party projects
+
+Ok, now your system is almost ready to work with git and GitHub.  
+Let's assume you want to contribute to a project hosted there, for instance concrete5.
+
+To work with the concrete5 repository you first have to fork it: go to the [concrete5 repository page](https://github.com/concrete5/concrete5) and hit on the `Fork` button on the top-right area of the window.
+
+Doing so, you'll end with your own copy of concrete5 in GitHub (in my case it's located at [github.com/mlocati/concrete5](https://github.com/mlocati/concrete5)).
+
+Remaining in _your_ copy of the repository, locate the green button labeled `Clone or download`.
+If the URL shown in the textbox starts with `https://`, hit the link `Use SSH`.
+Finally hit the the _Copy to clipboard_ button (or manually copy the text in the textbox).
+
+Now you have to choose where you want to save your repository in your local PC.
+I usually place all my websites under `C:\Dev\Web`: browse to that folder, right-click inside it and choose `Git Clone...`.
+
+TortoiseGit should already suggest you to the `URL` you copied before (something like `git@github.com:.../concrete5.git`).
+
+I customize the `Directory` field by specifying `C:\Dev\Web\concrete5\concrete5.git`
+(the final `.git` is only to remember myself it's a directory containing the git version of concrete5, it's not mandatory).
+
+In the `Load Putty Key` field you need to specify the full path of the `.ppk` file you created before with PuTTYgen.
+
+Hit `Ok`: you'll be prompted for the password of your `.ppk` file.
+This step have to be done every time you reboot your PC (or if you manually close `Pageant` - the utility that holds in memory your private keys - you'll find it in your tray bar).
+
+The first time you connect to GitHub with git, you'll be asked if you trust GitHub: you have to hit `Yes`.
+
+The cloning process will then start, and it may take a few minutes:
+git is retrieving the whole concrete5 repository and all the changes made to the code since it was initially imported in git (it was August 2008).
+
+You'll end up with a local clone of the remote clone of the repository (by default it's named `origin`).
+In order to update your local clone, you may want to add another remote that points to the original repository.
+In order to do so, right click on the folder containing the repository, choose `Git Fetch...` and click on the `Manage Remotes` link in the dialog that will open.
+You can add a new remote with these parameters:
+
+- Remote: `upstream`
+- URL: `https://github.com/concrete5/concrete5.git`
+- Tags: `All`
+- [ ] Push default
+- [x] Prune
+
+You may want also to update the first `origin` remote: select it and :
+
+- Tags: `None`
+- [x] Push default
+- [x] Prune
+
+Every time you work on a new pull request, create a new branch, add commits to it and push it to your `origin` remote.  
+When you need to update your clone with the new changes in the `upstream` remote, checkout the default remote branch (it's `develop` for concrete5, but usually it's `master`), fetch the `upstream` remote selecting the `Launch Rebase After Fetch`.  
+Once you fast-forwarded your local branch, you can optionally push it to your `origin` remote, so that your remote clone is kept in sync with the `upstream` one.
+
+
+
 ## Installing Apache
 
-In order to work with web sites, you'll need a web server. Apache is the most adopted one, so I've chosen it (not a great criterion, but who cares).
+In order to work with web sites (like the concrete5 project mentioned [above](#contributing-to-3rd-party-projects)), you'll need a web server.
+Apache is the most adopted one, so I've chosen it (not a great criterion, but who cares).
 
 On the [PHP for Windows download page](http://windows.php.net/download/), they suggest to use the binary distribution of Apache compiled by Apache Lounge.
 
@@ -385,7 +440,7 @@ Then save [this file](https://github.com/mlocati/mlocati.github.io/blob/master/f
 and [this file](https://github.com/mlocati/mlocati.github.io/blob/master/files/ApachePHP7.x.conf) as `Apache.conf` to all the `C:\Dev\PHP7.*` directories.
 
 Finally, I use Apache as a Windows service.
-In order to install the service, simply open a command prompt with administrative right (fast way: `WinKey`+`X` > `Command Prompt (Admin)`) and type:
+In order to install the service, simply open a command prompt with administrative right (fast way: `WinKey`+`X` ⇒ `Command Prompt (Admin)`) and type:
 
 ```
 C:\Dev\Apache\bin\httpd.exe -k install -n Apache -f C:\Dev\Apache\Apache.conf
@@ -394,21 +449,21 @@ C:\Dev\Apache\bin\httpd.exe -k install -n Apache -f C:\Dev\Apache\Apache.conf
 By running that command line, you'll install Apache as a Windows service called `Apache`.
 
 By the way, you'll see an error message: Apache is installed but can't be started.  
-That's because we don't have still configured any web site.
+That's because we still haven't configured any web site.
 
 Let's assume that you want a local [concrete5](https://www.concrete5.org/) web site.
 To define a new local website you need to create a `.conf` file in the `C:\Dev\Apache\vhosts` directory.
 
-For instance, here's the content of my `C:\Dev\Apache\vhosts\concrete5.git.conf` file that defines a new website available as http://localhost:10000 that publish the directory located at `C:\Dev\Web\concrete5\5.7.git\web`:
+For instance, here's the content of my `C:\Dev\Apache\vhosts\concrete5.git.conf` file that defines a new website available as http://localhost:10000 that publish the directory located at `C:\Dev\Web\concrete5\concrete5.git`:
 
 ```
 Listen 10000
 
 <VirtualHost *:10000>
     ServerAdmin mlocati@gmail.com
-    DocumentRoot "C:\Dev\Web\concrete5\5.7.git\web"
+    DocumentRoot "C:\Dev\Web\concrete5\concrete5.git"
 </VirtualHost>
-<Directory "C:\Dev\Web\concrete5\5.7.git\web">
+<Directory "C:\Dev\Web\concrete5\concrete5.git">
     Options +FollowSymLinks -SymLinksIfOwnerMatch
     Allow from all
     Order allow,deny
@@ -430,22 +485,27 @@ For the configuration type I've chosen `Server Machine`, since it uses more memo
 When I have to work directly with the database, I use the great [HeidiSQL](http://www.heidisql.com/).
 
 Before working with MySQL, I always add this line under the `[mysqld]` section in the `C:\Dev\MySQL\data\my.ini` configuration file:
+
 ```
 lower_case_table_names=2
 ```
+
 The above option will allow preserving the case of the table names (otherwise they'll be always lower-case).
 
-Another option I usually set to reduce disk usage (it's not safe, but that's fine for development machines).
+Another option I usually set to reduce disk usage (it's not safe, but that's fine for development machines):
+
 ```
 innodb_flush_log_at_trx_commit=0
 ```
 
 To speed-up accessing metadata a lot, you can add this option:
+
 ```
 innodb_stats_on_metadata=OFF
 ```
 
 One more option you may need from time to time is:
+
 ```
 skip-grant-tables
 ```
@@ -454,118 +514,11 @@ This option will allow accessing the database with full rights with any username
 
 ## Controlling MySQL and Apache
 
-Since I use my development machine for other purposes, I don't need that Apache and MySQL always start when I boot up my PC.
+Since I use my development machine for other purposes too, I don't need that Apache and MySQL always start when I boot up my PC.
 
 So, I set those services to `Start manually` in the Windows Services control panel (hit `WinKey`+`R`, enter `services.msc` and hit `return` then change the properties in the two services, `Apache` and `MySQL`).
 
 To start/stop/restart my services I wrote a little utility that you can find [here](https://github.com/mlocati/ServicesControl).
-
-
-## Cloning concrete5
-
-Ok, now your system is almost ready to work with git and GitHub.
-
-To work with the concrete5 repository you first have to fork it: go to the [concrete5 repository page](https://github.com/concrete5/concrete5) and hit on the `Fork` button on the top-right area of the window.
-
-Doing so, you'll end with your own copy of concrete5 in GitHub (in my case it's located at [github.com/mlocati/concrete5](https://github.com/mlocati/concrete5)).
-
-Remaining in _your_ copy of the repository, locate the dropdown labeled `HTTPS` or `SSH` in the top area of the page, be sure to select `SSH` and hit the _Copy to clipboard_ button (or copy manually the text in the textbox).
-
-Now you have to choose where you want to save your repository in your local PC. I usually place all my websites under `C:\Dev\Web`: browse to that folder, right-click inside it and choose `Git Clone...`.
-
-TortoiseGit should already suggest you to the `URL` you copied before (something like `git@github.com:.../concrete5.git`).
-
-I customize the `Directory` field by specifying `C:\Dev\Web\concrete5\5.7.git` (the final `.git` is only to remember myself it's a directory containing the git version of concrete5, it's not mandatory).
-
-In the `Load Putty Key` field you need to specify the full path of the `.ppk` file you created before with PuTTYgen.
-
-Hit `Ok`: you'll be prompted for the password of your `.ppk` file. This step have to be done every time you reboot your PC (or if you manually close `Pageant` - the utility that holds in memory your private keys - you'll find it in your tray bar).
-
-The first time you connect to GitHub with git, you'll be asked if you trust GitHub: you have to hit `Yes`.
-
-The cloning process will then start, and it may take a few minutes: git is retrieving the whole concrete5 repository and all the changes made to the code since it was initially imported in git (it was August 2008).
-
-
-## Setting up concrete5
-
-### Building the concrete5 JS and CSS assets
-
-The concrete5 repository does not contain a working set of JavaScript and CSS files: you have to build them.
-This is quite simple: open a command prompt and type the following commands
-```
-cd /D C:\Dev\Web\concrete5\5.7.git\build
-npm install
-grunt release
-```
-The `npm install` command downloads in a local folder the NodeJS libraries required to build the assets, and it must be run just once (or if the `build/package.json` file changes).
-`grunt release` is the command that effectively builds the JavaScripts and the CSSs needed by concrete5.
-
-### Installing the PHP libraries for concrete5
-
-concrete5 needs some third party PHP libraries.
-Before being able to install concrete5 locally, you have to install them: open a command prompt and type these commands:
-```
-cd /D C:\Dev\Web\concrete5\5.7.git\web\concrete
-composer install
-```
-Composer will start downloading all the required libraries (it may take a while and it may require some user intervention - read what gets printed).
-You'll have to call `composer install` every time that the file `web/concrete/composer.lock` changes.
-
-At this point you have a fully working copy of concrete5: compliments!
-
-
-## concrete5 via command line
-Starting from version 5.7.5, concrete5 comes with a command line interface (_CLI_ for short).
-
-It's entry point (ie the script to be called) is located in the `web\concrete\bin` directory, and in in our case is `C:\Dev\Web\concrete5\5.7.git\web\concrete\bin\concrete5.bat`.
-Since I use it a lot, I don't want to specify its full path every time, so I added [this wrapper](https://github.com/mlocati/mlocati.github.io/blob/master/files/c5.cmd) to `C:\Dev\Util\bin`.
-
-NOTE: This wrapper (`c5.cmd`) allows using [Inkscape](https://inkscape.org/) from within the concrete5 CLI by adding its installation directory to the `PATH` variable, so you may need to change it to specify if and where you installed Inkscape.
-
-NOTE: Inkscape may be used by CLI commands to automatically generate package and block icons starting from svg files.
-
-To see a list of all commands, you can type this in a command prompt:
-```
-c5 list
-```
-
-To list only the concret5 core commands:
-```
-c5 list c5
-```
-
-To get some help on a specific command (clear-cache for instance):
-```
-c5 c5:clear-cache --help
-```
-
-Some useful commands I use a lot:
-
-- `c5 c5:clear-cache`  
-  reset the concrete5 cache
-- `c5 c5:package-translate`  
-  to automatically build/update the translation files of my packages (it works even with 5.6.x packages!)
-- `c5 c5:package-pack`  
-  to perform many nice operations on my packages (it works even with 5.6.x packages!)
-
-### Fresh install
-I have a Windows batch file that performs the following operations to have a fresh new concrete5 installation with just one click:
-
-- `c5 c5:reset --force`  
-  to completely reset the concrete5 installation and re-start from scratch (use with care!)
-- `c5 c5:install --db-server=localhost --db-username=root --db-password=<MySqlPassword> --db-database=<MySqlDatabaseName> --site=<NameOfConcrete5Site> --starting-point=elemental_full --admin-email=<YourEmailAddress> --admin-password=<AdminPassword>`  
-  to install concrete5.  
-  You can also use `elemental_blank` instead of `elemental_full` to not install the sample contents  
-- `c5 c5:config -g set concrete.external.news_overlay false`  
-  to disable the (quite annoying IMHO) news shown at first login
-- `c5 c5:config -g set concrete.misc.help_overlay false`  
-  to disable the introductive guide (I don't think I personally need to read it ;) )
-- `c5 c5:config -g set concrete.debug.display_errors true`  
-  to show PHP errors on web pages
-- `c5 c5:config -g set concrete.debug.detail debug`  
-  to show detailed PHP errors (it's a development environment after all)
-- `c5 c5:config -g set concrete.i18n.choose_language_login true`  
-  to allow choosing the user's preferred language at login (I'm Italian after all ;) )
 
 
 ## Eclipse
@@ -593,188 +546,191 @@ Extract the downloaded archive into `C:\Dev\Eclipse`(you may want to add Eclipse
 
 The first time you launch Eclipse, you'll be asked the location of the so-called *Workspace*.
 
-An Eclipse workspace is a sort of container for all the projects you'll be working on. I usually have only one workspace (located at `C:\Dev\Eclipse\workspace`), so I choose to *Use this as the default and do not ask again*.
+An Eclipse workspace is a sort of container for all the projects you'll be working on. I usually have only one workspace (located at `C:\Dev\Eclipse\workspace`), so I choose to `Use this as the default and do not ask again`.
 
 
-### Adding the PHP Development Tools (PDT) to Eclipse
+### PHP Development Tools (PDT)
 
 PDT is a great plugin for Eclipse. Many brave guys are making it better and better every day, so I always install the latest development version. From time to time it may have problems, but it's really offering more and more features. Obviously there's a bit of risk doing so (but I've never had any big problems for years): the choice is up to you.
 
 So, here's how you can install either the development version or the official one.
 
-* __Development version installation__  
-  To install the development version of PDT you have to tell Eclipse where to find it.
-  Open Eclipse, in the *Window* menu choose *Preferences*.
-  In the left tab of the Preferences window, go to *Install/Update* > *Available Software Sites*.
+- __Development version installation__  
+  To install the development version of PDT you have to tell Eclipse where to find it.  
+  Open Eclipse, in the `Window` menu choose `Preferences`.  
+  In the left tab of the Preferences window, go to `Install/Update` ⇒ `Available Software Sites`.  
   Then add these two new sites:
-** Name: `PDT Nightly` (or whatever you want)  
-  Location: `http://download.eclipse.org/tools/pdt/updates/latest-nightly/`
-** Name: `DLTK Nightly` (PDT Nightly requires this)  
-  Location: `http://download.eclipse.org/technology/dltk/updates-dev/latest-nightly/`  
+
+  - Name: `PDT Nightly` (or whatever you want)  
+    Location: `http://download.eclipse.org/tools/pdt/updates/latest-nightly/`
+  - Name: `DLTK Nightly` (PDT Nightly requires this)  
+    Location: `http://download.eclipse.org/technology/dltk/updates-dev/latest-nightly/`
+
   Once you set these two new sites, you can install PDT in the same way of the official installation (see below).
 
-* __Official version installation__  
-  Open Eclipse, in the *Help* menu choose *Install New Software...*.  
-  In the window that will open, choose *--All Available Sites--* in the *Work with* field and enter *PDT* in the *type filter text* field.  
+- __Official version installation__  
+  Open Eclipse, in the `Help` menu choose `Install New Software...`.  
+  In the window that will open, choose `--All Available Sites--` in the `Work with` field and enter `PDT` in the `type filter text` field.  
   Check the `PHP Development Tools (PDT)` package and proceed with the installation.
 
 
 ### Configuring Eclipse and PDT
 
-Once you installed PDT, you can switch to the so-called PHP-perspective: under the *Window* menu choose *Perspective* > *Open Perspective* > *Other* and choose the *PHP* perspective.
+Once you installed PDT, you can switch to the so-called PHP-perspective: under the `Window` menu choose `Perspective` ⇒ `Open Perspective` ⇒ `Other` and choose the `PHP` perspective.
 
 Here's the few options I always apply to Eclipse.
 
-You can find the Eclipse preferences under the *Window* menu => *Preferences*.
+You can find the Eclipse preferences under the `Window` menu ⇒ `Preferences`.
 
-* under *General* > *Web Browser*:
-** I choose to *use external web browser*
-** I add the browsers that I use by pressing the *New...* button (please remark that using *Default system web browser* is not working for me with Windows 10 build 1511)
-* under *General* > *Workspace*:
-** in the *Text file encoding* choose *Other* > *UTF-8*
-** in the *New text file line delimiter* choose *Other* > *Unix*
-* under *JavaScript* > *Code Style* > *Formatter*:  
-  concrete5 uses the Airbnb coding style, simply hit on *Import...* and load [this xml file](https://github.com/mlocati/mlocati.github.io/blob/master/files/Airbnb.xml)
-* under *PHP* > *Code Style* > *Formatter*:  
-  concrete5 adopted the standard PSR rules, so choose *PSR-2 [builtin]*
-* under *PHP* > *PHP Executables*:  
-  add all the PHP versions you have setup (see the *Installing PHP* section above);  
-  I name the executables with the version name (for example: *PHP 5.5*)
-* under *PHP* > *PHP Executables* > *Execution Environments*  
+- under `General` ⇒ `Web Browser`
+  - I choose to `use external web browser`
+  - I add the browsers that I use by pressing the `New...` button (please remark that using `Default system web browser` is not working for me with Windows 10 build 1511)
+- under `General` ⇒ `Workspace`
+  - in the `Text file encoding` choose `Other` ⇒ `UTF-8`
+  - in the `New text file line delimiter` choose `Other` ⇒ `Unix`
+- under `JavaScript` ⇒ `Code Style` ⇒ `Formatter`  
+  to use the Airbnb coding style (like concrete5 requires for instance), simply hit on `Import...` and load [this xml file](https://github.com/mlocati/mlocati.github.io/blob/master/files/Airbnb.xml)
+- under `PHP` ⇒ `Code Style` ⇒ `Formatter`  
+  you usually want to use the `PSR-2 [builtin]` rules 
+- under `PHP` ⇒ `PHP Executables`  
+  add all the PHP versions you have setup (see the `Installing PHP` section [above](#installing-php));  
+  I name the executables with the version name (for example: `PHP 5.5`)
+- under `PHP` ⇒ `PHP Executables` ⇒ `Execution Environments`  
   you have to associate the executables to corresponding PHP versions
-* under *PHP* > *Servers*  
+- under `PHP` ⇒ `Servers`  
   you have to define all the web sites you defined in Apache.  
-  For instance, in the sample `concrete5-5.7.git.conf` I described above, you'll have to:
-** give a name to the server: I use the same name as the `.conf` file, so I have  
-  `concrete5-5.7.git`
-** in the base URL you have to specify the port defined in the `.conf` file, so I have  
+  For instance, in the sample `concrete5.git.conf` I described [above](#installing-apache), you'll have to:
+  - give a name to the server: I use the same name as the `.conf` file, so I have  
+  `concrete5.git`
+  - in the base URL you have to specify the port defined in the `.conf` file, so I have  
   `http://localhost:10000`
-** in the document root specify the full path of the web folder:  
-  `C:\Dev\Web\concrete5\5.7.git\web`
-** Hit *Next* and choose `XDebug` as the debugger
-* under *Run/Debug* > *Launching*  
+  - in the document root specify the full path of the web folder:  
+  `C:\Dev\Web\concrete5\concrete5.git`
+  - Hit `Next` and choose `XDebug` as the debugger
+- under `Run/Debug` ⇒ `Launching`  
   to allow faster debug sessions:
-** *Wait for ongoing build to complete before launching* > Never
-** *General options*/*Build (if required) before launching* > unchecked
+  - `Wait for ongoing build to complete before launching` ⇒ Never
+  - `General options`/`Build (if required) before launching` ⇒ unchecked
 
 
-### Coding concrete5 with Eclipse
+### Coding with Eclipse
 
-Now that you have a local concrete5 repository and a working Eclipse in your PC, you can start coding for concrete5.
+Let's assume you want to work with a local concrete5 instance (but the same applies for any PHP project).  
 You'll have to:
 
 
 #### Create a new project
 
-Select the *File* menu > *New* > *PHP Project*
+Select the `File` menu ⇒ `New` ⇒ `PHP Project`
 
-* Give a name to your project (I use `concrete5-5.7.git`)
-* Select *Create project at existing location (from existing source)* and specify the root directory of our concrete5 copy (`C:\Dev\Web\concrete5\5.7.git`)
+- Give a name to your project (I use `concrete5.git` for concrete5)
+- Select `Create project at existing location (from existing source)` and specify the root directory of our concrete5 copy (for instance `C:\Dev\Web\concrete5\concrete5.git`)
 
 All the other options are, well, optional...
 
 
-#### Configure the concrete5 project
+#### Configure the PHP project
 
-In the `PHP Explorer` panel, right-click on the project name (`concrete5-5.7.git` in my case) and choose *Properties*.
+In the `PHP Explorer` panel, right-click on the project name (`concrete5.git` in my case) and choose `Properties`.
 
-* under *PHP* > *Debug*:
-** select to *Enable project specific settings*
-** select the *PHP Server* defined above (`concrete5-5.7.git` in my case)
-** in the *Base Path* field enter just a `/`
+- under `PHP` ⇒ `Debug`:
+  - select to `Enable project specific settings`
+  - select the `PHP Server` defined [above](#configuring-eclipse-and-pdt) (`concrete5.git` in my case)
+  - in the `Base Path` field enter just a `/`
 
 Now it's time to see the full power of your new development system!
 
 
-### Step-by-step debugging
+#### Step-by-step debugging
 
-Locate the image:icon-toolbar_debug.png[Debug, title="Debug"] icon in the toolbar and click on then down arrow on the right of it, and then choose *Debug Configurations...*.
+Locate the ![Debug]({{ site.baseurl }}/images/icon-toolbar_debug.png) icon in the toolbar and click on the down arrow on the right of it, then choose `Debug Configurations...`.
 
-We're going to debug a web site, so right-click on *PHP Web Application* and choose *New*:
+We're going to debug a web site, so right-click on `PHP Web Application` and choose `New`:
 
-* in the *Server* tab:
-** in the *Name* field enter: `concrete5-5.7.git - Home` (or anything you want)
-** in the *PHP Server* field select `concrete5-5.7.git`
-** in the *File* field: hit *Browse* and choose the *web/index.php* file
-** uncheck the *Auto Generate* checkbox and empty the suggested URL
-* in the *Debugger* tab:
-** you may want to uncheck *Break at First Line* in future: take note it's there
-* in the *Common* tab:
-** select to save as *Shared file* and browse to the `.settings` directory (this is not mandatory but is really handy when working with multiple projects)
-** check both the *Debug* and *Run* checkboxes in the *Display in favorites menu*
-** since we're debugging a website, I'd uncheck the *Allocate console (necessary for input)* (you may want to check it when you'll debug PHP scripts that are not part of a web site)
+- in the `Server` tab:
+  - in the `Name` field enter: `concrete5.git - Home` (or anything you want)
+  - in the `PHP Server` field select `concrete5.git`
+  - in the `File` field: hit `Browse` and choose the `index.php` file
+  - uncheck the `Auto Generate` checkbox and empty the suggested URL
+- in the `Debugger` tab:
+  - you may want to uncheck `Break at First Line` in future: take note it's there
+- in the `Common` tab:
+  - select to save as `Shared file` and browse to the `.settings` directory (this is not mandatory but is really handy when working with multiple projects)
+  - check both the `Debug` and `Run` checkboxes in the `Display in favorites menu`
+  - since we're debugging a website, I'd uncheck the `Allocate console (necessary for input)` (you may want to check it when you'll debug PHP scripts that are not part of a web site)
 
-Hit the *Apply* then the *Close* buttons.
+Hit the `Apply` then the `Close` buttons.
 
-Now, if you want to simply start the website, click on the down arrow on the right of the image:icon-toolbar_run.png[Run, title="Run"] icon in the toolbar and choose `1. concrete5-5.7.git - Home`.
+Now, if you want to simply start the website, click on the down arrow on the right of the ![Run]({{ site.baseurl }}/images/icon-toolbar_run.png) icon in the toolbar
+and choose `1. concrete5.git - Home`.
 
-If you want to start a debugging session, hit the down arrow on the right of the image:icon-toolbar_debug.png[Debug, title="Debug"] icon in the toolbar and click on `1. concrete5-5.7.git - Home`.
+If you want to start a debugging session, hit the down arrow on the right of the ![Debug]({{ site.baseurl }}/images/icon-toolbar_debug.png) icon in the toolbar
+and click on `1. concrete5.git - Home`.
 
-Eclipse will ask you if you want to switch to the so-called *Debug* perspective: check the *Remember my decision* checkbox and hit *Yes*.
+Eclipse will ask you if you want to switch to the so-called `Debug` perspective: check the `Remember my decision` checkbox and hit `Yes`.
 
 In the debug perspective you are now able to view all the defined variables and to follow the execution flow by running the code line-by-line: great, isn't it?
 
-You may want to take a look at the *Eclipse keyboard shortcuts* section below to see how to control the execution flow.
+You may want to take a look at the `Eclipse keyboard shortcuts` section below to see how to control the execution flow.
 
 
 ### Integrating PHP-CS-Fixer
 
-It's handy to be able to reformat the PHP files accordingly to the concrete5 coding style.
+It's handy to be able to reformat the PHP files accordingly to a prefixed set of coding style rules.
 To integrate `PHP-CS-Fixer` in Eclipse simply:
 
-. locate the image:icon-toolbar_externaltools.png[External Tools, title="External Tools"] icon in the toolbar and click on then down arrow on the right of it
-. choose *External Tools Configurations...*
-. right-click on *Program* in the left area and choose *New*
-. in the right area:
-  * *Name*: enter what you want (I use `concrete5-5.7.git - php-cs-fixer`)
-  * *Main* tab:
-    ** *Location*: `C:\Dev\Util\bin\php-cs-fixer.cmd`
-    ** *Arguments*: `--config-file=C:\Dev\Web\concrete5\5.7.git\.php_cs fix ${selected_resource_loc}`
-  * *Build* tab:
-    ** uncheck *Build before launch*
-  * *Common* tab:
-    ** *Save as*: I keep every external tool associated to its own project, so I choose *Shared file* and save this external program in the existing `.settings` directory of the project.  
-       When you do so, if you close the project this specific external tool is hidden, and it appears when you re-open the project.  
-       It's very handy when you work with many projects.
-    ** *Display in favorites menu*: check *External Tools*
+- locate the ![External Tools]({{ site.baseurl }}/images/icon-toolbar_externaltools.png) icon in the toolbar and click on then down arrow on the right of it
+- choose `External Tools Configurations...`
+- right-click on `Program` in the left area and choose `New`
+- in the right area:
+  - `Name`: enter what you want (I use `php-cs-fixer`)
+  - `Main` tab:
+    - `Location`: `C:\Dev\Util\bin\php-cs-fixer.cmd`
+    - `Arguments`: `--config-file="${project_loc}\.php_cs" fix ${selected_resource_loc}`
+  - `Build` tab:
+    - uncheck `Build before launch`
+  - `Common` tab:
+    - `Display in favorites menu`: check `External Tools`
 
-Once you're done with the above steps, you can format a PHP file (or a whole directory), simply by opening the file in the editor (or selecting it in the *PHP Explorer* pane) and running this external tool (by clicking the image:icon-toolbar_externaltools.png[External Tools, title="External Tools"] icon in the toolbar).
+Once you're done with the above steps, you can format a PHP file (or a whole directory), simply by opening the file in the editor (or selecting it in the `PHP Explorer` pane) and running this external tool
+(by clicking the ![External Tools]({{ site.baseurl }}/images/icon-toolbar_externaltools.png) icon in the toolbar).
 
 ### Integrating JSHint
 
 You can integrate JSHint in Eclipse in order to check the JavaScript files:
 
-. locate the image:icon-toolbar_externaltools.png[External Tools, title="External Tools"] icon in the toolbar and click on then down arrow on the right of it
-. choose *External Tools Configurations...*
-. right-click on *Program* in the left area and choose *New*
-. In the right area:
-  * *Name*: enter what you want (I use `JSHint`)
-  * *Main* tab:
-    ** *Location*: `C:\Dev\Util\bin\jshint.bat`
-    ** *Arguments*: `"${selected_resource_loc}"`
-  * *Build* tab:
-    ** uncheck *Build before launch*
-  * *Common* tab:
-    ** *Save as*: since I use JSHint in many projects, I leave checked the *Local file* option.
-    ** *Display in favorites menu*: check *External Tools*
+- locate the ![External Tools]({{ site.baseurl }}/images/icon-toolbar_externaltools.png) icon in the toolbar and click on then down arrow on the right of it
+- choose `External Tools Configurations...`
+- right-click on `Program` in the left area and choose `New`
+- In the right area:
+  - `Name`: enter what you want (I use `JSHint`)
+  - `Main` tab:
+    - `Location`: `C:\Dev\Util\bin\jshint.bat`
+    - `Arguments`: `"${selected_resource_loc}"`
+  - `Build` tab:
+    - uncheck `Build before launch`
+  - `Common` tab:
+    - `Save as`: since I use JSHint in many projects, I leave checked the `Local file` option.
+    - `Display in favorites menu`: check `External Tools`
 
-Once you're done with the above steps, you can check a JavaScript file simply by opening the file in the editor and running this external tool (by clicking the image:icon-toolbar_externaltools.png[External Tools, title="External Tools"] icon in the toolbar).
+Once you're done with the above steps, you can check a JavaScript file simply by opening the file in the editor and running this external tool (by clicking the ![External Tools]({{ site.baseurl }}/images/icon-toolbar_externaltools.png) icon in the toolbar).
 
 In order to have a better analysis, your JavaScript should start with these comments:
-[source,javascript]
-```
+
+```javascript
 /* jshint unused:vars, undef:true */
 ```
 If you use jQuery and/or browser-specific options, you can add `, jquery:true` and/or `, browser:true` to the above options ([see here](http://jshint.com/docs/options/#environments) for a more complete option list).
 
 If you use some JavaScript objects that are defined in other JavaScripts, you can add also this comment:
-[source,javascript]
-```
+
+```javascript
 /* global Name1_of_an_object_defined_elsewhere, another_object, yet_another_one */
 ```
 
 If you define a JavaScript object that is only used in other scripts, you can add this comment too:
-```
+
+```javascript
 /* exported Object_defined_in_this_script_but_used_elsewhere */
 ```
 
@@ -783,29 +739,26 @@ Just a side note: using the [`strict mode`](https://developer.mozilla.org/en-US/
 
 ### Eclipse keyboard shortcuts
 
-All the Eclipse keyboard shortcuts can be found in the *Preferences* window under *General* > *Keys*.
+All the Eclipse keyboard shortcuts can be found in the `Preferences` window under `General` ⇒ `Keys`.
 
 By the way, here you can find the most useful ones (or at least those that I use most):
 
 
-* **Help**
-** `Shift`+`F2` when the current cursor position is in the middle of a built-in PHP function or class method: open the PHP manual for that function
-** `Ctrl`+`Left Click` on a variable/function/method: jump to its definition
-
-* **Search**
-** `Ctrl`+`F`: open the search-in-current-file dialog
-** `Ctrl`+`K` (after having defined a search with `Ctrl`+`F`): search next
-** `Ctrl`+`Shift`+`K` (after having defined a search with `Ctrl`+`F`): search previous
-** `Ctrl`+`H`: open the search-in-multiple-files dialog
-
-* **Debug**
-** `Ctrl`+`Shift`+`B`: add or remove a breakpoint
-** `F6` (while debugging): run next line of code (_step over_)
-** `F5` (while debugging): run next line of code (entering user defined functions - ie _step into_)
-** `F7` (while debugging): run the current function until it ends
-** `F8` (while debugging): run until the end of the script (or until the next breakpoint)
-** `Ctrl`+`F2`: stop the debugging session
-
-* **Miscellaneous**
-** `Ctrl`+`Space`: force the auto-completion context menu to appear
-** `Alt`+`Shift`+`W` then `X`: locate the currently selected file or directory in Windows Explorer
+- **Help**
+  - `Shift`+`F2` when the current cursor position is in the middle of a built-in PHP function or class method: open the PHP manual for that function
+  - `Ctrl`+`Left Click` on a variable/function/method: jump to its definition
+- **Search**
+  - `Ctrl`+`F`: open the search-in-current-file dialog
+  - `Ctrl`+`K` (after having defined a search with `Ctrl`+`F`): search next
+  - `Ctrl`+`Shift`+`K` (after having defined a search with `Ctrl`+`F`): search previous
+  - `Ctrl`+`H`: open the search-in-multiple-files dialog
+- **Debug**
+  - `Ctrl`+`Shift`+`B`: add or remove a breakpoint
+  - `F6` (while debugging): run next line of code (_step over_)
+  - `F5` (while debugging): run next line of code (entering user defined functions - ie _step into_)
+  - `F7` (while debugging): run the current function until it ends
+  - `F8` (while debugging): run until the end of the script (or until the next breakpoint)
+  - `Ctrl`+`F2`: stop the debugging session
+- **Miscellaneous**
+  - `Ctrl`+`Space`: force the auto-completion context menu to appear
+  - `Alt`+`Shift`+`W` then `X`: locate the currently selected file or directory in Windows Explorer

@@ -10,11 +10,12 @@ layout: default
 		</div>
 	</header>
 	<div class="row">
-		<div class="col-md-4" id="article-toc">
-		</div>
-		<div class="col-md-8">
+		<div class="col-md-9">
 			{{ content }}
 		</div>
+        <div class="col-md-3">
+            <nav id="article-toc" data-spy="affix" data-offset-top="0" class="hidden-print hidden-xs hidden-sm affix-top"></nav>
+        </div>
 	</div>
 </article>
 <script>
@@ -25,13 +26,9 @@ document.addEventListener('DOMContentLoaded', function() {
 		$(toc)
 		  .css({display: 'block'})
 		  .addClass('nav')
-		  .find('li').addClass('nav-item').end()
-		  .find('a').addClass('nav-link').end()
+		  .find('ul').addClass('nav').end()
 		;
-		$(document.body)
-		  .css('position', 'relative')
-		  .scrollspy({ target: '#markdown-toc' })
-	    ;
+      $(document.body).scrollspy({target:'#article-toc'});
 	}
 });
 </script>

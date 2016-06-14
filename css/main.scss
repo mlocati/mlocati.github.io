@@ -7,7 +7,7 @@ $fa-font-path: "{{ site.baseurl }}/css/fonts";
 
 @import
         "Font-Awesome/font-awesome.scss",
-        "bootstrap/bootstrap.scss",
+        "bootstrap/_bootstrap.scss",
         "_syntax-highlighting.scss"
 ;
 
@@ -15,18 +15,66 @@ $fa-font-path: "{{ site.baseurl }}/css/fonts";
     margin-bottom: 15px;
 }
 
+body {
+    position: relative;
+    padding-top: 70px;
+    padding-bottom: 40px;
+}
+
 div.article-toc {
     display: none;
 }
+#article-toc {
+    a {
+        color: #767676;
+    }
+    &>.nav>li>a {
+        padding: 4px 20px;
+        font-size: 13px;
+        color: #767676;
+    }
+    .nav .nav {
+        display: none;
+        &>li>a {
+            padding-top: 1px;
+            padding-bottom: 1px;
+            padding-left: 30px;
+            font-size: 12px;
+        }
+    }
+    .active .nav {
+        display: block;
+    }
+    &>.nav>.active>a {
+        font-weight: 700;
+        color: #563d7c;
+        background-color: transparent;
+        padding-left: 18px;
+        border-left: 2px solid #563d7c;
+    }
+    .nav .nav>.active>a {
+        color: #563d7c;
+        border-left: 2px solid #563d7c;
+        padding-left: 28px;
+        font-weight: 600;
+    }
+}
 
-#wip {
-	position: fixed;
-	left: 50%;
-	top: 50%;
-	width: 420px;
-	height: 44px;
-	margin-left: -210px;
-	margin-top: -22px;
-	transform: rotate(-22.5deg);
-	z-index:65535;
+.footer {
+    background-color: #fff;
+    padding-top: 10px;
+    border-top: 1px solid #e5e5e5;
+    a i {
+        margin-right: 5px;
+    }
+    a {
+        margin-left: 20px;
+        color: #767676;
+        &:hover {
+            color: $link-color;
+        }
+    }
+    li:first-child a {
+        margin-left: 0;
+    }
 }
