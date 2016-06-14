@@ -12,23 +12,31 @@ layout: default
 	<div class="row">
 		<div class="col-md-9">
 			{{ content }}
+			<div id="disqus_thread"></div>
 		</div>
-        <div class="col-md-3">
-            <nav id="article-toc" data-spy="affix" data-offset-top="0" class="hidden-print hidden-xs hidden-sm affix-top"></nav>
-        </div>
+		<div class="col-md-3">
+			<nav id="article-toc" data-spy="affix" data-offset-top="0" class="hidden-print hidden-xs hidden-sm affix-top"></nav>
+		</div>
 	</div>
 </article>
 <script>
+var disqus_config = function () {
+	this.page.url = '{{ page.url | replace:'index.html','' | prepend: site.baseurl | prepend: site.url }}';
+};
 document.addEventListener('DOMContentLoaded', function() {
 	var toc = document.getElementById('markdown-toc');
 	if (toc !== null) {
 		document.getElementById('article-toc').appendChild(toc);
 		$(toc)
-		  .css({display: 'block'})
-		  .addClass('nav')
-		  .find('ul').addClass('nav').end()
+			.css({display: 'block'})
+			.addClass('nav')
+			.find('ul').addClass('nav').end()
 		;
-      $(document.body).scrollspy({target:'#article-toc'});
+		$(document.body).scrollspy({target:'#article-toc'});
 	}
+	var s = document.createElement('script');
+	s.src = '//mlocati.disqus.com/embed.js';
+	s.setAttribute('data-timestamp', +new Date());
+	document.head.appendChild(s);
 });
 </script>
