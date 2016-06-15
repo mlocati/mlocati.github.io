@@ -1,5 +1,6 @@
 ---
 title:  "Deploy with git push"
+description: How to automatically deploy (ie publish) to a remote server with a simple git push.
 ---
 
 * TOC

@@ -14,7 +14,7 @@ layout: null
     {% for article in site.articles limit:10 %}
       <item>
         <title>{{ article.title | xml_escape }}</title>
-        <description>{{ article.content | xml_escape }}</description>
+        <description>{{ article.description | xml_escape }}</description>
         <pubDate>{{ article.date | date_to_rfc822 }}</pubDate>
         <link>{{ article.url | prepend: site.baseurl | prepend: site.url }}</link>
         <guid isPermaLink="true">{{ article.url | prepend: site.baseurl | prepend: site.url }}</guid>
