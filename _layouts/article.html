@@ -21,7 +21,7 @@ layout: default
 </article>
 <script>
 var disqus_config = function () {
-	this.page.url = '{{ page.url | replace:'index.html','' | prepend: site.baseurl | prepend: site.url }}';
+	this.page.url = {{ page.url | replace:'index.html','' | prepend: site.baseurl | prepend: site.url | jsonify }};
 };
 document.addEventListener('DOMContentLoaded', function() {
 	var toc = document.getElementById('markdown-toc');
