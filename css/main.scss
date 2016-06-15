@@ -80,7 +80,10 @@ div.article-toc {
         }
     }
     li {
-        padding: 0 10px;
+        padding: 0 2px;
+        @media (min-width: 450px) {
+            padding: 0 10px;
+        }
     }
 }
 
