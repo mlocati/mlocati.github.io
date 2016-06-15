@@ -5,7 +5,7 @@ title:  "My PHP Development Environment"
 * TOC
 {:toc}
 
-## Introduction!
+## Introduction
 
 When I develop PHP projects, I need the following features:
 

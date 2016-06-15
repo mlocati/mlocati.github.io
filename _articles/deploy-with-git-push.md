@@ -5,7 +5,7 @@ title:  "Deploy with git push"
 * TOC
 {:toc}
 
-## Introduction!
+## Introduction
 
 Wouldn't it be nice to publish a website with a simple git push?  
 Here I'll explain you how I usually do this.
