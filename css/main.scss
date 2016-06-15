@@ -4,6 +4,7 @@
 @charset "utf-8";
 
 $fa-font-path: "{{ site.baseurl }}/css/fonts";
+// $grid-float-breakpoint: 15000px;
 
 @import
         "Font-Awesome/font-awesome.scss",
