@@ -211,8 +211,8 @@ echo "I'm going to publish from"
 echo "   $repoDirectory"
 echo "to"
 echo "   $pubDirectory"
-sudo -u www-data git --git-dir=$repoDirectory --work-tree=$pubDirectory checkout master -f
 rc=0
+sudo -u www-data git --git-dir=$repoDirectory --work-tree=$pubDirectory checkout master -f
 if [ "$?" -ne "0" ]; then
     echo "GOSH! AN ERROR OCCURRED!!!!"
     rc=1
