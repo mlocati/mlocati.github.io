@@ -541,7 +541,7 @@ The same applies to Eclipse: there's already an Eclipse distribution targeted to
 
 So, let's start downloading the _naked_ version of Eclipse, that is an Eclipse without any plugin.
 
-It's called *Platform Runtime Binary* and to find it you have to go to the [Eclipse download page](http://www.eclipse.org/downloads/), click on [Other builds](http://download.eclipse.org/eclipse/) on the right side of that page, choose the first build under the *Latest Downloads* (at the moment it's [4.5.1 - Eclipse Mars.1](http://download.eclipse.org/eclipse/downloads/drops4/R-4.5.1-201509040015/)), look for *Platform Runtime Binary* and download the 32 bits build for Windows (remember: experience taught me that Apache, PHP, xdebug and Eclipse must all be the same version - 32 bits in my case).
+It's called *Platform Runtime Binary* and to find it you have to go to the [Eclipse download page](http://www.eclipse.org/downloads/), click on [Other builds](http://download.eclipse.org/eclipse/) on the right side of that page, choose the first build under the *Latest Downloads* (at the moment it's [4.6 - Eclipse Neon](http://download.eclipse.org/eclipse/downloads/drops4/R-4.6-201606061100/)), look for *Platform Runtime Binary* and download the 32 bits build for Windows (remember: experience taught me that Apache, PHP, xdebug and Eclipse must all be the same version - 32 bits in my case).
 
 Extract the downloaded archive into `C:\Dev\Eclipse`(you may want to add Eclipse to your Start Menu - simply add a shortcut to `eclipse.exe` in the Start Menu folder located at `%APPDATA%\Microsoft\Windows\Start Menu\Programs`).
 
