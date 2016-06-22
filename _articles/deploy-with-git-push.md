@@ -41,7 +41,7 @@ sudo apt-get install -y git-core
 ### Create the `git` user
 
 We need to create a user account on the server. This account will be the one used by the publish process.
-  
+
 With the following command we create that account:
 
 ```bash
@@ -249,7 +249,7 @@ When you push to the `deploy` remote, the published directory willbe updated aut
 Nice, isn't it?
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
+$(document).ready(function() {
     var $repoName = $('#dwgp-reponame'), repoName = null;
     $repoName
         .on('change keydown keypress keyup mousedown mouseup blur', function() {

@@ -17,7 +17,7 @@ Instead of writing long and unreadable articles, from time to time I simply grea
 </div>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
+$(document).ready(function() {
 	'use strict';
 	/*
 	var protoOk = false;

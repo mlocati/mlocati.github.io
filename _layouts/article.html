@@ -23,20 +23,21 @@ layout: default
 var disqus_config = function () {
 	this.page.url = {{ page.url | replace:'index.html','' | prepend: site.baseurl | prepend: site.url | jsonify }};
 };
-document.addEventListener('DOMContentLoaded', function() {
-	var toc = document.getElementById('markdown-toc');
-	if (toc !== null) {
-		document.getElementById('article-toc').appendChild(toc);
-		$(toc)
+$(document).ready(function() {
+	var $toc = $('#markdown-toc');
+	if ($toc !== null) {
+		$('#article-toc').append($toc);
+		$toc
 			.css({display: 'block'})
 			.addClass('nav')
 			.find('ul').addClass('nav').end()
 		;
 		$(document.body).scrollspy({target:'#article-toc'});
 	}
-	var s = document.createElement('script');
-	s.src = '//mlocati.disqus.com/embed.js';
-	s.setAttribute('data-timestamp', +new Date());
-	document.head.appendChild(s);
+	$(document.head).append(
+		$('<script />')
+			.attr('src', '//mlocati.disqus.com/embed.js')
+			.attr('data-timestamp', +new Date())
+	);
 });
 </script>
