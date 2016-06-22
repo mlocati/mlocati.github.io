@@ -591,6 +591,8 @@ You can find the Eclipse preferences under the `Window` menu ⇒ `Preferences`.
   - in the `New text file line delimiter` choose `Other` ⇒ `Unix`
 - under `JavaScript` ⇒ `Code Style` ⇒ `Formatter`  
   to use the Airbnb coding style (like concrete5 requires for instance), simply hit on `Import...` and load [this xml file](https://github.com/mlocati/mlocati.github.io/blob/master/files/Airbnb.xml)
+- under `JSON` ⇒ `JSON Files`  
+  - in the `Encoding` menu choose `ISO 10646/Unicode (UTF-8)` 
 - under `PHP` ⇒ `Code Style` ⇒ `Formatter`  
   you usually want to use the `PSR-2 [builtin]` rules 
 - under `PHP` ⇒ `PHP Executables`  
