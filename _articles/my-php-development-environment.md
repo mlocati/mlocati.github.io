@@ -574,6 +574,15 @@ So, here's how you can install either the development version or the official on
   In the window that will open, choose `--All Available Sites--` in the `Work with` field and enter `PDT` in the `type filter text` field.  
   Check the `PHP Development Tools (PDT)` package and proceed with the installation.
 
+### Other Eclipse plugins
+
+- `Ansi Console`  
+  To add color support in the console integrated in Eclipse
+  - Software site location: `http://www.mihai-nita.net/eclipse`
+  - Disable `Group items by category` in the Install window to view this plugin
+- `Markdown Editor`  
+  To add support for editing markdown files
+  - Software site location: `http://www.nodeclipse.org/updates/markdown/`
 
 ### Configuring Eclipse and PDT
 
