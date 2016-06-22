@@ -228,7 +228,7 @@ We finally need to update the permissions of the newly created directory:
     <pre class="highlight"><code>sudo chown -R git:www-data /var/git/<span class="dwgp-reponame"></span>.git
 sudo chmod -R ug+rwX /var/git/<span class="dwgp-reponame"></span>.git
 sudo chmod -R ug+x /var/git/<span class="dwgp-reponame"></span>.git/hooks/post-receive
-    </code></pre>
+</code></pre>
 </div>
 
 
