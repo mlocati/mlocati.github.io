@@ -90,3 +90,19 @@ div.article-toc {
 #disqus_thread {
     margin-top: 50px;
 }
+
+div.highlighter-rouge {
+    position: relative;
+    button.copy-to-clipboard {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        opacity: 0.2;
+        font-size: 0.6em;
+        transition: all 0.2s ease;
+    }
+    &:hover button.copy-to-clipboard {
+        opacity: 1;
+        font-size: 0.9em;
+    }
+}

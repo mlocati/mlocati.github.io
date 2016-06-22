@@ -23,4 +23,14 @@
 		</div>
 	</div>
 </footer>
+<script>
+$(document).ready(function() {
+	$('div.highlighter-rouge').append($('<button class="copy-to-clipboard" title="Copy to clipboard"><i class="fa fa-files-o" aria-hidden="true"></i></button>'));
+	new Clipboard('button.copy-to-clipboard', {
+		target: function(button) {
+			return $(button).closest('div.highlighter-rouge')[0];
+		}
+	});
+});
+</script>
 <script src="{{ "/js/site.js" | prepend: site.baseurl }}"></script>
