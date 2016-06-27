@@ -34,10 +34,12 @@ $(document).ready(function() {
 		;
 		$(document.body).scrollspy({target:'#article-toc'});
 	}
-	$(document.head).append(
-		$('<script />')
-			.attr('src', '//mlocati.disqus.com/embed.js')
-			.attr('data-timestamp', +new Date())
-	);
+	{% if jekyll.environment == "production" %}
+		$(document.head).append(
+			$('<script />')
+				.attr('src', '//mlocati.disqus.com/embed.js')
+				.attr('data-timestamp', +new Date())
+		);
+	{% endif %}
 });
 </script>
