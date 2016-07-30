@@ -33,3 +33,4 @@ gems:
  - jekyll-seo-tag
  - jekyll-coffeescript
  - jekyll-redirect-from
+ - jekyll-coffeescript
