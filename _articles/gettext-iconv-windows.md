@@ -19,7 +19,12 @@ redirect_from: "/gettext-iconv-windows/index.html"
 2: `static` means that the programs do not use DLL. The setup size is much bigger, but all the executables may be moved around as you like, no DLL-dependencies.
 
 
+### Download statistics
+
+<div id="giw-download-stats"><i class="fa fa-refresh fa-spin"></i></div>
+
 ----
 
 Do you want to see what's behind the scenes? See the [source code](https://github.com/mlocati/gettext-iconv-windows)!
 
+<script src="{{ "/js/gettext-iconv-windows.js" | prepend: site.baseurl }}"></script>
