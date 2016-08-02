@@ -1,6 +1,7 @@
 ---
 title:  "My PHP Development Environment"
 description: PHP development environment with multiple PHP versions and step-by-step debugging.
+date: 2016-06-22T17.51.46+02:00
 ---
 
 * TOC
