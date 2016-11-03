@@ -151,12 +151,12 @@ You can access the Docker MySQL/MariaDB database by connecting to the 3306 port 
 
 This can be done with a command like this:
 
-```
+```{% raw %}
 mysql -u root --password= -h `docker inspect -f '{{.NetworkSettings.IPAddress }}' boulder-mysql`
-```
+{% endraw %}```
 
 If you are running Boulder inside a virtual machine, you can expose it with iptables, by running this command:
 
-```
-sudo iptables -t nat -A DOCKER -p tcp --dport 3306 -j DNAT --to-destination `docker inspect -f '{{.NetworkSettings.IPAddress }}' boulder-mysql`:3306
-```
+```{% raw %}
+sudo iptables -t nat -A DOCKER -p tcp --dport 3306 -j DNAT --to-destination `docker inspect -f '\{{.NetworkSettings.IPAddress }}' boulder-mysql`:3306
+{% endraw %}```
