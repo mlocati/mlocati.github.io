@@ -129,9 +129,9 @@ To start boulder, you simply have to type this command via SSH:
 ## Website port
 
 By default, Boulder will try to reach your website via port `5002` (for http) and optionally via port `5001` (for https).  
-If your local website is available at another port, you should change the file `test/boulder-config.json` under the main Boulder folder.
+If your local website is available at another port, you should change the file `test/config/va.json` under the main Boulder folder.
 
-In particular, you may want to change the values of the `httpPort` and/or `httpsPort` options (under `va` > `portConfig`).  
+In particular, you may want to change the values of the `httpPort` and/or `httpsPort` options (under `portConfig`).  
 So, if for instance your local website is available via HTTP at port `1000`, you should have
 
 ```
