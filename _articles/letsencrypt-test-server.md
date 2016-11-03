@@ -89,7 +89,8 @@ Once Ubuntu is installed, you have to install the *VirtualBox Guest additions* a
   sudo apt-get upgrade -y
   # Install the packages required for the VirtualBox Guest additions and Docker
   sudo apt-get install -y build-essential module-assistant linux-headers-`uname -r` \
-      apt-transport-https ca-certificates linux-image-extra-`uname -r` unzip
+    apt-transport-https ca-certificates linux-image-extra-`uname -r` unzip \
+    linux-image-extra-virtual 
   # Install the VirtualBox Guest additions
   sudo mount /dev/cdrom /media/cdrom
   sudo /media/cdrom/VBoxLinuxAdditions.run
@@ -98,20 +99,23 @@ Once Ubuntu is installed, you have to install the *VirtualBox Guest additions* a
   # Install Docker
   sudo apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 \
       --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
-  sudo bash -c \
-      "echo 'deb https://apt.dockerproject.org/repo ubuntu-xenial main' > /etc/apt/sources.list.d/docker.list"
+  echo 'deb https://apt.dockerproject.org/repo ubuntu-xenial main' | sudo tee /etc/apt/sources.list.d/docker.list
   sudo apt-get update
-  sudo apt-get install -y docker-engine
+  sudo apt-get install -y --allow-unauthenticated docker-engine docker-compose
   # Allow running Docker without sudo
   sudo groupadd docker
   sudo usermod -aG docker `whoami`
   # Start Docker on boot
   sudo systemctl enable docker
   # Download Builder
+  mkdir -p ~/boulder/src/github.com/letsencrypt
   wget --show-progress -q -O ~/boulder-release.zip https://github.com/letsencrypt/boulder/archive/release.zip
   unzip -q -d ~ ~/boulder-release.zip
-  # Create Boulder start script
-  printf '#!/bin/bash\nexport FAKE_DNS=%s\n~/boulder-release/test/run-docker.sh\n' `netstat -rn | grep UG | cut -f10 -d" "` > ~/boulder.sh
+  mv ~/boulder-release ~/boulder/src/github.com/letsencrypt/boulder
+  rm boulder-release.zip
+  # Configure the FAKE_DNS
+  cat ~/boulder/src/github.com/letsencrypt/boulder/docker-compose.yml | sed -e 's/FAKE_DNS: 127.0.0.1/FAKE_DNS: '`netstat -rn | grep UG | cut -f10 -d" "`'/' >~/boulder/src/github.com/letsencrypt/boulder/docker-compose.yml
+  printf '#!/bin/bash\n\nexport GOPATH='$HOME'/boulder\ncd '$HOME'/boulder/src/github.com/letsencrypt/boulder\ndocker-compose up' >~/boulder.sh
   chmod a+x ~/boulder.sh
   # Shutdow the virtual machine
   sudo shutdown -P now
