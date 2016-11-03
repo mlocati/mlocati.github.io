@@ -158,5 +158,5 @@ mysql -u root --password= -h `docker inspect -f '{{.NetworkSettings.IPAddress }}
 If you are running Boulder inside a virtual machine, you can expose it with iptables, by running this command:
 
 ```{% raw %}
-sudo iptables -t nat -A DOCKER -p tcp --dport 3306 -j DNAT --to-destination `docker inspect -f '\{{.NetworkSettings.IPAddress }}' boulder-mysql`:3306
+sudo iptables -t nat -A DOCKER -p tcp --dport 3306 -j DNAT --to-destination `docker inspect -f '{{.NetworkSettings.IPAddress }}' boulder-mysql`:3306
 {% endraw %}```
