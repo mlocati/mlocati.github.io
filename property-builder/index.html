@@ -1,0 +1,157 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>PHP Getter/Setter builder</title>
+        <link rel="stylesheet" href="css/bootstrap.css" />
+        <link rel="stylesheet" href="css/selectize.css" />
+        <style>
+        #output {
+            color: #bd4147;
+            background-color: #f7f7f9;
+            font-family: Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+        }
+        </style>
+        <script src="js/jquery.js"></script>
+        <script>$(document).ready(function() {
+var TYPEHINT = {
+	CAST: 1,
+	PARAM: 2,
+}
+var types = [
+	['bigint', 'string', TYPEHINT.CAST],
+	['boolean', 'bool', TYPEHINT.CAST],
+	['date', '\\DateTime', TYPEHINT.PARAM],
+	['datetime', '\\DateTime', TYPEHINT.PARAM],
+	['datetimetz', '\\DateTime', TYPEHINT.PARAM],
+	['decimal', 'float', TYPEHINT.CAST],
+	['float', 'float', TYPEHINT.CAST],
+	['guid', 'string', TYPEHINT.CAST],
+	['integer', 'int', TYPEHINT.CAST],
+	['object', 'object'],
+	['smallint', 'int', TYPEHINT.CAST],
+	['string', 'string', TYPEHINT.CAST],
+	['text', 'string', TYPEHINT.CAST],
+	['time', '\\DateTime', TYPEHINT.PARAM]
+];
+var $type = $('#type');
+$.each(types, function() {
+	$type.append($('<option />').val(this[0]).text(this[0]));
+});
+$type.find('option[value="integer"]').prop('selected', true);
+$type.selectize({
+	create: true
+});
+function update()
+{
+	var d = {}, I = ' '.repeat(4);
+	d.name = $.trim($('#name').val());
+	d.description = $.trim($('#description').val());
+	if (d.description === 'The') {
+		d.description = '';
+	}
+	d.type = [$type.val(), $type.val(), TYPEHINT.PARAM];
+	for (var i = 0; i < types.length; i++) {
+		if (types[i][0] === d.type[0]) {
+			d.type = types[i];
+			break;
+		}
+	}
+	$('#type option:selected').data('type');
+	var s = JSON.stringify(d);
+	if (update.prev === s) {
+		return;
+	}
+	update.prev = s;
+	if (d.name === '') {
+		$('#btn-copy').css('visibility', 'hidden');
+		$('#output').val('');
+		return;
+	}
+	var lines = [];
+	lines.push('/**');
+	if (d.description !== '') {
+		lines.push(' * ' + d.description + '.');
+		lines.push(' *');
+	}
+	lines.push(' * @Column(type="' + d.type[0] + '", nullable=false, options={"comment": "' + d.description + '"})');
+	lines.push(' *');
+	lines.push(' * @var ' + d.type[1]);
+	lines.push(' */');
+	lines.push('protected $' + d.name + ';');
+	lines.push('');
+	lines.push('/**');
+	if (d.description !== '') {
+		lines.push(' * Set ' + d.description.charAt(0).toLowerCase() + d.description.substr(1) + '.');
+		lines.push(' *');
+	}
+	lines.push(' * @param ' + d.type[1] + ' $value');
+	lines.push(' *');
+	lines.push(' * return static');
+	lines.push(' */');
+	lines.push('public function set' + d.name.charAt(0).toUpperCase() + d.name.substr(1) + '(' + (((d.type[2] & TYPEHINT.PARAM) === TYPEHINT.PARAM) ? (d.type[1] + ' ') : '') + '$value)');
+	lines.push('{');
+	lines.push(I + '$this->' + d.name + ' = ' + (((d.type[2] & TYPEHINT.CAST) === TYPEHINT.CAST) ? ('(' + d.type[1] + ') ') : '') + '$value;');
+	lines.push('');
+	lines.push(I + 'return $this;');
+	lines.push('}');
+	lines.push('');
+	lines.push('/**');
+	if (d.description !== '') {
+		lines.push(' * Get ' + d.description.charAt(0).toLowerCase() + d.description.substr(1) + '.');
+		lines.push(' *');
+	}
+	lines.push(' * @return ' + d.type[1]);
+	lines.push(' */');
+	lines.push('public function get' + d.name.charAt(0).toUpperCase() + d.name.substr(1) + '()');
+	lines.push('{');
+	lines.push(I + 'return $this->' + d.name + ';');
+	lines.push('}');
+
+	var s = I + lines.join('\n' + I) + '\n';
+	$('#output').val(s.replace(/ +\n/g, '\n'));
+	$('#btn-copy').css('visibility', 'visible');
+}
+update.prev = '';
+update();
+$('input,select').on('input change', function() {
+	update();
+});
+new Clipboard('#btn-copy');
+        });</script>
+    </head>
+    <body>
+        <div class="container">
+            <form>
+                <div class="form-group row">
+                    <label for="name" class="col-sm-2 col-form-label">Name</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="name" placeholder="Name" autofocus="autofocus" />
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="description" class="col-sm-2 col-form-label">Description</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="description" placeholder="Description" value="The " />
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="type" class="col-sm-2 col-form-label">Type</label>
+                    <div class="col-sm-10">
+                        <select class="form-control" id="type"></select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="output" class="col-sm-2 col-form-label">Output <a href="#" onclick="return false" id="btn-copy" class="btn btn-primary btn-sm" style="visibility: hidden" data-clipboard-action="copy" data-clipboard-target="#output">copy</a></label>
+                    <div class="col-sm-10">
+                        <textarea class="form-control" id="output" rows="34" readonly="readonly"></textarea>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <script src="js/tether.js"></script>
+        <script src="js/bootstrap.js"></script>
+        <script src="js/selectize.js"></script>
+        <script src="js/clipboard.js"></script>
+    </body>
+</html>
