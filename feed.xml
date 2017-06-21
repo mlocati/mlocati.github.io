@@ -12,12 +12,19 @@ layout: null
     <lastBuildDate>{{ site.time | date_to_rfc822 }}</lastBuildDate>
     <generator>Jekyll v{{ jekyll.version }}</generator>
     {% for article in site.articles limit:10 %}
+      {% capture u %}
+        {% if article.actual_url %}
+          {{ article.actual_url }}
+        {% else %}
+          {{ article.url | prepend: site.baseurl | prepend: site.url }}
+        {% endif %}
+      {% endcapture %}
       <item>
         <title>{{ article.title | xml_escape }}</title>
         <description>{{ article.description | xml_escape }}</description>
         <pubDate>{{ article.date | date_to_rfc822 }}</pubDate>
-        <link>{{ article.url | prepend: site.baseurl | prepend: site.url }}</link>
-        <guid isPermaLink="true">{{ article.url | prepend: site.baseurl | prepend: site.url }}</guid>
+        <link>{{ u | crop }}</link>
+        <guid isPermaLink="true">{{ u | crop }}</guid>
         {% for tag in article.tags %}
         <category>{{ tag | xml_escape }}</category>
         {% endfor %}
