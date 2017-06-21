@@ -23,8 +23,15 @@
 		<div id="navbar" class="navbar-collapse collapse pull-right">
 			<ul class="nav navbar-nav">
 				{% for article in site.articles %}
+                    {% capture u %}
+                        {% if article.actual_url %}
+                            {{ article.actual_url }}
+                        {% else %}
+                            {{ article.url | prepend: site.baseurl }}
+                        {% endif %}
+                    {% endcapture %}
 					<li>
-						<a href="{{article.url | prepend: site.baseurl }}">{{ article.title }}</a>
+						<a href="{{ u | strip}}">{{ article.title }}</a>
 					</li>
 				{% endfor %}
 			</ul>
