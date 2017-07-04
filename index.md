@@ -21,3 +21,8 @@ Somebody found these notes quite useful, so I decided to share them.
 		</li>
 	{% endfor %}
 </ul>
+
+<p style="text-align:right">
+	<br />
+	<a href="https://paypal.me/mlocati"><img src="images/paypal-donate-100.png" alt="Donate with PayPal" /></a>
+</p>
