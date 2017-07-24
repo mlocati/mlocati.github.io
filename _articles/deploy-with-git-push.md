@@ -15,10 +15,17 @@ Here I'll explain you how I usually do this.
 I assume that the environment of the staging/production servers are the following:
 
 - Operating system: Ubuntu 14.04 or Ubuntu 16.04
-- User used by the web server: `www-data` (it's the default for Ubuntu)
-- User group used by the web server: `www-data` (it's the default for Ubuntu)
 
 If your servers are not the above, the approach described in this document should work with minor changes given that they are *nix.
+
+
+## Configuration
+
+Let's assume that:
+
+- the remote server is available at the address <input type="text" id="dwgp-serveraddress" value="www.example.com" />
+- you want to create a new repository named <input type="text" id="dwgp-reponame" value="MYSITE" />
+- the web server impersonates the user <input type="text" id="dwgp-webuser" value="www-data" /> in the group <input type="text" id="dwgp-webgroup" value="www-data" />
 
 
 ## One-time server setup
@@ -45,9 +52,9 @@ We need to create a user account on the server. This account will be the one use
 
 With the following command we create that account:
 
-```bash
-sudo adduser --gecos Git --disabled-login --disabled-password --shell /usr/bin/git-shell --home /home/git --ingroup www-data git
-```
+<div class="language-bash highlighter-rouge">
+    <pre class="highlight"><code>sudo adduser --gecos Git --disabled-login --disabled-password --shell /usr/bin/git-shell --home /home/git --ingroup <span class="dwgp-webgroup"></span> git</code></pre>
+</div>
 
 Here's the explanation of the above options:
 
@@ -56,7 +63,7 @@ Here's the explanation of the above options:
 - `--disabled-password`: disable the login using passwords (we'll access the system with SSH RSA keys)
 - `--shell /usr/bin/git-shell`: when the user access the system, he will use the fake shell provided by git
 - `--home /home/git`: set the home directory for the user to `/home/git`
-- `--ingroup www-data`:  add the new user to the `www-data` group instead of the default one
+- <code class="highlighter-rouge">--ingroup <span class="dwgp-webgroup"></span></code>:  add the new user to the <code class="highlighter-rouge"><span class="dwgp-webgroup"></span></code> group instead of the default one
 - `git`: the username of the new account
 
 #### Strengthen login security
@@ -87,9 +94,9 @@ We finally have to make the file executable:
 sudo chmod +x /home/git/git-shell-commands/no-interactive-login
 ```
 
-#### Allow `www-data` impersonation
+#### Allow <code class="highlighter-rouge"><span class="dwgp-webuser"></span></code> impersonation
 
-The `git` user needs to be able to publish files acting like `www-data`.  
+The `git` user needs to be able to publish files acting like <code class="highlighter-rouge"><span class="dwgp-webuser"></span></code>.  
 In order to allow this, run this command:
 
 ```bash
@@ -98,13 +105,13 @@ sudo visudo
 
 Go to the end of the editor contents and add these lines:
 
-``` 
-Defaults!/usr/bin/git env_keep="GIT_DIR GIT_WORK_TREE"
-git ALL=(www-data) NOPASSWD: /usr/bin/git
-```
+<div class="highlighter-rouge">
+    <pre class="highlight"><code>Defaults!/usr/bin/git env_keep="GIT_DIR GIT_WORK_TREE"
+git ALL=(<span class="dwgp-webuser"></span>) NOPASSWD: /usr/bin/git</code></pre>
+</div>
 
 The first line tells the system that when the `git` command is executed with a `sudo`, we need to keep the two environment variables `GIT_DIR` and `GIT_WORK_TREE`.  
-The second line tells the system that the `git` user can execute the `git` command acting as `www-data` without any further authentication.
+The second line tells the system that the `git` user can execute the `git` command acting as <code class="highlighter-rouge"><span class="dwgp-webuser"></span></code> without any further authentication.
 
 
 ## Authorized developers
@@ -166,18 +173,16 @@ The public key is a single line that starts with `ssh-rsa `, followed by a quite
 
 ## Create a new repository on the server
 
-Let's assume that you want to create a new repository named <input type="text" id="dwgp-reponame" value="MYSITE" />.
-
 We'll end up with:
 
 - Directory to be published: <code class="highlighter-rouge">/var/www/<span class="dwgp-reponame"></span></code>
 - Repository directory: <code class="highlighter-rouge">/var/git/<span class="dwgp-reponame"></span></code>
 
-First of all, we create the directory that will contain web site (it will be owned by the `www-data` user):
+First of all, we create the directory that will contain web site (it will be owned by the <code class="highlighter-rouge"><span class="dwgp-webuser"></span></code> user):
 
 <div class="highlighter-rouge">
     <pre class="highlight"><code>sudo mkdir -p /var/www/<span class="dwgp-reponame"></span>
-sudo chown -R www-data:www-data /var/www/<span class="dwgp-reponame"></span>
+sudo chown -R <span class="dwgp-webuser"></span>:<span class="dwgp-webgroup"></span> /var/www/<span class="dwgp-reponame"></span>
 sudo chmod u+rw -R /var/www/<span class="dwgp-reponame"></span></code></pre>
 </div>
 
@@ -190,7 +195,7 @@ sudo git init --bare
 sudo git config core.sharedRepository group</code></pre>
 </div>
 
-The `core.sharedRepository group` option of the git repository is needed in order to grant write access to both the `git` and `www-data` users (they both belong to the same user group - `www-data`). 
+The `core.sharedRepository group` option of the git repository is needed in order to grant write access to both the `git` and <code class="highlighter-rouge"><span class="dwgp-webuser"></span></code> users (they both belong to the same user group - <code class="highlighter-rouge"><span class="dwgp-webgroup"></span></code>). 
 
 And now the key concept of this whole approach: when someone pushes to this repository, we checkout the repository to the publish folder:
 
@@ -212,7 +217,7 @@ echo "   $repoDirectory"
 echo "to"
 echo "   $pubDirectory"
 rc=0
-sudo -u www-data git --git-dir=$repoDirectory --work-tree=$pubDirectory checkout master -f
+sudo -u <span class="dwgp-webuser"></span> git --git-dir=$repoDirectory --work-tree=$pubDirectory checkout master -f
 if [ "$?" -ne "0" ]; then
     echo "GOSH! AN ERROR OCCURRED!!!!"
     rc=1
@@ -226,7 +231,7 @@ exit $rc
 We finally need to update the permissions of the newly created directory:
 
 <div class="highlighter-rouge">
-    <pre class="highlight"><code>sudo chown -R git:www-data /var/git/<span class="dwgp-reponame"></span>.git
+    <pre class="highlight"><code>sudo chown -R git:<span class="dwgp-webgroup"></span> /var/git/<span class="dwgp-reponame"></span>.git
 sudo chmod -R ug+rwX /var/git/<span class="dwgp-reponame"></span>.git
 sudo chmod -R ug+x /var/git/<span class="dwgp-reponame"></span>.git/hooks/post-receive
 </code></pre>
@@ -238,8 +243,7 @@ sudo chmod -R ug+x /var/git/<span class="dwgp-reponame"></span>.git/hooks/post-r
 Everything is almost ready!
 The only step required to deploy with a simple `git push` is to add the remote to your repository.
 
-For instance, if the server is available at the address <input type="text" id="dwgp-serveraddress" value="www.example.com" />,
-here's how to add a remote named `deploy` to your local repository:
+For instance, here's how to add a remote named `deploy` to your local repository:
 
 <div class="highlighter-rouge">
     <pre class="highlight"><code>git remote add deploy git@<span class="dwgp-serveraddress"></span>:/var/git/<span class="dwgp-reponame"></span>.git</code></pre>
@@ -251,29 +255,41 @@ Nice, isn't it?
 
 <script>
 $(document).ready(function() {
-    var $repoName = $('#dwgp-reponame'), repoName = null;
-    $repoName
-        .on('change keydown keypress keyup mousedown mouseup blur', function() {
-            var n = $repoName.val().replace(/[^\w\.]+/g, '-').replace(/^-+|-+$/g, '');
-            if (n === '' || n === repoName) {
-                return;
-            }
-            repoName = n;
-            $('.dwgp-reponame').text(repoName);
-        })
-        .trigger('change')
-    ;
-    var $serverAddress = $('#dwgp-serveraddress'), serverAddress = null;
-    $serverAddress
-        .on('change keydown keypress keyup mousedown mouseup blur', function() {
-            var n = $serverAddress.val().replace(/\s+$/g, '');
-            if (n === '' || n === serverAddress) {
-                return;
-            }
-            serverAddress = n;
-            $('.dwgp-serveraddress').text(serverAddress);
-        })
-        .trigger('change')
-    ;
+    function Valorizer(key) {
+        var me = this;
+        me.currentValue = null;
+        me.$input = $('#dwgp-' + key);
+        me.$spans = $('.dwgp-' + key);
+        switch (key) {
+            case 'reponame':
+                me.normalize = function (v) { return v.replace(/[^\w\.]+/g, '-').replace(/^-+|-+$/g, ''); };
+                break;
+            case 'serveraddress':
+            case 'webuser':
+            case 'webgroup':
+                me.normalize = function (v) { return v.replace(/\s+/g, ''); };
+                break;
+            default:
+                me.normalize = function (v) { return v; };
+                break;
+        }
+        me.$input
+            .on('change keydown keypress keyup mousedown mouseup blur', function() {
+                var newValue = me.normalize(me.$input.val());
+                if (newValue === '' || newValue === me.currentValue) {
+                    return;
+                }
+                me.currentValue = newValue;
+                me.$spans.text(newValue);
+            })
+            .on('blur', function() {
+                me.$input.val(me.normalize(me.$input.val()));
+            })
+            .trigger('change')
+        ;
+    }
+    for (var i = 0, L = ['reponame', 'serveraddress', 'webuser', 'webgroup']; i < L.length; i++) {
+        new Valorizer(L[i]);
+    }
 });
 </script>
