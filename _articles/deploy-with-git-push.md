@@ -255,6 +255,35 @@ Nice, isn't it?
 
 <script>
 $(document).ready(function() {
+    var storage = (function() {
+        var PREFIX = 'ml-dwgp-';
+        var ok = window.localStorage && window.localStorage.setItem && window.localStorage.getItem;
+        return {
+            save: function (key, value) {
+                if (ok) {
+                    try {
+                        window.localStorage.setItem(PREFIX + key, value);
+                        return true;
+                    } catch (e) {
+                    }
+                }
+                return false;
+            },
+            load: function (key, defaultValue) {
+                var result = defaultValue;
+                if (ok) {
+                    try {
+                        var v = window.localStorage.getItem(PREFIX + key);
+                        if (v !== null) {
+                            return v;
+                        }
+                    } catch (e) {
+                    }
+                }
+                return defaultValue;
+            }
+        };
+    })();
     function Valorizer(key) {
         var me = this;
         me.currentValue = null;
@@ -265,9 +294,11 @@ $(document).ready(function() {
                 me.normalize = function (v) { return v.replace(/[^\w\.]+/g, '-').replace(/^-+|-+$/g, ''); };
                 break;
             case 'serveraddress':
+                me.normalize = function (v) { return v.replace(/\s+/g, ''); };
+                break;
             case 'webuser':
             case 'webgroup':
-                me.normalize = function (v) { return v.replace(/\s+/g, ''); };
+                me.normalize = function (v) { return v.replace(/[^\w\-]+/g, ''); };
                 break;
             default:
                 me.normalize = function (v) { return v; };
@@ -283,8 +314,11 @@ $(document).ready(function() {
                 me.$spans.text(newValue);
             })
             .on('blur', function() {
-                me.$input.val(me.normalize(me.$input.val()));
+                var v = me.normalize(me.$input.val());
+                me.$input.val(v);
+                storage.save(key, v);
             })
+            .val(storage.load(key, me.$input.val()))
             .trigger('change')
         ;
     }
