@@ -358,7 +358,7 @@ $(document).ready(function() {
         me.saveEvent = 'blur';
         switch (key) {
             case 'reponame':
-                me.normalize = function (v) { return v.replace(/[^\w\.]+/g, '-').replace(/^-+|-+$/g, ''); };
+                me.normalize = function (v) { return v.replace(/[\\\/]+/g, '/').replace(/^\/|\/$/, '').replace(/[^\w\.\/]+/g, '-').replace(/^-+|-+$/g, ''); };
                 break;
             case 'serveraddress':
                 me.normalize = function (v) { return v.replace(/\s+/g, ''); };
