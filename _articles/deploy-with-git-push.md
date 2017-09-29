@@ -26,6 +26,8 @@ Let's assume that:
 - the remote server is available at the address <input type="text" id="dwgp-serveraddress" value="www.example.com" />
 - you want to create a new repository named <input type="text" id="dwgp-reponame" value="MYSITE" />
 - the web server impersonates the user <input type="text" id="dwgp-webuser" value="www-data" /> in the group <input type="text" id="dwgp-webgroup" value="www-data" />
+- you want to execute these commands after the push:
+  - <label><input type="checkbox" id="dwgp-x-composer-nocache" />`Composer` (with cache disabled)</label>
 
 
 ## One-time server setup
@@ -46,6 +48,50 @@ If the above command fails with an error like `Unable to locate package git`, yo
 sudo apt-get install -y git-core
 ```
 
+<div class="dwgp-x-composer-nocache-on" markdown="1" style="display: none">
+### Install and configure Composer
+
+In order to have Composer, you need PHP and some PHP extension.
+On Ubuntu you can install all of them with:
+
+```bash
+sudo apt-get update && sudo apt-get install -y php-cli php-json php-mbstring
+```
+
+Then you can download Composer with this command:
+
+```bash
+# Go to your home directory
+cd
+# Download and install Composer
+curl --silent --show-error https://getcomposer.org/installer | php
+# Move Composer to the default binary folder
+sudo mv composer.phar /usr/local/bin/composer
+# Check that Composer works
+composer --version
+```
+
+In order to save some space, let's add a script that execute Composer with cache disabled.
+
+```bash
+sudo nano /usr/local/bin/composer-without-cache
+```
+
+And type this content:
+
+```bash
+#!/bin/bash
+export COMPOSER_CACHE_DIR=/dev/null
+composer "$@"
+```
+</div>
+
+Finally, make it executable:
+
+```bash
+sudo chmod a+x /usr/local/bin/composer-without-cache
+```
+
 ### Create the `git` user
 
 We need to create a user account on the server. This account will be the one used by the publish process.
@@ -58,7 +104,7 @@ With the following command we create that account:
 
 Here's the explanation of the above options:
 
-- `--gecos Git`: set the full name of the account to `Git` (this essentially in order to avoid asking useless data like the account room number and work/home phone) 
+- `--gecos Git`: set the full name of the account to `Git` (this essentially in order to avoid asking useless data like the account room number and work/home phone)
 - `--disabled-login`: the user won't be able to use the account until the password is set.
 - `--disabled-password`: disable the login using passwords (we'll access the system with SSH RSA keys)
 - `--shell /usr/bin/git-shell`: when the user access the system, he will use the fake shell provided by git
@@ -107,7 +153,7 @@ Go to the end of the editor contents and add these lines:
 
 <div class="highlighter-rouge">
     <pre class="highlight"><code>Defaults!/usr/bin/git env_keep="GIT_DIR GIT_WORK_TREE"
-git ALL=(<span class="dwgp-webuser"></span>) NOPASSWD: /usr/bin/git</code></pre>
+git ALL=(<span class="dwgp-webuser"></span>) NOPASSWD: /usr/bin/git</code><span class="dwgp-x-composer-nocache-on" style="display: none">, /usr/local/bin/composer-without-cache</span></pre>
 </div>
 
 The first line tells the system that when the `git` command is executed with a `sudo`, we need to keep the two environment variables `GIT_DIR` and `GIT_WORK_TREE`.  
@@ -139,7 +185,7 @@ So, open PuTTYgen and:
 Simply run this command:
 
 ```bash
-ssh-keygen -t rsa -b 2048 -f key-for-git -C 'ServerName - DeveloperName' 
+ssh-keygen -t rsa -b 2048 -f key-for-git -C 'ServerName - DeveloperName'
 ```
 
 Where:
@@ -195,7 +241,7 @@ sudo git init --bare
 sudo git config core.sharedRepository group</code></pre>
 </div>
 
-The `core.sharedRepository group` option of the git repository is needed in order to grant write access to both the `git` and <code class="highlighter-rouge"><span class="dwgp-webuser"></span></code> users (they both belong to the same user group - <code class="highlighter-rouge"><span class="dwgp-webgroup"></span></code>). 
+The `core.sharedRepository group` option of the git repository is needed in order to grant write access to both the `git` and <code class="highlighter-rouge"><span class="dwgp-webuser"></span></code> users (they both belong to the same user group - <code class="highlighter-rouge"><span class="dwgp-webgroup"></span></code>).
 
 And now the key concept of this whole approach: when someone pushes to this repository, we checkout the repository to the publish folder:
 
@@ -206,7 +252,7 @@ And now the key concept of this whole approach: when someone pushes to this repo
 In the editor type these lines:
 
 <div class="highlighter-rouge">
-    <pre class="highlight"><code>#!/bin/sh
+    <pre class="highlight"><code>#!/bin/bash
 currentUser=`whoami`
 currentServer=`hostname`
 repoDirectory=/var/git/<span class="dwgp-reponame"></span>.git
@@ -219,9 +265,29 @@ echo "   $pubDirectory"
 rc=0
 sudo -u <span class="dwgp-webuser"></span> git --git-dir=$repoDirectory --work-tree=$pubDirectory checkout master -f
 if [ "$?" -ne "0" ]; then
-    echo "GOSH! AN ERROR OCCURRED!!!!"
+    echo "GOSH! GIT FAILED!!!!"
     rc=1
-else
+fi
+<div class="dwgp-x-composer-nocache-on" style="display: none">if [ $rc -eq 0 ]; then
+    echo "Changing directory"
+    pushd $pubDirectory
+    if [ "$?" -ne "0" ]; then
+        echo "GOSH! PUSHD FAILED!!!!"
+        rc=1
+    else
+        echo "Running composer install"
+        sudo -u <span class="dwgp-webuser"></span> composer-without-cache install \
+            --prefer-dist --no-dev --no-progress --no-suggest --no-ansi --no-interaction
+        if [ "$?" -ne "0" ]; then
+            echo "GOSH! COMPOSER FAILED!!!!"
+            rc=1
+        else
+            echo "Great! Composer succeeded!"
+        fi
+        popd
+   fi
+fi</div>
+if [ $rc -eq 0 ]; then
     echo "Don't worry, be happy: everything worked out like a charm ;)"
 fi
 exit $rc
@@ -288,7 +354,8 @@ $(document).ready(function() {
         var me = this;
         me.currentValue = null;
         me.$input = $('#dwgp-' + key);
-        me.$spans = $('.dwgp-' + key);
+        me.type = 'text';
+        me.saveEvent = 'blur';
         switch (key) {
             case 'reponame':
                 me.normalize = function (v) { return v.replace(/[^\w\.]+/g, '-').replace(/^-+|-+$/g, ''); };
@@ -300,29 +367,69 @@ $(document).ready(function() {
             case 'webgroup':
                 me.normalize = function (v) { return v.replace(/[^\w\-]+/g, ''); };
                 break;
+            case 'x-composer-nocache':
+                me.type = 'checkbox';
+                me.saveEvent = 'change';
+                break;
             default:
                 me.normalize = function (v) { return v; };
                 break;
         }
+        switch (me.type) {
+            case 'checkbox':
+                me.$spans = {
+                    on: $('.dwgp-' + key + '-on'),
+                    off: $('.dwgp-' + key + '-off')
+                };
+                break;
+            default:
+                me.$spans = $('.dwgp-' + key);
+                break;
+           }
         me.$input
             .on('change keydown keypress keyup mousedown mouseup blur', function() {
-                var newValue = me.normalize(me.$input.val());
+                var newValue;
+                switch (me.type) {
+                    case 'checkbox':
+                        newValue = me.$input.is(':checked') ? 'on' : 'off';
+                        break;
+                    default:
+                        newValue = me.normalize(me.$input.val());
+                        break;
+                }
                 if (newValue === '' || newValue === me.currentValue) {
                     return;
                 }
                 me.currentValue = newValue;
-                me.$spans.text(newValue);
+                switch (me.type) {
+                    case 'checkbox':
+                        me.$spans.off[newValue === 'off' ? 'show' : 'hide']();
+                        me.$spans.on[newValue === 'on' ? 'show' : 'hide']();
+                        break;
+                    default:
+                        me.$spans.text(newValue);
+                        break;
+                }
             })
-            .on('blur', function() {
-                var v = me.normalize(me.$input.val());
-                me.$input.val(v);
-                storage.save(key, v);
+            .on(me.saveEvent, function() {
+                setTimeout(function() {
+                    if (me.currentValue !== null) {
+                        storage.save(key, me.currentValue);
+                    }
+                }, 0);
             })
-            .val(storage.load(key, me.$input.val()))
-            .trigger('change')
         ;
+        switch (me.type) {
+            case 'checkbox':
+                me.$input.prop('checked', storage.load(key, me.$input.is(':checked') ? 'on' :'off') === 'on');
+                break;
+            default:
+                me.$input.val(storage.load(key, me.$input.val()))
+                break;
+        }
+        me.$input.trigger('change');
     }
-    for (var i = 0, L = ['reponame', 'serveraddress', 'webuser', 'webgroup']; i < L.length; i++) {
+    for (var i = 0, L = ['reponame', 'serveraddress', 'webuser', 'webgroup', 'x-composer-nocache']; i < L.length; i++) {
         new Valorizer(L[i]);
     }
 });
