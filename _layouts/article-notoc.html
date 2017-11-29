@@ -1,0 +1,42 @@
+---
+layout: default
+---
+<article>
+	<header>
+		<div class="row">
+			<div class="col-md-12">
+				<h1>{{ page.title }}</h1>
+			</div>
+		</div>
+	</header>
+	<div class="row">
+		<div class="col-md-12">
+			{{ content }}
+			<div id="disqus_thread"></div>
+		</div>
+	</div>
+</article>
+<script>
+var disqus_config = function () {
+	this.page.url = {{ page.url | replace:'index.html','' | prepend: site.baseurl | prepend: site.url | jsonify }};
+};
+$(document).ready(function() {
+	var $toc = $('#markdown-toc');
+	if ($toc !== null) {
+		$('#article-toc').append($toc);
+		$toc
+			.css({display: 'block'})
+			.addClass('nav')
+			.find('ul').addClass('nav').end()
+		;
+		$(document.body).scrollspy({target:'#article-toc'});
+	}
+	{% if jekyll.environment == "production" %}
+		$(document.head).append(
+			$('<script />')
+				.attr('src', '//mlocati.disqus.com/embed.js')
+				.attr('data-timestamp', +new Date())
+		);
+	{% endif %}
+});
+</script>
