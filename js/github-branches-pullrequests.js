@@ -253,12 +253,12 @@ $('#ml-gh-go').on('click', function (e) {
         var doneBranches = 0;
         $.each(branches, function() {
             var branch = this;
-            branch.pullRequests = {open: [], merged: [], closed: []};
             GitHub.getPullRequestForBranch(baseOwner, baseRepository, forkOwner, branch.name, branch.commit.sha, function (ok, pullRequests) {
                 if (!ok) {
                     failed(pullRequests);
                     return;
                 }
+                branch.pullRequests = {open: [], merged: [], closed: []};
                 $.each(pullRequests, function() {
                     var pullRequest = this;
                     if (pullRequest.state === 'closed' && pullRequest.merged_at) {
