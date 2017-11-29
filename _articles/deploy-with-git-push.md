@@ -319,6 +319,8 @@ When you push to the `deploy` remote, the published directory willbe updated aut
 
 Nice, isn't it?
 
+{% include gitter.html handle="deploy-with-git-push" %}
+
 <script>
 $(document).ready(function() {
     var storage = (function() {
