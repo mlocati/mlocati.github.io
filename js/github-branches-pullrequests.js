@@ -269,7 +269,7 @@ $('#ml-gh-go').on('click', function (e) {
                 });
                 doneBranches++;
                 
-                if (doneBranches === branches.length - 1) {
+                if (doneBranches === branches.length) {
                     done();
                 }
             });
