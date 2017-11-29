@@ -28,4 +28,6 @@ date: 2016-07-30T20.45.08+02:00
 
 Do you want to see what's behind the scenes? See the [source code](https://github.com/mlocati/gettext-iconv-windows)!
 
+{% include gitter.html handle="gettext-iconv-windows" %}
+
 <script src="{{ "/js/gettext-iconv-windows.js" | prepend: site.baseurl }}"></script>

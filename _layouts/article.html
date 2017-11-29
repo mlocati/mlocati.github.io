@@ -12,7 +12,6 @@ layout: default
 	<div class="row">
 		<div class="col-md-9">
 			{{ content }}
-			<div id="disqus_thread"></div>
 		</div>
 		<div class="col-md-3">
 			<nav id="article-toc" data-spy="affix" data-offset-top="0" class="hidden-print hidden-xs hidden-sm affix-top"></nav>
@@ -20,9 +19,6 @@ layout: default
 	</div>
 </article>
 <script>
-var disqus_config = function () {
-	this.page.url = {{ page.url | replace:'index.html','' | prepend: site.baseurl | prepend: site.url | jsonify }};
-};
 $(document).ready(function() {
 	var $toc = $('#markdown-toc');
 	if ($toc !== null) {
@@ -34,12 +30,5 @@ $(document).ready(function() {
 		;
 		$(document.body).scrollspy({target:'#article-toc'});
 	}
-	{% if jekyll.environment == "production" %}
-		$(document.head).append(
-			$('<script />')
-				.attr('src', '//mlocati.disqus.com/embed.js')
-				.attr('data-timestamp', +new Date())
-		);
-	{% endif %}
 });
 </script>
