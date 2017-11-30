@@ -4,7 +4,7 @@ description: Map repository branches to pull requests
 date: 2017-11-29T10.24.13+02:00
 layout: article-notoc
 ---
-<div class="row">
+<div class="row" id="ml-gh-options">
 	<div class="col-md-4">
 		<fieldset>
 			<legend>Source repository</legend>

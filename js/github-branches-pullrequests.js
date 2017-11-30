@@ -225,8 +225,7 @@ var Working = (function() {
     };
 })();
 
-$('#ml-gh-go').on('click', function (e) {
-    e.preventDefault();
+function startProcess() {
     if (Working.get()) {
         return;
     }
@@ -321,6 +320,18 @@ $('#ml-gh-go').on('click', function (e) {
             });
         });
     });
+}
+
+$('#ml-gh-go').on('click', function (e) {
+    e.preventDefault();
+    startProcess();
+});
+$('#ml-gh-options input[type="text"],#ml-gh-options input[type="password"]').on('keypress', function (e) {
+    switch (e.keyCode) {
+        case 13:
+            startProcess();
+            break;
+    }
 });
 
 });
