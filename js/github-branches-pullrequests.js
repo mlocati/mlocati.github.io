@@ -11,7 +11,7 @@ var GitHub = (function() {
             method: 'GET',
             url: baseURL,
             beforeSend: function (xhr) {
-                var username = $('#ml-gh-access-username').val(),
+                var username = $.trim($('#ml-gh-access-username').val()),
                     password = $('#ml-gh-access-password').val();
                 if (username !== '' && password !== '' && window.btoa) {
                     xhr.setRequestHeader('Authorization', 'Basic ' + window.btoa(username + ':' + password));
@@ -54,7 +54,7 @@ var GitHub = (function() {
                     cb(true, paginatedResult);
                     return;
                 }
-                callGitHubApi(settings, cb, {url: nextUrl}, paginatedResult);
+                callGitHubApi(path, cb, {url: nextUrl}, paginatedResult);
             })
         ;
     }
@@ -106,6 +106,7 @@ var GitHub = (function() {
                 function (ok, pullRequests) {
                     if (!ok) {
                         cb(false, 'Failed to retrieve pull requests for ' + owner + '/' + repository + ': ' + pullRequests);
+                        return;
                     }
                     pullRequests = pullRequests.filter(function (pullRequest) {
                         return pullRequest.head.sha === branchSha;
@@ -144,6 +145,29 @@ var Persister = (function() {
         }
         return defaultValue;
     }
+    function inputsToHash() {
+        var owner, repository, chunks = [];
+        owner = $.trim($('#ml-gh-base-owner').val());
+        if (GitHub.isValidOwnerName(owner)) {
+            repository = $.trim($('#ml-gh-base-repository').val());
+            if (GitHub.isValidRepositoryName(repository)) {
+                chunks.push('base:' + owner + '/' + repository);
+            }
+        }
+        owner = $.trim($('#ml-gh-fork-owner').val());
+        if (GitHub.isValidOwnerName(owner)) {
+            repository = $.trim($('#ml-gh-fork-repository').val());
+            if (GitHub.isValidRepositoryName(repository)) {
+                chunks.push('fork:' + owner + '/' + repository);
+            }
+        }
+        var newHash = chunks.join(';');
+        var oldHash = window.location.hash;
+        if (oldHash.replace(/^#/, '') === newHash) {
+            return;
+        }
+        window.location.hash = newHash === '' ? '' : ('#' + newHash);
+    }
     if (ok) {
         $('#ml-gh-base-owner').val(load('base-owner', ''));
         $('#ml-gh-base-repository').val(load('base-repository', ''));
@@ -151,13 +175,35 @@ var Persister = (function() {
         $('#ml-gh-fork-repository').val(load('fork-repository', ''));
         $('#ml-gh-access-username').val(load('access-username', ''));
     }
+    if (window.location.hash) {
+        var matches;
+        matches = /(?:^|#|;)base:([a-z\d\-]+)\/([a-z\d_\-\.]+)(?:$|;)/i.exec(window.location.hash);
+        if (matches) {
+            if (GitHub.isValidOwnerName(matches[1])) {
+                $('#ml-gh-base-owner').val(matches[1]);
+            }
+            if (GitHub.isValidRepositoryName(matches[2])) {
+                $('#ml-gh-base-repository').val(matches[2]);
+            }
+        }
+        matches = /(?:^|#|;)fork:([a-z\d\-]+)\/([a-z\d_\-\.]+)(?:$|;)/i.exec(window.location.hash);
+        if (matches) {
+            if (GitHub.isValidOwnerName(matches[1])) {
+                $('#ml-gh-fork-owner').val(matches[1]);
+            }
+            if (GitHub.isValidRepositoryName(matches[2])) {
+                $('#ml-gh-fork-repository').val(matches[2]);
+            }
+        }
+    }
     return {
         save: function() {
-            save('base-owner', $('#ml-gh-base-owner').val());
-            save('base-repository', $('#ml-gh-base-repository').val());
-            save('fork-owner', $('#ml-gh-fork-owner').val());
-            save('fork-repository', $('#ml-gh-fork-repository').val());
-            save('access-username', $('#ml-gh-access-username').val());
+            save('base-owner', $.trim($('#ml-gh-base-owner').val()));
+            save('base-repository', $.trim($('#ml-gh-base-repository').val()));
+            save('fork-owner', $.trim($('#ml-gh-fork-owner').val()));
+            save('fork-repository', $.trim($('#ml-gh-fork-repository').val()));
+            save('access-username', $.trim($('#ml-gh-access-username').val()));
+            inputsToHash();
         }
     };
 })();
@@ -185,22 +231,22 @@ $('#ml-gh-go').on('click', function (e) {
         return;
     }
     var $i;
-    var baseOwner = ($i = $('#ml-gh-base-owner')).val();
+    var baseOwner = $.trim(($i = $('#ml-gh-base-owner')).val());
     if (!GitHub.isValidOwnerName(baseOwner)) {
         $i.select().focus();
         return;
     }
-    var baseRepository = ($i = $('#ml-gh-base-repository')).val();
+    var baseRepository = $.trim(($i = $('#ml-gh-base-repository')).val());
     if (!GitHub.isValidRepositoryName(baseRepository)) {
         $i.select().focus();
         return;
     }
-    var forkOwner = ($i = $('#ml-gh-fork-owner')).val();
+    var forkOwner = $.trim(($i = $('#ml-gh-fork-owner')).val());
     if (!GitHub.isValidOwnerName(forkOwner)) {
         $i.select().focus();
         return;
     }
-    var forkRepository = ($i = $('#ml-gh-fork-repository')).val();
+    var forkRepository = $.trim(($i = $('#ml-gh-fork-repository')).val());
     if (!GitHub.isValidRepositoryName(forkRepository)) {
         $i.select().focus();
         return;
