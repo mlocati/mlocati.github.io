@@ -54,6 +54,7 @@ Once you downloaded the correct files:
   - `CORE_RL_`
   - `IM_MOD_RL_`
 3. Add this line to your `php.ini` file: `extension=php_imagick.dll`
+4. Restart the Apache/NGINX Windows service (if applicable)
 
 To test if the extension works, you can run this PHP code:
 
