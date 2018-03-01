@@ -84,13 +84,13 @@ And type this content:
 export COMPOSER_CACHE_DIR=/dev/null
 composer "$@"
 ```
-</div>
-
 Finally, make it executable:
 
 ```bash
 sudo chmod a+x /usr/local/bin/composer-without-cache
 ```
+
+</div>
 
 ### Create the `git` user
 
