@@ -203,9 +203,7 @@ junction C:\Dev\PHP C:\Dev\PHP5.5
 
 The above command will create a *junction*: `C:\Dev\PHP` will be an *alias* of `C:\Dev\PHP5.5`.
 
-In order to easily use PHP from other scripts and console windows, I add the `C:\Dev\PHP` directory [to the PATH variable](https://www.google.com/search?q=add+directory+to+path+environment+variable+in+windows).
-
-To make all extensions defined in the php.ini file available I also add the `C:\Dev\PHP` directory [to the Sytem PATH variable](https://stackoverflow.com/a/26368386/1387233)
+Some of the PHP extensions [may require](https://stackoverflow.com/a/26368386/1387233) that `C:\Dev\PHP` is present in the [System `PATH` environment variable](https://www.google.com/search?q=how+to+add+directory+OR+folder+to+global+PATH+environment+variable+in+Windows). This is also useful when you use PHP from other scripts and console windows.
 
 So, if you now open a command prompt and type
 
