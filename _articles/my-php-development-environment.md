@@ -239,10 +239,6 @@ I wrote a [batch file](https://github.com/mlocati/mlocati.github.io/blob/master/
 Then, simply create a shortcut to it where you like, edit its properties and add the version as a parameter to that script:
 example: `C:\Dev\Util\bin\switchphp.cmd 5.6`
 
-### PHP extensions
-
-In order to make some extensions (defined in the php.ini file) work, we need to add the  *junctioned* or *aliased* path [see above](Switching-PHP-version) of the currently loaded PHP version [to the Windows Path variable](https://stackoverflow.com/a/26368386/1387233)
-
 ## PHP utilities
 
 Now that we have installed PHP, it's time to add some very useful PHP-based tools.
