@@ -194,14 +194,18 @@ Let's assume that you have your custom CA certificate saved as `C:\Dev\ssl\my-ca
 
 In order to create a file that contains both the official CA certificates and your custom CA certificates, you can for instance use this command:
 ```text
-CScript.exe //NoLogo C:\Dev\ssl\cacert.vbs C:\Dev\ssl\cacert.pem C:\Dev\ssl\my-ca.crt
+CScript.exe //NoLogo "C:\Dev\ssl\cacert.vbs" "C:\Dev\ssl\cacert.pem" "C:\Dev\ssl\my-ca.crt"
 ```
 The above command will create the `C:\Dev\ssl\cacert.pem` file, containing the official CA certificates and your custom `C:\Dev\ssl\my-ca.crt` certificate.
 You can add as many custom CA certificate files as you want, and you can also specify a directory containing your custom certificates.
 
 Of course, if you only specify one argument, the final file won't contain any custom certificate, only the official ones.
 
-You can schedule the execution of this script using the Windows Scheduler (`Windows` + `R` -> `taskschd.msc`).
+You can schedule the execution of this script using the Windows Scheduler (`Windows` + `R` -> `taskschd.msc`):
+
+- Action: *Start a program*
+- Program/script: `C:\Windows\System32\cscript.exe`
+- Arguments: `//NoLogo "C:\Dev\ssl\cacert.vbs" "C:\Dev\ssl\cacert.pem" "C:\Dev\ssl\my-ca.crt"`
 
 
 ## Configuring PHP
