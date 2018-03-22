@@ -6,7 +6,8 @@ This is a kind of a personal list of notes for myself.
 Somebody found these notes quite useful, so I decided to share them.
 
 <ul class="article-list">
-	{% for article in site.articles %}
+	{% assign sortedArticles = site.articles | sort: 'date' | reverse %}
+	{% for article in sortedArticles %}
 		{% capture u %}
 			{% if article.actual_url %}
 				{{ article.actual_url }}
