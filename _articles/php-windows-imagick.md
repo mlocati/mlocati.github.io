@@ -27,25 +27,36 @@ Once you determined the above parameters, you have to download the dll of the PH
 	<div class="btn-group btn-group-xs versions-filter" data-field="architecture"></div>
 </div>
 
+{% capture ImageMagick32_VC11 %}[ImageMagick-6.9.3-7-vc11-x86.zip](http://windows.php.net/downloads/pecl/deps/ImageMagick-6.9.3-7-vc11-x86.zip){% endcapture %}
+{% capture ImageMagick64_VC11 %}[ImageMagick-6.9.3-7-vc11-x64.zip](http://windows.php.net/downloads/pecl/deps/ImageMagick-6.9.3-7-vc11-x64.zip){% endcapture %}
+{% capture ImageMagick32_VC14 %}[ImageMagick-6.9.3-7-vc14-x86.zip](http://windows.php.net/downloads/pecl/deps/ImageMagick-6.9.3-7-vc14-x86.zip){% endcapture %}
+{% capture ImageMagick64_VC14 %}[ImageMagick-6.9.3-7-vc14-x64.zip](http://windows.php.net/downloads/pecl/deps/ImageMagick-6.9.3-7-vc14-x64.zip){% endcapture %}
+{% capture ImageMagick32_VC15 %}[ImageMagick-7.0.7-11-vc15-x86.zip](http://windows.php.net/downloads/pecl/deps/ImageMagick-7.0.7-11-vc15-x86.zip){% endcapture %}
+{% capture ImageMagick64_VC15 %}[ImageMagick-7.0.7-11-vc15-x64.zip](http://windows.php.net/downloads/pecl/deps/ImageMagick-7.0.7-11-vc15-x64.zip){% endcapture %}
+
 {: .table .table-condensed .table-hover #versions-table }
 | Version | Thread Safe | Architecture | Estension | ImageMagick |
 |---------|-------------|-----------|-----------|-------------|
-| 5.5 | Yes | x86 | [php_imagick-3.4.3-5.5-ts-vc11-x86.zip](http://windows.php.net/downloads/pecl/releases/imagick/3.4.3/php_imagick-3.4.3-5.5-ts-vc11-x86.zip) | [ImageMagick-6.9.3-7-vc11-x86.zip](http://windows.php.net/downloads/pecl/deps/ImageMagick-6.9.3-7-vc11-x86.zip) |
-| 5.5 | Yes | x64 | [php_imagick-3.4.3-5.5-ts-vc11-x64.zip](http://windows.php.net/downloads/pecl/releases/imagick/3.4.3/php_imagick-3.4.3-5.5-ts-vc11-x64.zip) | [ImageMagick-6.9.3-7-vc11-x64.zip](http://windows.php.net/downloads/pecl/deps/ImageMagick-6.9.3-7-vc11-x64.zip) |
-| 5.5 | No | x86 | [php_imagick-3.4.3-5.5-nts-vc11-x86.zip](http://windows.php.net/downloads/pecl/releases/imagick/3.4.3/php_imagick-3.4.3-5.5-nts-vc11-x86.zip) | [ImageMagick-6.9.3-7-vc11-x86.zip](http://windows.php.net/downloads/pecl/deps/ImageMagick-6.9.3-7-vc11-x86.zip) |
-| 5.5 | No | x64 | [php_imagick-3.4.3-5.5-nts-vc11-x64.zip](http://windows.php.net/downloads/pecl/releases/imagick/3.4.3/php_imagick-3.4.3-5.5-nts-vc11-x64.zip) | [ImageMagick-6.9.3-7-vc11-x64.zip](http://windows.php.net/downloads/pecl/deps/ImageMagick-6.9.3-7-vc11-x64.zip) |
-| 5.6 | Yes | x86 | [php_imagick-3.4.3-5.6-ts-vc11-x86.zip](http://windows.php.net/downloads/pecl/releases/imagick/3.4.3/php_imagick-3.4.3-5.6-ts-vc11-x86.zip) | [ImageMagick-6.9.3-7-vc11-x86.zip](http://windows.php.net/downloads/pecl/deps/ImageMagick-6.9.3-7-vc11-x86.zip) |
-| 5.6 | Yes | x64 | [php_imagick-3.4.3-5.6-ts-vc11-x64.zip](http://windows.php.net/downloads/pecl/releases/imagick/3.4.3/php_imagick-3.4.3-5.6-ts-vc11-x64.zip) | [ImageMagick-6.9.3-7-vc11-x64.zip](http://windows.php.net/downloads/pecl/deps/ImageMagick-6.9.3-7-vc11-x64.zip) |
-| 5.6 | No | x86 | [php_imagick-3.4.3-5.6-nts-vc11-x86.zip](http://windows.php.net/downloads/pecl/releases/imagick/3.4.3/php_imagick-3.4.3-5.6-nts-vc11-x86.zip) | [ImageMagick-6.9.3-7-vc11-x86.zip](http://windows.php.net/downloads/pecl/deps/ImageMagick-6.9.3-7-vc11-x86.zip) |
-| 5.6 | No | x64 | [php_imagick-3.4.3-5.6-nts-vc11-x64.zip](http://windows.php.net/downloads/pecl/releases/imagick/3.4.3/php_imagick-3.4.3-5.6-nts-vc11-x64.zip) | [ImageMagick-6.9.3-7-vc11-x64.zip](http://windows.php.net/downloads/pecl/deps/ImageMagick-6.9.3-7-vc11-x64.zip) |
-| 7.0 | Yes | x86 | [php_imagick-3.4.3-7.0-ts-vc14-x86.zip](http://windows.php.net/downloads/pecl/releases/imagick/3.4.3/php_imagick-3.4.3-7.0-ts-vc14-x86.zip) | [ImageMagick-6.9.3-7-vc14-x86.zip](http://windows.php.net/downloads/pecl/deps/ImageMagick-6.9.3-7-vc14-x86.zip) |
-| 7.0 | Yes | x64 | [php_imagick-3.4.3-7.0-ts-vc14-x64.zip](http://windows.php.net/downloads/pecl/releases/imagick/3.4.3/php_imagick-3.4.3-7.0-ts-vc14-x64.zip) | [ImageMagick-6.9.3-7-vc14-x64.zip](http://windows.php.net/downloads/pecl/deps/ImageMagick-6.9.3-7-vc14-x64.zip) |
-| 7.0 | No | x86 | [php_imagick-3.4.3-7.0-nts-vc14-x86.zip](http://windows.php.net/downloads/pecl/releases/imagick/3.4.3/php_imagick-3.4.3-7.0-nts-vc14-x86.zip) | [ImageMagick-6.9.3-7-vc14-x86.zip](http://windows.php.net/downloads/pecl/deps/ImageMagick-6.9.3-7-vc14-x86.zip) |
-| 7.0 | No | x64 | [php_imagick-3.4.3-7.0-nts-vc14-x64.zip](http://windows.php.net/downloads/pecl/releases/imagick/3.4.3/php_imagick-3.4.3-7.0-nts-vc14-x64.zip) | [ImageMagick-6.9.3-7-vc14-x64.zip](http://windows.php.net/downloads/pecl/deps/ImageMagick-6.9.3-7-vc14-x64.zip) |
-| 7.1 | Yes | x86 | [php_imagick-3.4.3-7.1-ts-vc14-x86.zip](http://windows.php.net/downloads/pecl/releases/imagick/3.4.3/php_imagick-3.4.3-7.1-ts-vc14-x86.zip) | [ImageMagick-6.9.3-7-vc14-x86.zip](http://windows.php.net/downloads/pecl/deps/ImageMagick-6.9.3-7-vc14-x86.zip) |
-| 7.1 | Yes | x64 | [php_imagick-3.4.3-7.1-ts-vc14-x64.zip](http://windows.php.net/downloads/pecl/releases/imagick/3.4.3/php_imagick-3.4.3-7.1-ts-vc14-x64.zip) | [ImageMagick-6.9.3-7-vc14-x64.zip](http://windows.php.net/downloads/pecl/deps/ImageMagick-6.9.3-7-vc14-x64.zip) |
-| 7.1 | No | x86 | [php_imagick-3.4.3-7.1-nts-vc14-x86.zip](http://windows.php.net/downloads/pecl/releases/imagick/3.4.3/php_imagick-3.4.3-7.1-nts-vc14-x86.zip) | [ImageMagick-6.9.3-7-vc14-x86.zip](http://windows.php.net/downloads/pecl/deps/ImageMagick-6.9.3-7-vc14-x86.zip) |
-| 7.1 | No | x64 | [php_imagick-3.4.3-7.1-nts-vc14-x64.zip](http://windows.php.net/downloads/pecl/releases/imagick/3.4.3/php_imagick-3.4.3-7.1-nts-vc14-x64.zip) | [ImageMagick-6.9.3-7-vc14-x64.zip](http://windows.php.net/downloads/pecl/deps/ImageMagick-6.9.3-7-vc14-x64.zip) |
+| 5.5 | Yes | x86 | [php_imagick-3.4.3-5.5-ts-vc11-x86.zip](http://windows.php.net/downloads/pecl/releases/imagick/3.4.3/php_imagick-3.4.3-5.5-ts-vc11-x86.zip) | {{ ImageMagick32_VC11 }} |
+| 5.5 | Yes | x64 | [php_imagick-3.4.3-5.5-ts-vc11-x64.zip](http://windows.php.net/downloads/pecl/releases/imagick/3.4.3/php_imagick-3.4.3-5.5-ts-vc11-x64.zip) | {{ ImageMagick64_VC11 }} |
+| 5.5 | No | x86 | [php_imagick-3.4.3-5.5-nts-vc11-x86.zip](http://windows.php.net/downloads/pecl/releases/imagick/3.4.3/php_imagick-3.4.3-5.5-nts-vc11-x86.zip) | {{ ImageMagick32_VC11 }} |
+| 5.5 | No | x64 | [php_imagick-3.4.3-5.5-nts-vc11-x64.zip](http://windows.php.net/downloads/pecl/releases/imagick/3.4.3/php_imagick-3.4.3-5.5-nts-vc11-x64.zip) | {{ ImageMagick64_VC11 }} |
+| 5.6 | Yes | x86 | [php_imagick-3.4.3-5.6-ts-vc11-x86.zip](http://windows.php.net/downloads/pecl/releases/imagick/3.4.3/php_imagick-3.4.3-5.6-ts-vc11-x86.zip) | {{ ImageMagick32_VC11 }} |
+| 5.6 | Yes | x64 | [php_imagick-3.4.3-5.6-ts-vc11-x64.zip](http://windows.php.net/downloads/pecl/releases/imagick/3.4.3/php_imagick-3.4.3-5.6-ts-vc11-x64.zip) | {{ ImageMagick64_VC11 }} |
+| 5.6 | No | x86 | [php_imagick-3.4.3-5.6-nts-vc11-x86.zip](http://windows.php.net/downloads/pecl/releases/imagick/3.4.3/php_imagick-3.4.3-5.6-nts-vc11-x86.zip) | {{ ImageMagick32_VC11 }} |
+| 5.6 | No | x64 | [php_imagick-3.4.3-5.6-nts-vc11-x64.zip](http://windows.php.net/downloads/pecl/releases/imagick/3.4.3/php_imagick-3.4.3-5.6-nts-vc11-x64.zip) | {{ ImageMagick64_VC11 }} |
+| 7.0 | Yes | x86 | [php_imagick-3.4.3-7.0-ts-vc14-x86.zip](http://windows.php.net/downloads/pecl/releases/imagick/3.4.3/php_imagick-3.4.3-7.0-ts-vc14-x86.zip) | {{ ImageMagick32_VC14 }} |
+| 7.0 | Yes | x64 | [php_imagick-3.4.3-7.0-ts-vc14-x64.zip](http://windows.php.net/downloads/pecl/releases/imagick/3.4.3/php_imagick-3.4.3-7.0-ts-vc14-x64.zip) | {{ ImageMagick64_VC14 }} |
+| 7.0 | No | x86 | [php_imagick-3.4.3-7.0-nts-vc14-x86.zip](http://windows.php.net/downloads/pecl/releases/imagick/3.4.3/php_imagick-3.4.3-7.0-nts-vc14-x86.zip) | {{ ImageMagick32_VC14 }} |
+| 7.0 | No | x64 | [php_imagick-3.4.3-7.0-nts-vc14-x64.zip](http://windows.php.net/downloads/pecl/releases/imagick/3.4.3/php_imagick-3.4.3-7.0-nts-vc14-x64.zip) | {{ ImageMagick64_VC14 }} |
+| 7.1 | Yes | x86 | [php_imagick-3.4.3-7.1-ts-vc14-x86.zip](http://windows.php.net/downloads/pecl/releases/imagick/3.4.3/php_imagick-3.4.3-7.1-ts-vc14-x86.zip) | {{ ImageMagick32_VC14 }} |
+| 7.1 | Yes | x64 | [php_imagick-3.4.3-7.1-ts-vc14-x64.zip](http://windows.php.net/downloads/pecl/releases/imagick/3.4.3/php_imagick-3.4.3-7.1-ts-vc14-x64.zip) | {{ ImageMagick64_VC14 }} |
+| 7.1 | No | x86 | [php_imagick-3.4.3-7.1-nts-vc14-x86.zip](http://windows.php.net/downloads/pecl/releases/imagick/3.4.3/php_imagick-3.4.3-7.1-nts-vc14-x86.zip) | {{ ImageMagick32_VC14 }} |
+| 7.1 | No | x64 | [php_imagick-3.4.3-7.1-nts-vc14-x64.zip](http://windows.php.net/downloads/pecl/releases/imagick/3.4.3/php_imagick-3.4.3-7.1-nts-vc14-x64.zip) | {{ ImageMagick64_VC14 }} |
+| 7.2 | Yes | x86 | [php_imagick-3.4.3-7.2-ts-vc15-x86.zip](http://windows.php.net/downloads/pecl/snaps/imagick/3.4.3/php_imagick-3.4.3-7.2-ts-vc15-x86.zip) | {{ ImageMagick32_VC15 }} |
+| 7.2 | Yes | x64 | [php_imagick-3.4.3-7.2-ts-vc15-x64.zip](http://windows.php.net/downloads/pecl/snaps/imagick/3.4.3/php_imagick-3.4.3-7.2-ts-vc15-x64.zip) | {{ ImageMagick64_VC15 }} |
+| 7.2 | No | x86 | [php_imagick-3.4.3-7.2-nts-vc15-x86.zip](http://windows.php.net/downloads/pecl/snaps/imagick/3.4.3/php_imagick-3.4.3-7.2-nts-vc15-x86.zip) | {{ ImageMagick32_VC15 }} |
+| 7.2 | No | x64 | [php_imagick-3.4.3-7.2-nts-vc15-x64.zip](http://windows.php.net/downloads/pecl/snaps/imagick/3.4.3/php_imagick-3.4.3-7.2-nts-vc15-x64.zip) | {{ ImageMagick64_VC15 }} |
 
 Once you downloaded the correct files:
 
