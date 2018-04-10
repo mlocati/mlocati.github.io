@@ -22,9 +22,9 @@ Once you determined the above parameters, you have to download the dll of the PH
 
 <div class="text-center">
 	<span class="badge">Filter</span>
-	<div class="btn-group btn-group-xs versions-filter" data-field="version"></div>
-	<div class="btn-group btn-group-xs versions-filter" data-field="threadsafe"></div>
-	<div class="btn-group btn-group-xs versions-filter" data-field="architecture"></div>
+	<div class="btn-group btn-group-xs versions-filter" data-field="version" title="PHP version"></div>
+	<div class="btn-group btn-group-xs versions-filter" data-field="threadsafe" title="Thread safety"></div>
+	<div class="btn-group btn-group-xs versions-filter" data-field="architecture" title="Architecture"></div>
 </div>
 
 {% capture ImageMagick32_VC11 %}[ImageMagick-6.9.3-7-vc11-x86.zip](http://windows.php.net/downloads/pecl/deps/ImageMagick-6.9.3-7-vc11-x86.zip){% endcapture %}
