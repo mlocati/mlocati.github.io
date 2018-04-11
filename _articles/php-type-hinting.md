@@ -1,7 +1,7 @@
 ---
 title:  "Type hint in PHP function parameters and return values"
 description: All the scalar, compound and special types used in function (and method) parameter and results, for any PHP version.
-date: 2018-04-11T12.45.00+01:00
+date: 2018-04-11T12:45:00+01:00
 ---
 
 Here's a list of all the types you can use in PHP type hinting, with the minimum PHP version since they are available:

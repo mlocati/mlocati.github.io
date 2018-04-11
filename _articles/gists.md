@@ -1,7 +1,7 @@
 ---
 title:  "My Gists"
 description: List of the gists of mine.
-date: 2016-06-22T09.03.42+02:00
+date: 2016-06-22T09:03:42+02:00
 ---
 
 * TOC

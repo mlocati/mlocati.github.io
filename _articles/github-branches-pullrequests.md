@@ -1,7 +1,7 @@
 ---
 title: Map branches and pull requests for GitHub
 description: Map repository branches to pull requests
-date: 2017-11-29T10.24.13+02:00
+date: 2017-11-29T10:24:13+02:00
 layout: article-notoc
 ---
 <div class="row" id="ml-gh-options">

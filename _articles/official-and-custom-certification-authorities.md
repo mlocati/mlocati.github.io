@@ -1,7 +1,7 @@
 ---
 title:  "Windows: official and custom Certification Authorities in Git, PHP, ..."
 description: How to configure tools like PHP and Git to trust official and custom Certification Authorities 
-date: 2018-03-22T16.17.00+01:00
+date: 2018-03-22T16:17:00+01:00
 ---
 
 * TOC

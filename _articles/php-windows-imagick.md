@@ -1,7 +1,7 @@
 ---
 title:  "Install the ImageMagick PHP extension in Windows"
 description: How to install the ImageMagick PHP extension () in Windows.
-date: 2017-09-13T16.54.00+02:00
+date: 2017-09-13T16:54:00+02:00
 ---
 
 In order to install the imagick PHP extension on Windows, you need to know the exact version of your PHP.

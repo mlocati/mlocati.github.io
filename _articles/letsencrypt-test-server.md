@@ -1,7 +1,7 @@
 ---
 title:  "Let's Encrypt test server (Boulder)"
 description: How to set up a local server to test Let's Encrypt
-date: 2016-06-28T18.05.44+02:00
+date: 2016-06-28T18:05:44+02:00
 ---
 
 * TOC
