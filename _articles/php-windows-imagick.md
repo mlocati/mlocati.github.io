@@ -4,6 +4,10 @@ description: How to install the ImageMagick PHP extension () in Windows.
 date: 2017-09-13T16:54:00+02:00
 ---
 
+<div class="alert alert-info" role="alert">
+    <strong>NOTE</strong> I recently released a <a href="https://github.com/mlocati/powershell-phpmanager">PowerShell module</a> that will let you install the PHP imagick extension simply with <span style="font-family:monospace;white-space:nowrap">Install-PhpExtension imagick</span> (or <span style="font-family:monospace;white-space:nowrap">Install-PhpExtension imagick snapshot</span> for PHP 7.2)
+</div>
+
 In order to install the imagick PHP extension on Windows, you need to know the exact version of your PHP.
 To do this: open a command prompt and enter these commands:
 
