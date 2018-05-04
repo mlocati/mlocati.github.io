@@ -16,9 +16,10 @@ Somebody found these notes quite useful, so I decided to share them.
 			{% endif %}
 		{% endcapture %}
 		<li>
-			<h2>
-				<a class="article-link" href="{{ u | strip}}">{{ article.title }}</a>
-			</h2>
+			<h3 style="margin-bottom: 0"><a class="article-link" href="{{ u | strip}}">{{ article.title }}</a></h3>
+			{% if article.description %}
+				{{ article.description }}
+			{% endif %}
 		</li>
 	{% endfor %}
 </ul>
