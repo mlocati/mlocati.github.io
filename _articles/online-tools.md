@@ -31,14 +31,17 @@ layout: article-notoc
 		<div class="col-md-4">
 			<h3>Only in #1</h3>
 			<textarea id="tlc-output-1" class="form-control" style="resize: vertical" rows="10" readonly="readonly"></textarea>
+			<span style="float: right">(<span id="tlc-output-1-count">0</span>)</span>
 		</div>
 		<div class="col-md-4">
 			<h3>In #1 and in #2</h3>
 			<textarea id="tlc-output-1-2" class="form-control" style="resize: vertical" rows="10" readonly="readonly"></textarea>
+			<span style="float: right">(<span id="tlc-output-1-2-count">0</span>)</span>
 		</div>
 		<div class="col-md-4">
 			<h3>Only in #3</h3>
 			<textarea id="tlc-output-2" class="form-control" style="resize: vertical" rows="10" readonly="readonly"></textarea>
+			<span style="float: right">(<span id="tlc-output-2-count">0</span>)</span>
 		</div>
 	</div>
 </div>
