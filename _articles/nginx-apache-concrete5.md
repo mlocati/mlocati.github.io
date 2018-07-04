@@ -92,7 +92,7 @@ Installing Apache is as easy as running
 sudo apt install -y apache2
 ```
 
-During the installation see an error stating that apache can't be started: ignore it (it's because Apache tries to start using port 80, which is already taken by NGINX).
+During the installation you may see an error stating that apache can't be started: ignore it (it's because Apache tries to start using port 80, which is already taken by NGINX).
 
 Let's disable the default Apache website:
 
