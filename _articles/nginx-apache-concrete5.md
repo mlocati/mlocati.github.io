@@ -144,6 +144,14 @@ Finally we enable this new Apache site:
 	<pre class="highlight"><code><span class="nb">sudo </span>a2ensite <span class="canu-sitename"></span></code></pre>
 </div>
 
+## Installing PHP
+
+concrete5 requires PHP and a few PHP extensions. To install them type this command:
+
+```php
+sudo apt install -y php libapache2-mod-php php-bz2 php-curl php-gd php-intl php-json php-mbstring php-mysql php-opcache php-xml php-zip
+```
+
 ## Activating the configuration
 
 To instruct NGINX and Apache to reload their configuration, simply type these two commands:
