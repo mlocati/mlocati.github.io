@@ -68,6 +68,7 @@ And here's the content of this new file:
         <span class="kn">try_files</span> <span class="nv">$uri</span> <span class="nv">$uri</span><span class="n">/</span> <span class="n">/index.php?</span><span class="nv">$query_string</span><span class="p">;</span>
     <span class="p">}</span>
     <span class="kn">location</span> <span class="p">~</span> <span class="sr">\.php$</span> <span class="p">{</span>
+		<span class="kn">proxy_set_header</span> <span class="s">X-Forwarded-Proto</span> <span class="nv">$scheme</span><span class="p">;</span>
         <span class="kn">proxy_set_header</span> <span class="s">X-Real-IP</span> <span class="nv">$remote_addr</span><span class="p">;</span>
         <span class="kn">proxy_set_header</span> <span class="s">X-Forwarded-For</span> <span class="nv">$remote_addr</span><span class="p">;</span>
         <span class="kn">proxy_set_header</span> <span class="s">Host</span> <span class="nv">$host</span><span class="p">;</span>
@@ -181,7 +182,7 @@ return [
                 '127.0.0.1',
                 '::1',
             ],
-            'headers' => 1,
+            'headers' => -1,
         ],
     ],
 ];
@@ -192,7 +193,11 @@ and finally be sure that Apache can handle this new file:
 <div class="language-bash highlighter-rouge">
 	<pre class="highlight"><code><span class="nb">sudo </span>chown www-data:www-data /var/www/<span class="canu-sitename"></span>/<span class="canu-webfolder"></span>/application/config/concrete.php 
 </code></pre></div>
- 
+
+## HTTPS
+
+In order to have a website accessible via HTTPS, simply configure NGINX.
+
 <script>
 $(document).ready(function() {
     var storage = (function() {
