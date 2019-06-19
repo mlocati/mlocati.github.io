@@ -68,6 +68,9 @@ Here's a list of all the types you can use in PHP type hinting, with the minimum
         <tr><td><code>function foo(): ClassName</code></td><td>PHP 7.0+</td><td><a href="https://3v4l.org/JXlnA">example</a></td></tr>
         <tr><td><code>function foo(): ?ClassName</code></td><td>PHP 7.1+</td><td><a href="https://3v4l.org/PCgCc">example</a></td></tr>
 
+        <tr><th colspan="3" style="text-align:center;"><h3 style="margin: 0;">void</h3></th></tr>
+        <tr><td><code>function foo(): void</code></td><td>PHP 7.1+</td><td><a href="https://3v4l.org/PVqNg">example</a></td></tr>
+
         <tr><th colspan="3" style="text-align:center;"><h3 style="margin: 0;">boolean, double, integer, resource, static</h3></th></tr>
         <tr><td colspan="2">Never recognized as valid for type hinting</td><td><a href="https://3v4l.org/816pM">example 1</a><br /><a href="https://3v4l.org/BnKK3">example 2</a><br /><a href="https://3v4l.org/IC6QP">example 3</a></td></tr>
     </tbody>
