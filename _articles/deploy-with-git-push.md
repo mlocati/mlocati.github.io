@@ -90,6 +90,21 @@ Finally, make it executable:
 sudo chmod a+x /usr/local/bin/composer-without-cache
 ```
 
+If you need to access GitHub (private) repositories, you have to [create a new Personal access token](https://github.com/settings/tokens/new).
+Assuming that the newly generated token is <input type="text" id="dwgp-composer-pat" value="YOUR_TOKEN" />, you then have to run these commands:
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mkdir <span class="nt">-p</span> /home/git/.composer/
+<span class="nb">cat</span> <span class="o">&gt;</span>/home/git/.composer/auth.json <span class="o">&lt;&lt;</span><span class="no">EOL</span><span class="sh">
+{
+    &quot;github-oauth&quot;: {
+        &quot;github.com&quot;: &quot;<span class="dwgp-composer-pat"></span>&quot;
+    }
+}
+</span><span class="no">EOL
+</span>chown <span class="nt">-R</span> git:www-data /home/git/.composer
+chmod <span class="nt">-R</span> ug+rw /home/git/.composer
+</code></pre></div></div>
+
 </div>
 
 ### Create the `git` user
@@ -352,87 +367,99 @@ $(document).ready(function() {
             }
         };
     })();
-    function Valorizer(key) {
-        var me = this;
-        me.currentValue = null;
-        me.$input = $('#dwgp-' + key);
-        me.type = 'text';
-        me.saveEvent = 'blur';
+    function Valorizer(key, volatile) {
+        var my = this;
+        my.currentValue = null;
+        my.volatile = volatile;
+        my.$input = $('#dwgp-' + key);
+        my.type = 'text';
+        my.saveEvent = 'blur';
         switch (key) {
             case 'reponame':
-                me.normalize = function (v) { return v.replace(/[\\\/]+/g, '/').replace(/^\/|\/$/, '').replace(/[^\w\.\/]+/g, '-').replace(/^-+|-+$/g, ''); };
+                my.normalize = function (v) { return v.replace(/[\\\/]+/g, '/').replace(/^\/|\/$/, '').replace(/[^\w\.\/]+/g, '-').replace(/^-+|-+$/g, ''); };
                 break;
             case 'serveraddress':
-                me.normalize = function (v) { return v.replace(/\s+/g, ''); };
+                my.normalize = function (v) { return v.replace(/\s+/g, ''); };
                 break;
             case 'webuser':
             case 'webgroup':
-                me.normalize = function (v) { return v.replace(/[^\w\-]+/g, ''); };
+                my.normalize = function (v) { return v.replace(/[^\w\-]+/g, ''); };
                 break;
             case 'x-composer-nocache':
-                me.type = 'checkbox';
-                me.saveEvent = 'change';
+                my.type = 'checkbox';
+                my.saveEvent = 'change';
+                break;
+            case 'composer-pat':
+                my.normalize = function (v) { return v.replace(/\W+/g, ''); };
                 break;
             default:
-                me.normalize = function (v) { return v; };
+                my.normalize = function (v) { return v; };
                 break;
         }
-        switch (me.type) {
+        switch (my.type) {
             case 'checkbox':
-                me.$spans = {
+                my.$spans = {
                     on: $('.dwgp-' + key + '-on'),
                     off: $('.dwgp-' + key + '-off')
                 };
                 break;
             default:
-                me.$spans = $('.dwgp-' + key);
+                my.$spans = $('.dwgp-' + key);
                 break;
            }
-        me.$input
-            .on('change keydown keypress keyup mousedown mouseup blur', function() {
+        my.$input
+            .on('change keydown keypress keyup mousedown mouseup blur input', function() {
                 var newValue;
-                switch (me.type) {
+                switch (my.type) {
                     case 'checkbox':
-                        newValue = me.$input.is(':checked') ? 'on' : 'off';
+                        newValue = my.$input.is(':checked') ? 'on' : 'off';
                         break;
                     default:
-                        newValue = me.normalize(me.$input.val());
+                        newValue = my.normalize(my.$input.val());
                         break;
                 }
-                if (newValue === '' || newValue === me.currentValue) {
+                if (newValue === my.currentValue) {
                     return;
                 }
-                me.currentValue = newValue;
-                switch (me.type) {
+                my.currentValue = newValue;
+                switch (my.type) {
                     case 'checkbox':
-                        me.$spans.off[newValue === 'off' ? 'show' : 'hide']();
-                        me.$spans.on[newValue === 'on' ? 'show' : 'hide']();
+                        my.$spans.off[newValue === 'off' ? 'show' : 'hide']();
+                        my.$spans.on[newValue === 'on' ? 'show' : 'hide']();
                         break;
                     default:
-                        me.$spans.text(newValue);
+                        my.$spans.text(newValue);
                         break;
                 }
             })
-            .on(me.saveEvent, function() {
+            .on(my.saveEvent, function() {
+                if (my.volatile) {
+                    return;
+                }
                 setTimeout(function() {
-                    if (me.currentValue !== null) {
-                        storage.save(key, me.currentValue);
+                    if (my.currentValue !== null) {
+                        storage.save(key, my.currentValue);
                     }
                 }, 0);
             })
         ;
-        switch (me.type) {
-            case 'checkbox':
-                me.$input.prop('checked', storage.load(key, me.$input.is(':checked') ? 'on' :'off') === 'on');
-                break;
-            default:
-                me.$input.val(storage.load(key, me.$input.val()))
-                break;
+        if (!my.volatile) {
+            switch (my.type) {
+                case 'checkbox':
+                    my.$input.prop('checked', storage.load(key, my.$input.is(':checked') ? 'on' :'off') === 'on');
+                    break;
+                default:
+                    my.$input.val(storage.load(key, my.$input.val()))
+                    break;
+            }
         }
-        me.$input.trigger('change');
+        my.$input.trigger('change');
     }
     for (var i = 0, L = ['reponame', 'serveraddress', 'webuser', 'webgroup', 'x-composer-nocache']; i < L.length; i++) {
-        new Valorizer(L[i]);
+        new Valorizer(L[i], false);
+    }
+    for (var i = 0, L = ['composer-pat']; i < L.length; i++) {
+        new Valorizer(L[i], true);
     }
 });
 </script>
