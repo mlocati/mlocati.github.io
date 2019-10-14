@@ -68,8 +68,8 @@ Once you determined the above parameters, you have to download the dll of the PH
 
 Once you downloaded the correct files:
 
-1. Extract from `php_imagick-….zip` to the `ext` directory the `php_imagick.dll` file of your PHP installation
-2. From the `ImageMagick-….zip`, extract the DLL files that start with `CORE_RL` or `IM_MOD_RL` into the PHP root directory (where you have `php.exe`), or to a directory in your PATH variable
+1. Extract from `php_imagick-….zip` the `php_imagick.dll` file, and save it to the `ext` directory of your PHP installation
+2. Extract from `ImageMagick-….zip` the DLL files located in the `bin` folder that start with `CORE_RL` or `IM_MOD_RL`, and  save them to the PHP root directory (where you have `php.exe`), or to a directory in your `PATH` variable
 3. Add this line to your `php.ini` file:  
   `extension=php_imagick.dll`
 4. Restart the Apache/NGINX Windows service (if applicable)
