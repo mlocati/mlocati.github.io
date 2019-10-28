@@ -27,7 +27,7 @@ Let's assume that:
 - you want to create a new repository named <input type="text" id="dwgp-reponame" value="MYSITE" />
 - the web server impersonates the user <input type="text" id="dwgp-webuser" value="www-data" /> in the group <input type="text" id="dwgp-webgroup" value="www-data" />
 - you want to execute these commands after the push:
-  - <label><input type="checkbox" id="dwgp-x-composer-nocache" />`Composer` (with cache disabled)</label>
+  - <label><input type="checkbox" id="dwgp-x-composer" />`Composer`</label><span class="dwgp-x-composer-on"> - <label style="font-weight:normal"><input type="checkbox" id="dwgp-x-composer-withoutcache" /> disable cache</label></span>
 
 
 ## One-time server setup
@@ -48,14 +48,14 @@ If the above command fails with an error like `Unable to locate package git`, yo
 sudo apt-get install -y git-core
 ```
 
-<div class="dwgp-x-composer-nocache-on" markdown="1" style="display: none">
+<div class="dwgp-x-composer-on" markdown="1" style="display: none">
 ### Install and configure Composer
 
 In order to have Composer, you need PHP and some PHP extension.
 On Ubuntu you can install all of them with:
 
 ```bash
-sudo apt-get update && sudo apt-get install -y php-cli php-json php-mbstring
+sudo apt-get update && sudo apt-get install -y php-cli php-json php-mbstring curl git unzip
 ```
 
 Then you can download Composer with this command:
@@ -69,25 +69,6 @@ curl --silent --show-error https://getcomposer.org/installer | php
 sudo mv composer.phar /usr/local/bin/composer
 # Check that Composer works
 composer --version
-```
-
-In order to save some space, let's add a script that execute Composer with cache disabled.
-
-```bash
-sudo nano /usr/local/bin/composer-without-cache
-```
-
-And type this content:
-
-```bash
-#!/bin/bash
-export COMPOSER_CACHE_DIR=/dev/null
-composer "$@"
-```
-Finally, make it executable:
-
-```bash
-sudo chmod a+x /usr/local/bin/composer-without-cache
 ```
 
 If you need to access GitHub (private) repositories, you have to [create a new Personal access token](https://github.com/settings/tokens/new).
@@ -168,7 +149,7 @@ Go to the end of the editor contents and add these lines:
 
 <div class="highlighter-rouge">
     <pre class="highlight"><code>Defaults!/usr/bin/git env_keep="GIT_DIR GIT_WORK_TREE"
-git ALL=(<span class="dwgp-webuser"></span>) NOPASSWD: /usr/bin/git</code><span class="dwgp-x-composer-nocache-on" style="display: none">, /usr/local/bin/composer-without-cache</span></pre>
+git ALL=(<span class="dwgp-webuser"></span>) NOPASSWD: /usr/bin/git</code><span class="dwgp-x-composer-on" style="display: none">, /usr/local/bin/composer</span></pre>
 </div>
 
 The first line tells the system that when the `git` command is executed with a `sudo`, we need to keep the two environment variables `GIT_DIR` and `GIT_WORK_TREE`.  
@@ -283,7 +264,7 @@ if [ "$?" -ne "0" ]; then
     echo "GOSH! GIT FAILED!!!!"
     rc=1
 fi
-<div class="dwgp-x-composer-nocache-on" style="display: none">if [ $rc -eq 0 ]; then
+<div class="dwgp-x-composer-on" style="display: none">if [ $rc -eq 0 ]; then
     echo "Changing directory"
     pushd $pubDirectory
     if [ "$?" -ne "0" ]; then
@@ -291,7 +272,7 @@ fi
         rc=1
     else
         echo "Running composer install"
-        sudo -u <span class="dwgp-webuser"></span> composer-without-cache install \
+        sudo -u <span class="dwgp-webuser"></span> composer<span class="dwgp-x-composer-withoutcache-on"> --no-cache</span> install \
             --prefer-dist --no-dev --no-progress --no-suggest --no-ansi --no-interaction
         if [ "$?" -ne "0" ]; then
             echo "GOSH! COMPOSER FAILED!!!!"
@@ -385,7 +366,8 @@ $(document).ready(function() {
             case 'webgroup':
                 my.normalize = function (v) { return v.replace(/[^\w\-]+/g, ''); };
                 break;
-            case 'x-composer-nocache':
+            case 'x-composer':
+            case 'x-composer-withoutcache':
                 my.type = 'checkbox';
                 my.saveEvent = 'change';
                 break;
@@ -455,7 +437,7 @@ $(document).ready(function() {
         }
         my.$input.trigger('change');
     }
-    for (var i = 0, L = ['reponame', 'serveraddress', 'webuser', 'webgroup', 'x-composer-nocache']; i < L.length; i++) {
+    for (var i = 0, L = ['reponame', 'serveraddress', 'webuser', 'webgroup', 'x-composer', 'x-composer-withoutcache']; i < L.length; i++) {
         new Valorizer(L[i], false);
     }
     for (var i = 0, L = ['composer-pat']; i < L.length; i++) {
