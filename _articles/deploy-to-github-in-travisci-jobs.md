@@ -64,7 +64,7 @@ By default, you can save it as `.travis/github_deploy_key.enc`
 - If you didn't save the encrypted key as `.travis/github_deploy_key.enc`, define an environment variable named `DEPLOYKEY_FILE` whose value is the relative path to the encrypted key
 - Invoke the following code to load the key so that GIT has (write) access to the repository:
     ```sh
-    wget -q -O - https://raw.githubusercontent.com/mlocati/travisci-github-deploy-key/master/load-deploy-key.sh | sh
+wget -q -O - https://raw.githubusercontent.com/mlocati/travisci-github-deploy-key/master/load-deploy-key.sh | sh
     ```
 
 ## Credits
