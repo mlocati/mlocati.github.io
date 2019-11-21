@@ -3,6 +3,10 @@ $(document).ready(function() {
 'use strict';
 
 var GitHub = (function() {
+    var otp = {
+        loginHash: '',
+        code: '',
+    }
     function callGitHubApi(path, cb, customSettings, paginatedResult) {
         var baseURL = 'https://api.github.com/' + path.replace(/^\//, '');
         var settings = {
@@ -14,7 +18,16 @@ var GitHub = (function() {
                 var username = $.trim($('#ml-gh-access-username').val()),
                     password = $('#ml-gh-access-password').val();
                 if (username !== '' && password !== '' && window.btoa) {
-                    xhr.setRequestHeader('Authorization', 'Basic ' + window.btoa(username + ':' + password));
+                    var loginHash = window.btoa(username + ':' + password)
+                    xhr.setRequestHeader('Authorization', 'Basic ' + loginHash);
+                    if (otp.loginHash !== loginHash) {
+                        otp.loginHash = loginHash;
+                        otp.code = '';
+                    } else if (otp.code !== '') {
+                        xhr.setRequestHeader('X-GitHub-OTP', otp.code)
+                    }
+                } else {
+                    otp.loginHash = '';
                 }
             }
         };
@@ -24,7 +37,36 @@ var GitHub = (function() {
         paginatedResult = paginatedResult ? paginatedResult : null;
         $.ajax(settings)
             .fail(function(xhr, status, error) {
-                var message = '';
+                var message;
+                var match;
+                if (otp.loginHash !== '' && error === 'Unauthorized' && (match = /^required\s*;\s*(\w.*)$/.exec(xhr.getResponseHeader('X-GitHub-OTP'))) !== null) {
+                    if (otp.code !== '') {
+                        otp.code = '';
+                        cb(false, 'The OTP is wrong');
+                        return;
+                    }
+                    message = 'Two factor authentication detected.';
+                    switch (match[1].toLowerCase()) {
+                        case 'app':
+                            message += '\nPlease enter the OTP code using the app:';
+                            break;
+                        case 'sms':
+                            message += '\nPlease enter the OTP code you received via SMS:';
+                            break;
+                        default:
+                            message += '\nPlease enter the OTP code:';
+                            break;
+                    }
+                    var otpCode = window.prompt(message, '');
+                    otpCode = typeof otpCode === 'string' ? otpCode.replace(/^\s+|\s+$/g, '') : '';
+                    if (otpCode === '') {
+                        cb(false, 'Aborted');
+                        return;
+                    }
+                    otp.code = otpCode;
+                    callGitHubApi(path, cb, customSettings, paginatedResult)
+                    return;
+                }
                 if (xhr && xhr.responseJSON && typeof xhr.responseJSON.message === 'string') {
                     message = xhr.responseJSON.message;
                 } else {
