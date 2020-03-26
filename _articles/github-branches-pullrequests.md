@@ -78,6 +78,8 @@ layout: article-notoc
 							&lt;br /&gt;
 							By specifying your &lt;a href=&quot;https://github.com/settings/tokens&quot;&gt;GitHub personal access token&lt;/a&gt;, you'll be able to perform 5000 requests per hour.&lt;br /&gt;
 							&lt;br /&gt;
+							You can save the tokem by selecting the control box (it will be saved locally in your browser, not anywhere else).&lt;br /&gt;
+							&lt;br /&gt;
 							Your credentials are only sent to GitHub (you can check that by inspecting the javascript of this page, as well as checking the network traffic in your browsers developer tools).
 						"
 					><i class="fa fa-info-circle"></i></a>
@@ -85,7 +87,13 @@ layout: article-notoc
 			</legend>
 			<div class="form-group">
 				<label for="ml-gh-access-token">GitHub Personal access token</label>
-				<input type="password" class="form-control" id="ml-gh-access-token" />
+				<div class="input-group">
+					<input type="password" class="form-control" id="ml-gh-access-token" />
+					<span class="input-group-addon">
+						<input type="checkbox" id="ml-gh-access-token-save" />
+						save
+					</span>
+				</div>
 			</div>
 		</fieldset>
 	</div>

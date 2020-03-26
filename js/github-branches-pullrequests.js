@@ -235,6 +235,9 @@ var Persister = (function() {
         $('#ml-gh-fork-repository').val(load('fork-repository', ''));
         if (USE_LOGIN_PASSWORD) {
             $('#ml-gh-access-username').val(load('access-username', ''));
+        } else {
+            $('#ml-gh-access-token').val(load('access-token', ''));
+            $('#ml-gh-access-token-save').prop('checked', $('#ml-gh-access-token').val() !== '');
         }
     }
     if (window.location.hash) {
@@ -266,6 +269,9 @@ var Persister = (function() {
             save('fork-repository', $.trim($('#ml-gh-fork-repository').val()));
             if (USE_LOGIN_PASSWORD) {
                 save('access-username', $.trim($('#ml-gh-access-username').val()));
+            } else {
+                save('access-token', $('#ml-gh-access-token-save').is(':checked') ? $.trim($('#ml-gh-access-token').val()) : '');
+                
             }
             inputsToHash();
         }
@@ -397,5 +403,11 @@ $('#ml-gh-options input[type="text"],#ml-gh-options input[type="password"]').on(
             break;
     }
 });
+
+if (!USE_LOGIN_PASSWORD) {
+    $('#ml-gh-access-token-save').on('change', function() {
+        Persister.save();
+    });
+}
 
 });
