@@ -2,9 +2,12 @@
 $(document).ready(function() {
 'use strict';
 
+var USE_LOGIN_PASSWORD = false;
+
 var GitHub = (function() {
     var otp = {
         loginHash: '',
+        token: '',
         code: '',
     }
     function callGitHubApi(path, cb, customSettings, paginatedResult) {
@@ -15,19 +18,34 @@ var GitHub = (function() {
             method: 'GET',
             url: baseURL,
             beforeSend: function (xhr) {
-                var username = $.trim($('#ml-gh-access-username').val()),
-                    password = $('#ml-gh-access-password').val();
-                if (username !== '' && password !== '' && window.btoa) {
-                    var loginHash = window.btoa(username + ':' + password)
-                    xhr.setRequestHeader('Authorization', 'Basic ' + loginHash);
-                    if (otp.loginHash !== loginHash) {
-                        otp.loginHash = loginHash;
-                        otp.code = '';
-                    } else if (otp.code !== '') {
-                        xhr.setRequestHeader('X-GitHub-OTP', otp.code)
+                if (USE_LOGIN_PASSWORD) {
+                    var username = $.trim($('#ml-gh-access-username').val()),
+                        password = $('#ml-gh-access-password').val();
+                    if (username !== '' && password !== '' && window.btoa) {
+                        var loginHash = window.btoa(username + ':' + password)
+                        xhr.setRequestHeader('Authorization', 'Basic ' + loginHash);
+                        if (otp.loginHash !== loginHash) {
+                            otp.loginHash = loginHash;
+                            otp.code = '';
+                        } else if (otp.code !== '') {
+                            xhr.setRequestHeader('X-GitHub-OTP', otp.code)
+                        }
+                    } else {
+                        otp.loginHash = '';
                     }
                 } else {
-                    otp.loginHash = '';
+                    var token = $.trim($('#ml-gh-access-token').val());
+                    if (token !== '') {
+                        xhr.setRequestHeader('Authorization', 'token ' + token);
+                        if (otp.token !== token) {
+                            otp.token = token;
+                        } else if (otp.code !== '') {
+                            xhr.setRequestHeader('X-GitHub-OTP', otp.code)
+                            otp.code = '';
+                        }
+                    } else {
+                        otp.token = '';
+                    }
                 }
             }
         };
@@ -39,7 +57,7 @@ var GitHub = (function() {
             .fail(function(xhr, status, error) {
                 var message;
                 var match;
-                if (otp.loginHash !== '' && error === 'Unauthorized' && (match = /^required\s*;\s*(\w.*)$/.exec(xhr.getResponseHeader('X-GitHub-OTP'))) !== null) {
+                if ((otp.loginHash !== '' || otp.token !== '') && error === 'Unauthorized' && (match = /^required\s*;\s*(\w.*)$/.exec(xhr.getResponseHeader('X-GitHub-OTP'))) !== null) {
                     if (otp.code !== '') {
                         otp.code = '';
                         cb(false, 'The OTP is wrong');
@@ -215,7 +233,9 @@ var Persister = (function() {
         $('#ml-gh-base-repository').val(load('base-repository', ''));
         $('#ml-gh-fork-owner').val(load('fork-owner', ''));
         $('#ml-gh-fork-repository').val(load('fork-repository', ''));
-        $('#ml-gh-access-username').val(load('access-username', ''));
+        if (USE_LOGIN_PASSWORD) {
+            $('#ml-gh-access-username').val(load('access-username', ''));
+        }
     }
     if (window.location.hash) {
         var matches;
@@ -244,7 +264,9 @@ var Persister = (function() {
             save('base-repository', $.trim($('#ml-gh-base-repository').val()));
             save('fork-owner', $.trim($('#ml-gh-fork-owner').val()));
             save('fork-repository', $.trim($('#ml-gh-fork-repository').val()));
-            save('access-username', $.trim($('#ml-gh-access-username').val()));
+            if (USE_LOGIN_PASSWORD) {
+                save('access-username', $.trim($('#ml-gh-access-username').val()));
+            }
             inputsToHash();
         }
     };

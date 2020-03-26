@@ -13,7 +13,7 @@ layout: article-notoc
 				<input type="text" class="form-control" id="ml-gh-base-owner" />
 			</div>
 			<div class="form-group">
-				<label for="ml-gh-base-owner">Repository</label>
+				<label for="ml-gh-base-repository">Repository</label>
 				<input type="text" class="form-control" id="ml-gh-base-repository" />
 			</div>
 		</fieldset>
@@ -26,13 +26,14 @@ layout: article-notoc
 				<input type="text" class="form-control" id="ml-gh-fork-owner" />
 			</div>
 			<div class="form-group">
-				<label for="ml-gh-fork-owner">Repository</label>
+				<label for="ml-gh-fork-repository">Repository</label>
 				<input type="text" class="form-control" id="ml-gh-fork-repository" />
 			</div>
 		</fieldset>
 	</div>
 	<div class="col-md-4">
 		<fieldset>
+			<!-- Accessing GitHub APIs with username and password is deprecated
 			<legend>
 				Access
 				<div class="pull-right">
@@ -54,12 +55,37 @@ layout: article-notoc
 				</div>
 			</legend>
 			<div class="form-group">
-				<label for="ml-gh-form-owner">Username</label>
+				<label for="ml-gh-access-username">Username</label>
 				<input type="text" class="form-control" id="ml-gh-access-username" />
 			</div>
 			<div class="form-group">
-				<label for="ml-gh-form-owner">Password</label>
+				<label for="ml-gh-access-password">Password</label>
 				<input type="password" class="form-control" id="ml-gh-access-password" />
+			</div>
+			-->
+			<legend>
+				Access
+				<div class="pull-right">
+					<a
+						href="#" onclick="return false"
+						data-toggle="popover"
+						data-container="body"
+						data-trigger="focus"
+						data-placement="left"
+						data-html="true"
+						data-content="
+							Anonymous users are limited to 60 requests per hour.&lt;br /&gt;
+							&lt;br /&gt;
+							By specifying your &lt;a href=&quot;https://github.com/settings/tokens&quot;&gt;GitHub personal access token&lt;/a&gt;, you'll be able to perform 5000 requests per hour.&lt;br /&gt;
+							&lt;br /&gt;
+							Your credentials are only sent to GitHub (you can check that by inspecting the javascript of this page, as well as checking the network traffic in your browsers developer tools).
+						"
+					><i class="fa fa-info-circle"></i></a>
+				</div>
+			</legend>
+			<div class="form-group">
+				<label for="ml-gh-access-token">GitHub Personal access token</label>
+				<input type="password" class="form-control" id="ml-gh-access-token" />
 			</div>
 		</fieldset>
 	</div>
