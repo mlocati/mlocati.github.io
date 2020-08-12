@@ -23,7 +23,7 @@ For simplicity, in this document I assume that you will run the client and a tes
 
 ## Configure the host names
 
-Let's assume you want to test your Let's Encrypt client agains two domain called `www.example.com` and `www.test.com`.  
+Let's assume you want to test your Let's Encrypt client against two domain called `www.example.com` and `www.test.com`.  
 First of all, you need to tell your computer that those domains reside on your computer.
 
 This can be done by modifying the `/etc/hosts` file (for Linux and Mac OS X) or the file `C:\Windows\System32\drivers\etc\hosts` (for Windows), by adding these two lines:

@@ -349,7 +349,7 @@ For the kind of workflow I adopted, I use these settings:
 
 ## GitHub
 
-I use a lot GitHub: it hosts some of my open source projects, and I often use it to contributo to other projects.
+I use a lot GitHub: it hosts some of my open source projects, and I often use it to contribute to other projects.
 
 In order o work with it, you need an account: [go create it](https://github.com/join) if you didn't already do it.
 
@@ -380,7 +380,7 @@ Doing so, you'll end with your own copy of concrete5 in GitHub (in my case it's 
 
 Remaining in _your_ copy of the repository, locate the green button labeled `Clone or download`.
 If the URL shown in the textbox starts with `https://`, hit the link `Use SSH`.
-Finally hit the the _Copy to clipboard_ button (or manually copy the text in the textbox).
+Finally hit the _Copy to clipboard_ button (or manually copy the text in the textbox).
 
 Now you have to choose where you want to save your repository in your local PC.
 I usually place all my websites under `C:\Dev\Web`: browse to that folder, right-click inside it and choose `Git Clone...`.

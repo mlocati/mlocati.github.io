@@ -16,7 +16,7 @@ It is possible to have both running, so that NGINX serves static files (technica
 
 NGINX will be the publicly visible webserver, whereas Apache will only be visible by NGINX at the port <input type="number" step="1" min="1" max="65535" id="canu-proxyport" value="8080" />.
 
-In this document I describe how to setup such environment on Ubuntu 18.04, including all the required steps to have a running concrete5 8.3+ installation avalable at <code>/var/www/<input type="text" id="canu-sitename" value="example.com" />/<input type="text" id="canu-webfolder" value="public" /></code>.
+In this document I describe how to setup such environment on Ubuntu 18.04, including all the required steps to have a running concrete5 8.3+ installation available at <code>/var/www/<input type="text" id="canu-sitename" value="example.com" />/<input type="text" id="canu-webfolder" value="public" /></code>.
 
 
 ## Preparation

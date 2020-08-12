@@ -19,7 +19,7 @@ So, before setting them, you should show a highly visible banner/popup where you
 
     [Ok, I accept]
 
-Only when users hit the "Accept" buttom you can set non technical cookies.
+Only when users hit the "Accept" button you can set non technical cookies.
 
 But how can we easily implement that?
 
@@ -31,7 +31,7 @@ Google Tag Manager (GTM for short) is one of the choices.
 In [Google Tag Manage](https://tagmanager.google.com) you need to:
 
 1. create an account
-2. create a container - one for evey website, so it's a good idea to name the container with the URL of the website
+2. create a container - one for every website, so it's a good idea to name the container with the URL of the website
 
 When creating a container, GTM will show a popup with two codes to be added to your website (you can also view them by going to `Admin` &rarr; `Account Settings` &rarr; `Install Google Tag Manager`).
 
@@ -98,7 +98,7 @@ That's it.
 
 ### Google Analytics
 
-A final note about adding a Google (Universal) Analitics tag. You have 2 options:
+A final note about adding a Google (Universal) Analytics tag. You have 2 options:
 
 1. enable the tag when GTM receives the `cookieAllowed` event
 2. always enable the tag, by setting the `anonymizeIp` value to `true` (since analytics will collect anonymized data, it doesn't require that the user accepts it). 

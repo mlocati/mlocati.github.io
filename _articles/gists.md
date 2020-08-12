@@ -9,7 +9,7 @@ date: 2016-06-22T09:03:42+02:00
 
 ## Introduction
 
-Instead of writing long and unreadable articles, from time to time I simply greate GitHub gists.
+Instead of writing long and unreadable articles, from time to time I simply create GitHub gists.
 
 ## My gists
 

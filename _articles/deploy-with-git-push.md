@@ -207,7 +207,7 @@ sudo mkdir /home/git/.ssh
 sudo nano /home/git/.ssh/authorized_keys
 ```
 
-Go to the end of the editor contents and add a new line containing the previusly generated public key.  
+Go to the end of the editor contents and add a new line containing the previously generated public key.  
 
 The public key is a single line that starts with `ssh-rsa `, followed by a quite long list of characters and ending with the `ServerName - DeveloperName` comments specified during the creation of the key.
 
