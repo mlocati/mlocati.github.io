@@ -50,7 +50,7 @@ date: 2021-05-10T21:45:07+02:00
         </tr>
         <tr>
             <td>Vaxzevria by AstraZeneca</td>
-            <td><a href="#" class="days-preset" data-days="78"></a> days</td>
+            <td><a href="#" class="days-preset" data-days="63"></a> &rarr; <a href="#" class="days-preset" data-days="84"></a> days</td>
         </tr>
         <tr>
             <th colspan="2">Italy (old)</th>
