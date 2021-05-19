@@ -42,11 +42,11 @@ date: 2021-05-10T21:45:07+02:00
         </tr>
         <tr>
             <td>Comirnaty by Pfizer/BioNTech</td>
-            <td><a href="#" class="days-preset" data-days="36"></a> &rarr; <a href="#" class="days-preset" data-days="42"></a> days</td>
+            <td><a href="#" class="days-preset" data-days="35"></a> &rarr; <a href="#" class="days-preset" data-days="42"></a> days</td>
         </tr>
         <tr>
             <td>Moderna</td>
-            <td><a href="#" class="days-preset" data-days="36"></a> &rarr; <a href="#" class="days-preset" data-days="42"></a> days</td>
+            <td><a href="#" class="days-preset" data-days="35"></a> &rarr; <a href="#" class="days-preset" data-days="42"></a> days</td>
         </tr>
         <tr>
             <td>Vaxzevria by AstraZeneca</td>
@@ -118,7 +118,7 @@ function updateView(fixFields) {
 }
 
 var DAYS = document.getElementById('days');
-var DAYS_LASTGOOD = 36;
+var DAYS_LASTGOOD = 35;
 var FIRST2SECOND = document.getElementById('first-to-second-shot');
 var FIRST2SECOND_LASTGOOD = valueToDate(dateToValue(new Date()));
 var FIRST2SECOND_RESULT = document.getElementById('first-to-second-shot-result');
