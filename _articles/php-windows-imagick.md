@@ -61,18 +61,18 @@ Once you determined the above parameters, you have to download the dll of the PH
 | 7.2 | Yes | x64 | [php_imagick-3.4.4-7.2-ts-vc15-x64.zip](https://windows.php.net/downloads/pecl/releases/imagick/3.4.4/php_imagick-3.4.4-7.2-ts-vc15-x64.zip) | {{ ImageMagick64_VC15 }} |
 | 7.2 | No | x86 | [php_imagick-3.4.4-7.2-nts-vc15-x86.zip](https://windows.php.net/downloads/pecl/releases/imagick/3.4.4/php_imagick-3.4.4-7.2-nts-vc15-x86.zip) | {{ ImageMagick32_VC15 }} |
 | 7.2 | No | x64 | [php_imagick-3.4.4-7.2-nts-vc15-x64.zip](https://windows.php.net/downloads/pecl/releases/imagick/3.4.4/php_imagick-3.4.4-7.2-nts-vc15-x64.zip) | {{ ImageMagick64_VC15 }} |
-| 7.3 | Yes | x86 | [php_imagick-3.5.0-7.3-ts-vc15-x86.zip](https://windows.php.net/downloads/pecl/releases/imagick/3.5.0/php_imagick-3.5.0-7.3-ts-vc15-x86.zip) | {{ ImageMagick32_VC15 }} |
-| 7.3 | Yes | x64 | [php_imagick-3.5.0-7.3-ts-vc15-x64.zip](https://windows.php.net/downloads/pecl/releases/imagick/3.5.0/php_imagick-3.5.0-7.3-ts-vc15-x64.zip) | {{ ImageMagick64_VC15 }} |
-| 7.3 | No | x86 | [php_imagick-3.5.0-7.3-nts-vc15-x86.zip](https://windows.php.net/downloads/pecl/releases/imagick/3.5.0/php_imagick-3.5.0-7.3-nts-vc15-x86.zip) | {{ ImageMagick32_VC15 }} |
-| 7.3 | No | x64 | [php_imagick-3.5.0-7.3-nts-vc15-x64.zip](https://windows.php.net/downloads/pecl/releases/imagick/3.5.0/php_imagick-3.5.0-7.3-nts-vc15-x64.zip) | {{ ImageMagick64_VC15 }} |
-| 7.4 | Yes | x86 | [php_imagick-3.5.0-7.4-ts-vc15-x86.zip](https://windows.php.net/downloads/pecl/releases/imagick/3.5.0/php_imagick-3.5.0-7.4-ts-vc15-x86.zip) | {{ ImageMagick32_VC15 }} |
-| 7.4 | Yes | x64 | [php_imagick-3.5.0-7.4-ts-vc15-x64.zip](https://windows.php.net/downloads/pecl/releases/imagick/3.5.0/php_imagick-3.5.0-7.4-ts-vc15-x64.zip) | {{ ImageMagick64_VC15 }} |
-| 7.4 | No | x86 | [php_imagick-3.5.0-7.4-nts-vc15-x86.zip](https://windows.php.net/downloads/pecl/releases/imagick/3.5.0/php_imagick-3.5.0-7.4-nts-vc15-x86.zip) | {{ ImageMagick32_VC15 }} |
-| 7.4 | No | x64 | [php_imagick-3.5.0-7.4-nts-vc15-x64.zip](https://windows.php.net/downloads/pecl/releases/imagick/3.5.0/php_imagick-3.5.0-7.4-nts-vc15-x64.zip) | {{ ImageMagick64_VC15 }} |
-| 8.0 | Yes | x86 | [php_imagick-3.5.0-8.0-ts-vs16-x86.zip](https://windows.php.net/downloads/pecl/releases/imagick/3.5.0/php_imagick-3.5.0-8.0-ts-vs16-x86.zip) | n/a |
-| 8.0 | Yes | x64 | [php_imagick-3.5.0-8.0-ts-vs16-x64.zip](https://windows.php.net/downloads/pecl/releases/imagick/3.5.0/php_imagick-3.5.0-8.0-ts-vs16-x64.zip) | n/a |
-| 8.0 | No | x86 | [php_imagick-3.5.0-8.0-nts-vs16-x86.zip](https://windows.php.net/downloads/pecl/releases/imagick/3.5.0/php_imagick-3.5.0-8.0-nts-vs16-x86.zip) | n/a |
-| 8.0 | No | x64 | [php_imagick-3.5.0-8.0-nts-vs16-x64.zip](https://windows.php.net/downloads/pecl/releases/imagick/3.5.0/php_imagick-3.5.0-8.0-nts-vs16-x64.zip) | n/a |
+| 7.3 | Yes | x86 | [php_imagick-3.5.1-7.3-ts-vc15-x86.zip](https://windows.php.net/downloads/pecl/releases/imagick/3.5.1/php_imagick-3.5.1-7.3-ts-vc15-x86.zip) | {{ ImageMagick32_VC15 }} |
+| 7.3 | Yes | x64 | [php_imagick-3.5.1-7.3-ts-vc15-x64.zip](https://windows.php.net/downloads/pecl/releases/imagick/3.5.1/php_imagick-3.5.1-7.3-ts-vc15-x64.zip) | {{ ImageMagick64_VC15 }} |
+| 7.3 | No | x86 | [php_imagick-3.5.1-7.3-nts-vc15-x86.zip](https://windows.php.net/downloads/pecl/releases/imagick/3.5.1/php_imagick-3.5.1-7.3-nts-vc15-x86.zip) | {{ ImageMagick32_VC15 }} |
+| 7.3 | No | x64 | [php_imagick-3.5.1-7.3-nts-vc15-x64.zip](https://windows.php.net/downloads/pecl/releases/imagick/3.5.1/php_imagick-3.5.1-7.3-nts-vc15-x64.zip) | {{ ImageMagick64_VC15 }} |
+| 7.4 | Yes | x86 | [php_imagick-3.5.1-7.4-ts-vc15-x86.zip](https://windows.php.net/downloads/pecl/releases/imagick/3.5.1/php_imagick-3.5.1-7.4-ts-vc15-x86.zip) | {{ ImageMagick32_VC15 }} |
+| 7.4 | Yes | x64 | [php_imagick-3.5.1-7.4-ts-vc15-x64.zip](https://windows.php.net/downloads/pecl/releases/imagick/3.5.1/php_imagick-3.5.1-7.4-ts-vc15-x64.zip) | {{ ImageMagick64_VC15 }} |
+| 7.4 | No | x86 | [php_imagick-3.5.1-7.4-nts-vc15-x86.zip](https://windows.php.net/downloads/pecl/releases/imagick/3.5.1/php_imagick-3.5.1-7.4-nts-vc15-x86.zip) | {{ ImageMagick32_VC15 }} |
+| 7.4 | No | x64 | [php_imagick-3.5.1-7.4-nts-vc15-x64.zip](https://windows.php.net/downloads/pecl/releases/imagick/3.5.1/php_imagick-3.5.1-7.4-nts-vc15-x64.zip) | {{ ImageMagick64_VC15 }} |
+| 8.0 | Yes | x86 | [php_imagick-3.5.1-8.0-ts-vs16-x86.zip](https://windows.php.net/downloads/pecl/releases/imagick/3.5.1/php_imagick-3.5.1-8.0-ts-vs16-x86.zip) | n/a |
+| 8.0 | Yes | x64 | [php_imagick-3.5.1-8.0-ts-vs16-x64.zip](https://windows.php.net/downloads/pecl/releases/imagick/3.5.1/php_imagick-3.5.1-8.0-ts-vs16-x64.zip) | n/a |
+| 8.0 | No | x86 | [php_imagick-3.5.1-8.0-nts-vs16-x86.zip](https://windows.php.net/downloads/pecl/releases/imagick/3.5.1/php_imagick-3.5.1-8.0-nts-vs16-x86.zip) | n/a |
+| 8.0 | No | x64 | [php_imagick-3.5.1-8.0-nts-vs16-x64.zip](https://windows.php.net/downloads/pecl/releases/imagick/3.5.1/php_imagick-3.5.1-8.0-nts-vs16-x64.zip) | n/a |
 
 Once you downloaded the correct files:
 
