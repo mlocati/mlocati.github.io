@@ -6,15 +6,15 @@ var $tool = $('#tool');
 
 // LineComparer
 (function() {
-    var parsed = ['', ''], parsedCaseSensitive = null;
+    var parsed = ['', ''], parsedCaseSensitive = null, parsedSplitWords = null;
     var $inputList = [$('#tlc-input-1'),$('#tlc-input-2')];
     var $outputList = [$('#tlc-output-1'), $('#tlc-output-1-2'), $('#tlc-output-2')];
     var $outputListCount = [$('#tlc-output-1-count'), $('#tlc-output-1-2-count'), $('#tlc-output-2-count')];
     $inputList[0].add($inputList[1]).add($tool).on('change keydown keyup keypress blur', function() {
         var parsing = [$inputList[0].val(), $inputList[1].val()];
         var parsingCaseSensitive = $('#tool option:selected').data('case-sensitive') === 'yes';
-        console.log(parsingCaseSensitive)
-        if (parsing[0] === parsed[0] && parsing[1] === parsed[1] && parsedCaseSensitive === parsingCaseSensitive) {
+        var parsingSplitWords = $('#tool option:selected').data('split-words') === 'yes';
+        if (parsing[0] === parsed[0] && parsing[1] === parsed[1] && parsedCaseSensitive === parsingCaseSensitive && parsedSplitWords === parsingSplitWords) {
             return;
         }
         function inList(value, list) {
@@ -29,10 +29,15 @@ var $tool = $('#tool');
             }
             return false;
         }
-        var inputList = [], outputList = [[], [], []], i;
+        var inputList = [], outputList = [[], [], []], i, items;
         for (i = 0; i < 2; i++) {
             inputList[i] = [];
-            $.each($inputList[i].val().replace(/\r\n/g, '\n').replace(/\r/g, '\n').split('\n'), function(_, line) {
+            if (parsingSplitWords) {
+                items = $inputList[i].val().replace(/\s+/g, ' ').split(' ');
+            } else {
+                items = $inputList[i].val().replace(/\r\n/g, '\n').replace(/\r/g, '\n').split('\n');
+            }
+            $.each(items, function(_, line) {
                 line = $.trim(line);
                 if (line !== '') {
                     inputList[i].push(line);
@@ -59,6 +64,7 @@ var $tool = $('#tool');
         $outputListCount[2].text(outputList[2].length.toString());
         parsed = parsing; 
         parsedCaseSensitive = parsingCaseSensitive;
+        parsedSplitWords = parsingSplitWords;
     }); 
 })();
 

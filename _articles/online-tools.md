@@ -10,8 +10,10 @@ layout: article-notoc
 	<div class="form-group">
 		<label for="tool">Tool</label>
 		<select class="form-control" id="tool">
-			<option value="line-comparer" data-case-sensitive="no" selected="selected">Line comparer (case insensitive)</option>
+			<option value="line-comparer" selected="selected">Line comparer (case insensitive)</option>
 			<option value="line-comparer" data-case-sensitive="yes">Line comparer (case sensitive)</option>
+			<option value="line-comparer" data-split-words="yes">Word comparer (case insensitive)</option>
+			<option value="line-comparer" data-case-sensitive="yes" data-split-words="yes">Word comparer (case sensitive)</option>
 		</select>
 	</div>
 </form>
