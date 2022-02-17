@@ -28,7 +28,7 @@ defaults:
     values:
       layout: article
 
-gems:
+plugins:
  - jekyll-sitemap
  - jekyll-seo-tag
  - jekyll-coffeescript
