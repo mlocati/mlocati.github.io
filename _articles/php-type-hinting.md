@@ -1,7 +1,7 @@
 ---
 title:  "Type hint in PHP function parameters and return values, properties and constants"
 description: All the scalar, compound and special types used in function (and method) parameter and results, for any PHP version.
-date: 2018-04-11T12:45:00+01:00
+date: 2023-11-23T17:15:00+01:00
 ---
 
 ## Function parameters and return types:
@@ -96,7 +96,7 @@ date: 2018-04-11T12:45:00+01:00
         <tr><td><code>protected const NAME = '...';</code></td><td>PHP 7.1+</td><td><a href="https://3v4l.org/rsa80">example</a></td></tr>
         <tr><td><code>public const NAME = '...';</code></td><td>PHP 7.1+</td><td><a href="https://3v4l.org/Qhq19">example</a></td></tr>
         <tr><th colspan="3" style="text-align:center;"><h3 style="margin: 0;">types</h3></th></tr>
-        <tr><td><code>const string NAME = '...';</code></td><td><b>never</b></td><td><a href="https://3v4l.org/OJKH9">example</a></td></tr>
+        <tr><td><code>const string NAME = '...';</code></td><td><b>PHP 8.3+</b></td><td><a href="https://3v4l.org/OJKH9">example</a></td></tr>
     </tbody>
 </table>
 
