@@ -77,6 +77,14 @@ Once you determined the above parameters, you have to download the dll of the PH
 | 8.1 | Yes | x64 | [php_imagick-3.7.0-8.1-ts-vs16-x64.zip](https://downloads.php.net/~windows/pecl/releases/imagick/3.7.0/php_imagick-3.7.0-8.1-ts-vs16-x64.zip) {% comment %} | n/a {% endcomment %} |
 | 8.1 | No | x86 | [php_imagick-3.7.0-8.1-nts-vs16-x86.zip](https://downloads.php.net/~windows/pecl/releases/imagick/3.7.0/php_imagick-3.7.0-8.1-nts-vs16-x86.zip) {% comment %} | n/a {% endcomment %} |
 | 8.1 | No | x64 | [php_imagick-3.7.0-8.1-nts-vs16-x64.zip](https://downloads.php.net/~windows/pecl/releases/imagick/3.7.0/php_imagick-3.7.0-8.1-nts-vs16-x64.zip) {% comment %} | n/a {% endcomment %} |
+| 8.2 | Yes | x86 | [php_imagick-3.7.0-8.2-ts-vs16-x86.zip](https://downloads.php.net/~windows/pecl/releases/imagick/3.7.0/php_imagick-3.7.0-8.2-ts-vs16-x86.zip) {% comment %} | n/a {% endcomment %} |
+| 8.2 | Yes | x64 | [php_imagick-3.7.0-8.2-ts-vs16-x64.zip](https://downloads.php.net/~windows/pecl/releases/imagick/3.7.0/php_imagick-3.7.0-8.2-ts-vs16-x64.zip) {% comment %} | n/a {% endcomment %} |
+| 8.2 | No | x86 | [php_imagick-3.7.0-8.2-nts-vs16-x86.zip](https://downloads.php.net/~windows/pecl/releases/imagick/3.7.0/php_imagick-3.7.0-8.2-nts-vs16-x86.zip) {% comment %} | n/a {% endcomment %} |
+| 8.2 | No | x64 | [php_imagick-3.7.0-8.2-nts-vs16-x64.zip](https://downloads.php.net/~windows/pecl/releases/imagick/3.7.0/php_imagick-3.7.0-8.2-nts-vs16-x64.zip) {% comment %} | n/a {% endcomment %} |
+| 8.3 | Yes | x86 | [php_imagick-3.7.0-8.3-ts-vs16-x86.zip](https://downloads.php.net/~windows/pecl/releases/imagick/3.7.0/php_imagick-3.7.0-8.3-ts-vs16-x86.zip) {% comment %} | n/a {% endcomment %} |
+| 8.3 | Yes | x64 | [php_imagick-3.7.0-8.3-ts-vs16-x64.zip](https://downloads.php.net/~windows/pecl/releases/imagick/3.7.0/php_imagick-3.7.0-8.3-ts-vs16-x64.zip) {% comment %} | n/a {% endcomment %} |
+| 8.3 | No | x86 | [php_imagick-3.7.0-8.3-nts-vs16-x86.zip](https://downloads.php.net/~windows/pecl/releases/imagick/3.7.0/php_imagick-3.7.0-8.3-nts-vs16-x86.zip) {% comment %} | n/a {% endcomment %} |
+| 8.3 | No | x64 | [php_imagick-3.7.0-8.3-nts-vs16-x64.zip](https://downloads.php.net/~windows/pecl/releases/imagick/3.7.0/php_imagick-3.7.0-8.3-nts-vs16-x64.zip) {% comment %} | n/a {% endcomment %} |
 
 Once you downloaded the correct files:
 
