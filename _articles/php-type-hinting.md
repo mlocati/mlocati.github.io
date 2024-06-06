@@ -64,6 +64,13 @@ date: 2023-11-23T17:15:00+01:00
         <tr><td><code>function foo(): self</code></td><td>PHP 7.0+</td><td><a href="https://3v4l.org/lKvL5">example</a></td></tr>
         <tr><td><code>function foo(): ?self</code></td><td>PHP 7.1+</td><td><a href="https://3v4l.org/WLnQs">example</a></td></tr>
 
+        <tr><th colspan="3" style="text-align:center;"><h3 style="margin: 0;">static</h3></th></tr>
+        <tr><td><code>function foo(static $bar)</code></td><td>never</td><td><a href="https://3v4l.org/BnKK3">example</a></td></tr>
+        <tr><td><code>function foo(static $bar = null)</code></td><td>never</td><td><a href="https://3v4l.org/GGOfL">example</a></td></tr>
+        <tr><td><code>function foo(?static $bar)</code></td><td>never</td><td><a href="https://3v4l.org/0sXn5">example</a></td></tr>
+        <tr><td><code>function foo(): static</code></td><td>PHP 8.0+</td><td><a href="https://3v4l.org/QgcJL">example</a></td></tr>
+        <tr><td><code>function foo(): ?static</code></td><td>PHP 8.0+</td><td><a href="https://3v4l.org/8oLmT">example</a></td></tr>
+
         <tr><th colspan="3" style="text-align:center;"><h3 style="margin: 0;">string</h3></th></tr>
         <tr><td><code>function foo(string $bar)</code></td><td>PHP 7.0+</td><td><a href="https://3v4l.org/ZBCdh">example</a></td></tr>
         <tr><td><code>function foo(string $bar = null)</code></td><td>PHP 7.0+</td><td><a href="https://3v4l.org/iPFDp">example</a></td></tr>
@@ -81,8 +88,8 @@ date: 2023-11-23T17:15:00+01:00
         <tr><th colspan="3" style="text-align:center;"><h3 style="margin: 0;">void</h3></th></tr>
         <tr><td><code>function foo(): void</code></td><td>PHP 7.1+</td><td><a href="https://3v4l.org/PVqNg">example</a></td></tr>
 
-        <tr><th colspan="3" style="text-align:center;"><h3 style="margin: 0;">boolean, double, integer, resource, static</h3></th></tr>
-        <tr><td colspan="2">Never recognized as valid for type hinting</td><td><a href="https://3v4l.org/816pM">example 1</a><br /><a href="https://3v4l.org/BnKK3">example 2</a><br /><a href="https://3v4l.org/IC6QP">example 3</a></td></tr>
+        <tr><th colspan="3" style="text-align:center;"><h3 style="margin: 0;">boolean, double, integer, resource</h3></th></tr>
+        <tr><td colspan="2">Never recognized as valid for type hinting</td><td><a href="https://3v4l.org/816pM">example</a></td></tr>
     </tbody>
 </table>
 
