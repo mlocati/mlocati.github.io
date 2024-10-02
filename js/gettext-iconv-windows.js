@@ -36,9 +36,22 @@ $.ajax({
 		return n.toString().replace(/(\d)(?=(\d{3})+$)/g, '$1,');
 	}
 	$.each(data, function() {
-		var versions = this.tag_name.replace(/[^\d\.]/g, ' ').replace(/  +/g, ' ').replace(/^ | $/, '').split(' ');
+		const versions = this.tag_name.split('-');
 		if (versions.length !== 2) {
 			return;
+		}
+		if (versions.length !== 2) {
+			return;
+		}
+		if (!versions.every((version, index) => {
+			const match = /^(v\.?)?(?<v>\d+(\.\d+)+[A-Za-z]?)$/.exec(version);
+			if (!match) {
+				return false;
+			}
+			versions[index] = match.groups.v;
+			return true;
+		})) {
+			return false;
 		}
 		var group = {
 			createdOn: new Date(this.created_at),
