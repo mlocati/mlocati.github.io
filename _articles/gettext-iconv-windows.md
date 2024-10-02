@@ -24,6 +24,17 @@ date: 2019-05-10T13:12:00+02:00
 
 <div id="giw-download-stats"><i class="fa fa-refresh fa-spin"></i></div>
 
+
+### Code Signing Policy
+
+Starting with gettext v0.22.5 / iconv v1.17, the build DLLs and executables are signed.
+
+Free code signing is provided by [SignPath.io](https://about.signpath.io/), certificate by [SignPath Foundation](https://signpath.org/).
+
+The source code of gettext and iconv is created and maintained by the [Free Software Foundation](https://www.fsf.org/).
+
+This gettext-iconv-windows project only compile gettext and iconv for Windows, and is maintained by [Michele Locati](https://mlocati.github.io).
+
 ----
 
 Do you want to see what's behind the scenes? See the [source code](https://github.com/mlocati/gettext-iconv-windows)!
