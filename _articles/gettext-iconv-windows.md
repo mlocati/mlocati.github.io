@@ -43,4 +43,4 @@ Questions? [Start a discussion](https://github.com/mlocati/gettext-iconv-windows
 
 Problems? [File an issue](https://github.com/mlocati/gettext-iconv-windows/issues).
 
-<script src="{{ "/js/gettext-iconv-windows.js?1" | prepend: site.baseurl }}"></script>
+<script src="{{ "/js/gettext-iconv-windows.js?3" | prepend: site.baseurl }}"></script>

@@ -54,6 +54,7 @@ $.ajax({
 			return false;
 		}
 		var group = {
+			link: this.html_url,
 			createdOn: new Date(this.created_at),
 			vGettext: versions[0],
 			vIconv: versions[1],
@@ -145,9 +146,14 @@ $.ajax({
 		var group = this;
 		$tbody.append($tr = $('<tr />'));
 		$tr
-			.append($('<td style="text-align: center" />').text(
-				[group.createdOn.getFullYear(), to2(1 + group.createdOn.getMonth()), to2(group.createdOn.getDate())].join('-')
-			))
+			.append($('<td style="text-align: center" />')
+				.append($('<a />')
+					.attr('href', group.link)
+					.text(
+						[group.createdOn.getFullYear(), to2(1 + group.createdOn.getMonth()), to2(group.createdOn.getDate())].join('-')
+					)
+				)
+			)
 			.append($('<td style="text-align: center" />').text(
 				group.vGettext
 			))
