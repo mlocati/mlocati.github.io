@@ -12,6 +12,10 @@ $grid-float-breakpoint: 15000px;
         "_syntax-highlighting.scss"
 ;
 
+[v-cloak] {
+    display: none;
+}
+
 %vertical-rhythm {
     margin-bottom: 15px;
 }

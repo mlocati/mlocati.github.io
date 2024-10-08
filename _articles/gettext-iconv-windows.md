@@ -22,7 +22,121 @@ date: 2024-10-02T13:12:00+02:00
 
 ### Download statistics
 
-<div id="giw-download-stats"><i class="fa fa-refresh fa-spin"></i></div>
+{% raw %}
+<div id="giw-download-stats" v-cloak>
+    <div v-if="error !== null" class="alert alert-danger" style="white-space: pre-wrap">{{ error }}</div>
+    <i v-else-if="stats === null" class="fa fa-refresh fa-spin"></i>
+    <div v-else>
+        <table class="table table-striped" style="width: auto">
+            <thead>
+                <tr>
+                    <th rowspan="3" style="text-align: center">Date</th>
+                    <th rowspan="2" colspan="2" style="text-align: center">Version</th>
+                    <th colspan="4" style="text-align: center">Shared</th>
+				    <th colspan="4" style="text-align: center">Static</th>
+				    <th rowspan="3" style="text-align: center">Total</th>
+				    <th rowspan="3" style="text-align: center">Downloads/day</th>
+			    </tr>
+			    <tr>
+				    <th colspan="2" style="text-align: center">32 bits</th>
+				    <th colspan="2" style="text-align: center">64 bits</th>
+				    <th colspan="2" style="text-align: center">32 bits</th>
+				    <th colspan="2" style="text-align: center">64 bits</th>
+			    </tr>
+			    <tr>
+				    <th rowspan="2" style="text-align: center">gettext</th>
+				    <th rowspan="2" style="text-align: center">iconv</th>
+				    <th style="text-align: center">exe</th>
+				    <th style="text-align: center">zip</th>
+				    <th style="text-align: center">exe</th>
+				    <th style="text-align: center">zip</th>
+				    <th style="text-align: center">exe</th>
+				    <th style="text-align: center">zip</th>
+				    <th style="text-align: center">exe</th>
+				    <th style="text-align: center">zip</th>
+			    </tr>
+            </thead>
+            <tbody>
+                <tr v-for="group in stats.groups">
+                    <td style="text-align: center">
+                        <a v-bind:href="group.link" style="white-space: nowrap">{{ formatDate(group.createdOn) }}</a>
+                    </td>
+                    <td style="text-align: center">
+                        {{ group.vGettext }}
+                    </td>
+                    <td style="text-align: center">
+                        {{ group.vIconv }}
+                    </td>
+                    <td style="text-align: center">
+                        {{ formatInt(group.shared32exe) }}
+                    </td>
+                    <td style="text-align: center">
+                        {{ formatInt(group.shared32zip) }}
+                    </td>
+                    <td style="text-align: center">
+                        {{ formatInt(group.shared64exe) }}
+                    </td>
+                    <td style="text-align: center">
+                        {{ formatInt(group.shared64zip) }}
+                    </td>
+                    <td style="text-align: center">
+                        {{ formatInt(group.static32exe) }}
+                    </td>
+                    <td style="text-align: center">
+                        {{ formatInt(group.static32zip) }}
+                    </td>
+                    <td style="text-align: center">
+                        {{ formatInt(group.static64exe) }}
+                    </td>
+                    <td style="text-align: center">
+                        {{ formatInt(group.static64zip) }}
+                    </td>
+                    <td style="text-align: center">
+                        {{ formatInt(group.total) }}
+                    </td>
+                    <td style="text-align: center">
+                        {{ formatFloat(getGroupdDownloadsPerDay(group)) }}
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th colspan="3" style="text-align: right">Total</th>
+                    <td style="text-align: center">
+                        {{ formatInt(stats.totals.shared32exe) }}
+                    </td>
+                    <td style="text-align: center">
+                        {{ formatInt(stats.totals.shared32zip) }}
+                    </td>
+                    <td style="text-align: center">
+                        {{ formatInt(stats.totals.shared64exe) }}
+                    </td>
+                    <td style="text-align: center">
+                        {{ formatInt(stats.totals.shared64zip) }}
+                    </td>
+                    <td style="text-align: center">
+                        {{ formatInt(stats.totals.static32exe) }}
+                    </td>
+                    <td style="text-align: center">
+                        {{ formatInt(stats.totals.static32zip) }}
+                    </td>
+                    <td style="text-align: center">
+                        {{ formatInt(stats.totals.static64exe) }}
+                    </td>
+                    <td style="text-align: center">
+                        {{ formatInt(stats.totals.static64zip) }}
+                    </td>
+                    <td style="text-align: center">
+                        {{ formatInt(stats.totals.total) }}
+                    </td>
+                    <td>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+{% endraw %}
 
 
 ### Code Signing Policy
@@ -43,4 +157,5 @@ Questions? [Start a discussion](https://github.com/mlocati/gettext-iconv-windows
 
 Problems? [File an issue](https://github.com/mlocati/gettext-iconv-windows/issues).
 
-<script src="{{ "/js/gettext-iconv-windows.js?3" | prepend: site.baseurl }}"></script>
+<script src="{{ "/js/vue.js?3.5.11" | prepend: site.baseurl }}"></script>
+<script src="{{ "/js/gettext-iconv-windows.js?4" | prepend: site.baseurl }}"></script>
