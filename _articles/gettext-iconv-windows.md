@@ -4,7 +4,7 @@ description: Download gettext & iconv binaries for Windows - 32 and 64 bits - sh
 redirect_from: "/gettext-iconv-windows"
 redirect_from: "/gettext-iconv-windows/"
 redirect_from: "/gettext-iconv-windows/index.html"
-date: 2019-05-10T13:12:00+02:00
+date: 2024-10-02T13:12:00+02:00
 ---
 
 
