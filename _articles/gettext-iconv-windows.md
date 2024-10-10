@@ -7,14 +7,17 @@ redirect_from: "/gettext-iconv-windows/index.html"
 date: 2024-10-02T13:12:00+02:00
 ---
 
+{% assign gettext_version = "0.22.5a" %}
+{% assign iconv_version = "1.17" %}
+{% assign release_prefix = "https://github.com/mlocati/gettext-iconv-windows/releases/download/v0.22.5a-v1.17" %}
 
 {: .table .table-condensed }
 | gettext version | libiconv version | Operating system | Flavor | Download |
 |-----------------|------------------|------------------|--------|----------|
-| 0.22.5a | 1.17 | 32 bit | shared<sup>1</sup> | [![Setup]({{ site.baseurl }}/images/icon-setup.png)](https://github.com/mlocati/gettext-iconv-windows/releases/download/v0.22.5a-v1.17/gettext0.22.5a-iconv1.17-shared-32.exe) [![ZIP]({{ site.baseurl }}/images/icon-zip.png)](https://github.com/mlocati/gettext-iconv-windows/releases/download/v0.22.5a-v1.17/gettext0.22.5a-iconv1.17-shared-32.zip) |
-| 0.22.5a | 1.17 | 32 bit | static<sup>2</sup> | [![Setup]({{ site.baseurl }}/images/icon-setup.png)](https://github.com/mlocati/gettext-iconv-windows/releases/download/v0.22.5a-v1.17/gettext0.22.5a-iconv1.17-static-32.exe) [![ZIP]({{ site.baseurl }}/images/icon-zip.png)](https://github.com/mlocati/gettext-iconv-windows/releases/download/v0.22.5a-v1.17/gettext0.22.5a-iconv1.17-static-32.zip) |
-| 0.22.5a | 1.17 | 64 bit | shared<sup>1</sup> | [![Setup]({{ site.baseurl }}/images/icon-setup.png)](https://github.com/mlocati/gettext-iconv-windows/releases/download/v0.22.5a-v1.17/gettext0.22.5a-iconv1.17-shared-64.exe) [![ZIP]({{ site.baseurl }}/images/icon-zip.png)](https://github.com/mlocati/gettext-iconv-windows/releases/download/v0.22.5a-v1.17/gettext0.22.5a-iconv1.17-shared-64.zip) |
-| 0.22.5a | 1.17 | 64 bit | static<sup>2</sup> | [![Setup]({{ site.baseurl }}/images/icon-setup.png)](https://github.com/mlocati/gettext-iconv-windows/releases/download/v0.22.5a-v1.17/gettext0.22.5a-iconv1.17-static-64.exe) [![ZIP]({{ site.baseurl }}/images/icon-zip.png)](https://github.com/mlocati/gettext-iconv-windows/releases/download/v0.22.5a-v1.17/gettext0.22.5a-iconv1.17-static-64.zip) |
+| {{ gettext_version }} | {{ iconv_version }} | 32 bit | shared<sup>1</sup> | [![Setup]({{ site.baseurl }}/images/icon-setup.png)]({{ release_prefix }}/gettext{{ gettext_version }}-iconv{{ iconv_version }}-shared-32.exe) [![ZIP]({{ site.baseurl }}/images/icon-zip.png)]({{ release_prefix }}/gettext{{ gettext_version }}-iconv{{ iconv_version }}-shared-32.zip) |
+| {{ gettext_version }} | {{ iconv_version }} | 32 bit | static<sup>2</sup> | [![Setup]({{ site.baseurl }}/images/icon-setup.png)]({{ release_prefix }}/gettext{{ gettext_version }}-iconv{{ iconv_version }}-static-32.exe) [![ZIP]({{ site.baseurl }}/images/icon-zip.png)]({{ release_prefix }}/gettext{{ gettext_version }}-iconv{{ iconv_version }}-static-32.zip) |
+| {{ gettext_version }} | {{ iconv_version }} | 64 bit | shared<sup>1</sup> | [![Setup]({{ site.baseurl }}/images/icon-setup.png)]({{ release_prefix }}/gettext{{ gettext_version }}-iconv{{ iconv_version }}-shared-64.exe) [![ZIP]({{ site.baseurl }}/images/icon-zip.png)]({{ release_prefix }}/gettext{{ gettext_version }}-iconv{{ iconv_version }}-shared-64.zip) |
+| {{ gettext_version }} | {{ iconv_version }} | 64 bit | static<sup>2</sup> | [![Setup]({{ site.baseurl }}/images/icon-setup.png)]({{ release_prefix }}/gettext{{ gettext_version }}-iconv{{ iconv_version }}-static-64.exe) [![ZIP]({{ site.baseurl }}/images/icon-zip.png)]({{ release_prefix }}/gettext{{ gettext_version }}-iconv{{ iconv_version }}-static-64.zip) |
 
 1: `shared` means that the programs make use of DLL. The setup size is small, but all the executables needs to stay together with the shipped DLL libraries.  
 2: `static` means that the programs do not use DLL. The setup size is much bigger, but all the executables may be moved around as you like, no DLL-dependencies.
