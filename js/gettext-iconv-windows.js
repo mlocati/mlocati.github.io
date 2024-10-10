@@ -81,18 +81,15 @@ Vue.createApp({
 			];
 			data.forEach((item) => {
 				const versions = item.tag_name.split('-');
-				if (versions.length !== 2) {
+				if (versions.length < 2 || versions.length > 3) {
 					return;
 				}
-				if (!versions.every((version, index) => {
-					const match = /^(v\.?)?(?<v>\d+(\.\d+)+[A-Za-z]?)$/.exec(version);
+				for (let index = 0; index < 2; index++) {
+					const match = /^(v\.?)?(?<v>\d+(\.\d+)+[A-Za-z]?)$/.exec(versions[index]);
 					if (!match) {
-						return false;
+						return;
 					}
 					versions[index] = match.groups.v;
-					return true;
-				})) {
-					return false;
 				}
 				const group = {
 					link: item.html_url,

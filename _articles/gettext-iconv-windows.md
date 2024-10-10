@@ -161,4 +161,4 @@ Questions? [Start a discussion](https://github.com/mlocati/gettext-iconv-windows
 Problems? [File an issue](https://github.com/mlocati/gettext-iconv-windows/issues).
 
 <script src="{{ "/js/vue.js?3.5.11" | prepend: site.baseurl }}"></script>
-<script src="{{ "/js/gettext-iconv-windows.js?4" | prepend: site.baseurl }}"></script>
+<script src="{{ "/js/gettext-iconv-windows.js?5" | prepend: site.baseurl }}"></script>
