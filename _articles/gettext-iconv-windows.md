@@ -9,7 +9,7 @@ date: 2024-10-02T13:12:00+02:00
 
 {% assign gettext_version = "0.22.5a" %}
 {% assign iconv_version = "1.17" %}
-{% assign release_prefix = "https://github.com/mlocati/gettext-iconv-windows/releases/download/v0.22.5a-v1.17" %}
+{% assign release_prefix = "https://github.com/mlocati/gettext-iconv-windows/releases/download/v0.22.5a-v1.17-r2" %}
 
 {: .table .table-condensed }
 | gettext version | libiconv version | Operating system | Flavor | Download |
