@@ -51,7 +51,7 @@ layout: article-notoc
 							&lt;br /&gt;
 							Your credentials are only sent to GitHub (you can check that by inspecting the javascript of this page, as well as checking the network traffic in your browsers developer tools).
 						"
-					><i class="fa fa-info-circle"></i></a>
+					><i class="fa-solid fa-circle-info"></i></a>
 				</div>
 			</legend>
 			<div class="form-group">
@@ -82,7 +82,7 @@ layout: article-notoc
 							&lt;br /&gt;
 							Your credentials are only sent to GitHub (you can check that by inspecting the javascript of this page, as well as checking the network traffic in your browsers developer tools).
 						"
-					><i class="fa fa-info-circle"></i></a>
+					><i class="fa-solid fa-circle-info"></i></a>
 				</div>
 			</legend>
 			<div class="form-group">

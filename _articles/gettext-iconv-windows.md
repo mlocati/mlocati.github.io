@@ -28,7 +28,7 @@ date: 2024-10-02T13:12:00+02:00
 {% raw %}
 <div id="giw-download-stats" v-cloak>
     <div v-if="error !== null" class="alert alert-danger" style="white-space: pre-wrap">{{ error }}</div>
-    <i v-else-if="stats === null" class="fa fa-refresh fa-spin"></i>
+    <i v-else-if="stats === null" class="fa-solid fa-sync fa-spin"></i>
     <div v-else>
         <table class="table table-striped" style="width: auto">
             <thead>

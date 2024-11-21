@@ -7,7 +7,9 @@ $fa-font-path: "{{ site.baseurl }}/css/fonts";
 $grid-float-breakpoint: 15000px;
 
 @import
-        "Font-Awesome/font-awesome.scss",
+        "Font-Awesome/fontawesome.scss",
+        "Font-Awesome/brands.scss",
+        "Font-Awesome/solid.scss",
         "bootstrap/_bootstrap.scss",
         "_syntax-highlighting.scss"
 ;
