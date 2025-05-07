@@ -1,5 +1,5 @@
 ---
-title:  "gettext 0.24 and iconv 1.17 - Binaries for Windows"
+title:  "gettext 0.24.1 and iconv 1.17 - Binaries for Windows"
 description: Download gettext & iconv binaries for Windows - 32 and 64 bits - shared and static.
 redirect_from: "/gettext-iconv-windows"
 redirect_from: "/gettext-iconv-windows/"
@@ -7,9 +7,9 @@ redirect_from: "/gettext-iconv-windows/index.html"
 date: 2024-10-02T13:12:00+02:00
 ---
 
-{% assign gettext_version = "0.24" %}
+{% assign gettext_version = "0.24.1" %}
 {% assign iconv_version = "1.17" %}
-{% assign release_prefix = "https://github.com/mlocati/gettext-iconv-windows/releases/download/v0.24-v1.17" %}
+{% assign release_prefix = "https://github.com/mlocati/gettext-iconv-windows/releases/download/v0.24.1-v1.17" %}
 
 {: .table .table-condensed }
 | gettext version | libiconv version | Operating system | Flavor | Download |
