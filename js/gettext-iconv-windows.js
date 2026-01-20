@@ -90,6 +90,9 @@ Vue.createApp({
 				};
 			};
 			data.forEach((item) => {
+				if (item.draft) {
+					return;
+				}
 				const versions = extractVersions(item.tag_name);
 				if (versions === null) {
 					return;
@@ -99,6 +102,7 @@ Vue.createApp({
 					createdOn: new Date(item.created_at),
 					vGettext: versions.gettext,
 					vIconv: versions.iconv,
+					prerelease: item.prerelease,
 					total: 0,
 				};
 				for (const rName of rNames) {

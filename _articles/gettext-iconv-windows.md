@@ -63,6 +63,7 @@ date: 2024-10-02T13:12:00+02:00
                 <tr v-for="group in stats.groups">
                     <td style="text-align: center">
                         <a v-bind:href="group.link" style="white-space: nowrap">{{ formatDate(group.createdOn) }}</a>
+                        <span v-if="group.prerelease">&beta;</span>
                     </td>
                     <td style="text-align: center">
                         {{ group.vGettext }}
