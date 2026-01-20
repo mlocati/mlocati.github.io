@@ -79,23 +79,26 @@ Vue.createApp({
 				'static64exe',
 				'static64zip',
 			];
-			data.forEach((item) => {
-				const versions = item.tag_name.split('-');
-				if (versions.length < 2 || versions.length > 3) {
-					return;
+			const extractVersions = (tagName) => {
+				const [, vGettext, vIconv, tooMany] = tagName.split(/(?<![A-Za-z0-9])v(?=\d)/);
+				if (tooMany !== undefined || vIconv === undefined || vIconv.includes('shared') || vIconv.includes('static')) {
+					return null;
 				}
-				for (let index = 0; index < 2; index++) {
-					const match = /^(v\.?)?(?<v>\d+(\.\d+)+[A-Za-z]?)$/.exec(versions[index]);
-					if (!match) {
-						return;
-					}
-					versions[index] = match.groups.v;
+				return {
+					gettext: vGettext.replace(/-+$/, ''),
+					iconv: vIconv.replace(/-r\d+$/, ''),
+				};
+			};
+			data.forEach((item) => {
+				const versions = extractVersions(item.tag_name);
+				if (versions === null) {
+					return;
 				}
 				const group = {
 					link: item.html_url,
 					createdOn: new Date(item.created_at),
-					vGettext: versions[0],
-					vIconv: versions[1],
+					vGettext: versions.gettext,
+					vIconv: versions.iconv,
 					total: 0,
 				};
 				for (const rName of rNames) {
