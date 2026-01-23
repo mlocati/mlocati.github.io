@@ -327,7 +327,7 @@ The `core.sharedRepository group` option of the git repository is needed in orde
 And now the key concept of this whole approach: when someone pushes to this repository, we checkout the repository to the publish folder and run some fancy stuff with our `git-post-receive-hook`:
 
 ```sh
-cat <<'EOF' | sudo tee var/git/{% raw %}{{ repositoryName }}{% endraw %}.git/hooks/post-receive >/dev/null
+cat <<'EOF' | sudo tee /var/git/{% raw %}{{ repositoryName }}{% endraw %}.git/hooks/post-receive >/dev/null
 #!/bin/sh
 
 /usr/local/bin/git-post-receive-hook \
