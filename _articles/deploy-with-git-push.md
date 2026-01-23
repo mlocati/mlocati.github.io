@@ -7,86 +7,151 @@ date: 2016-06-15T14:36:55+02:00
 * TOC
 {:toc}
 
+<div id="deploy-with-git-push-app" markdown="1" v-cloak>
+
 ## Introduction
 
 Wouldn't it be nice to publish a website with a simple git push?  
+
 Here I'll explain you how I usually do this.
-
-I assume that the environment of the staging/production servers are the following:
-
-- Operating system: Ubuntu 14.04 or Ubuntu 16.04
-
-If your servers are not the above, the approach described in this document should work with minor changes given that they are *nix.
 
 
 ## Configuration
 
-Let's assume that:
+<table class="table">
+    <tbody>
+        <tr>
+            <th>Remote server available at the address</th>
+            <td><input type="text" class="form-control" v-model.trim="inputServerAddress" v-on:blur="inputServerAddress = serverAddress" /></td>
+        </tr>
+        <tr>
+            <th>Name of the repository</th>
+            <td><input type="text" class="form-control" v-model.trim="inputRepositoryName" v-on:blur="inputRepositoryName = repositoryName" /></td>
+        </tr>
+        <tr>
+            <th>Branch to be deployed</th>
+            <td><input type="text" class="form-control" v-model.trim="inputRepositoryBranch" v-on:blur="inputRepositoryBranch = repositoryBranch" /></td>
+        </tr>
+        <tr>
+            <th>User impersonated by webserver</th>
+            <td><input type="text" class="form-control" v-model.trim="inputWebUser" v-on:blur="inputWebUser = webUser" /></td>
+        </tr>
+        <tr>
+            <th>Group of the user impersonated by webserver</th>
+            <td><input type="text" class="form-control" v-model.trim="inputWebUserGroup" v-on:blur="inputWebUserGroup = webUserGroup" /></td>
+        </tr>
+        <tr v-if="updateConcreteCMS">
+            <th>ConcreteCMS languages to update/install</th>
+            <td><input type="text" class="form-control" v-model="inputConcreteCMSLocales" v-on:blur="inputConcreteCMSLocales = concreteCMSLocales.join(' ')" placeholder="de_DE de_CH fr_FR it_IT" /></td>
+        </tr>
+        <tr>
+            <th>Options</th>
+            <td>
+                 <div class="checkbox">
+                    <label>
+                        <input type="checkbox" v-model="runComposerInstall" />
+                        <span markdown="1">Run `composer install`</span>
+                    </label>
+                </div>
+                 <div class="checkbox">
+                    <label>
+                        <input type="checkbox" v-model="updateConcreteCMS" />
+                        Update ConcreteCMS
+                    </label>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
 
-- the remote server is available at the address <input type="text" id="dwgp-serveraddress" value="www.example.com" />
-- you want to create a new repository named <input type="text" id="dwgp-reponame" value="MYSITE" />
-- the web server impersonates the user <input type="text" id="dwgp-webuser" value="www-data" /> in the group <input type="text" id="dwgp-webgroup" value="www-data" />
-- you want to execute these commands after the push:
-  - <label><input type="checkbox" id="dwgp-x-composer" />`Composer`</label><span class="dwgp-x-composer-on"> - <label style="font-weight:normal"><input type="checkbox" id="dwgp-x-composer-withoutcache" /> disable cache</label></span>
+
+## One-time Server Setup
 
 
-## One-time server setup
-
-### Install required packages
+### Install Required Packages
 
 First of all, you need to install git on the server.  
-You can do this by running the following command:
+You can do this by running the following command (on Debian/Ubuntu & family):
 
-```bash
-sudo apt-get update
-sudo apt-get install -y git
+```sh
+sudo apt-get update -q
+sudo apt-get install -qy git
 ```
 
 If the above command fails with an error like `Unable to locate package git`, you can try this:
 
-```bash
-sudo apt-get install -y git-core
+```sh
+sudo apt-get install -qy git-core
 ```
 
-<div class="dwgp-x-composer-on" markdown="1" style="display: none">
-### Install and configure Composer
 
-In order to have Composer, you need PHP and some PHP extension.
-On Ubuntu you can install all of them with:
+<div v-if="runComposerInstall" markdown="1">
 
-```bash
-sudo apt-get update && sudo apt-get install -y php-cli php-json php-mbstring curl git unzip
-```
+### Install and Configure Composer
 
-Then you can download Composer with this command:
-
-```bash
+```sh
 # Go to your home directory
 cd
 # Download and install Composer
-curl --silent --show-error https://getcomposer.org/installer | php
+curl -sSLf https://getcomposer.org/installer | php
 # Move Composer to the default binary folder
 sudo mv composer.phar /usr/local/bin/composer
 # Check that Composer works
 composer --version
 ```
 
-If you need to access GitHub (private) repositories, you have to [create a new Personal access token](https://github.com/settings/tokens/new).
-Assuming that the newly generated token is <input type="text" id="dwgp-composer-pat" value="YOUR_TOKEN" />, you then have to run these commands:
+#### Private GitHub Repositories
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mkdir <span class="nt">-p</span> /home/git/.composer/
-<span class="nb">cat</span> <span class="o">&gt;</span>/home/git/.composer/auth.json <span class="o">&lt;&lt;</span><span class="no">EOL</span><span class="sh">
+If you need to access GitHub (private) repositories, you have to [create a new Personal access token](https://github.com/settings/tokens/new).
+
+Assuming that the newly generated token is <span class="form-inline"><input type="text" class="form-control input-sm" v-model.trim="inputGitHubPAT" v-on:blur="inputGitHubPAT = gitHubPAT" /></span>, you then have to run these commands:
+
+{% raw %}
+```sh
+mkdir -p /home/git/.composer/
+cat <<'EOF' | sudo tee /home/git/.composer/auth.json >/dev/null
 {
-    &quot;github-oauth&quot;: {
-        &quot;github.com&quot;: &quot;<span class="dwgp-composer-pat"></span>&quot;
+    "github-oauth": {
+        "github.com": "{{ gitHubPAT }}"
     }
 }
-</span><span class="no">EOL
-</span>chown <span class="nt">-R</span> git:www-data /home/git/.composer
-chmod <span class="nt">-R</span> ug+rw /home/git/.composer
-</code></pre></div></div>
+EOF
+chown -R git:www-data /home/git/.composer
+chmod -R ug+rw /home/git/.composer
+```
+{% endraw %}
 
 </div>
+
+
+<div v-if="updateConcreteCMS" markdown="1">
+
+### Script to Update ConcreteCMS
+
+Updating ConcreteCMS is as simple as running the `c5:update` CLI command.
+
+By the way, it's better to:
+
+1. turn on maintenance mode before doing it (and turning it back off when done)
+1. run `c5:update` to update the ConcreteCMS core
+1. run `c5:package:update --all` to update any ConcreteCMS package that may have been udated by composer
+1. update the installed language files
+1. refresh the Doctrine Entities
+1. clear the ConcreteCMS cache
+
+So, what about creating a script to make it easier to perform all those operations?
+
+I did it for you ;)
+
+Download [this gists](https://gist.github.com/mlocati/2195c70caeca3df1240e35d5db871587), save it as `/usr/local/bin/update-concrete`, and make it executable:
+
+```sh
+sudo curl -sSLf -o/usr/local/bin/update-concrete https://gist.githubusercontent.com/mlocati/2195c70caeca3df1240e35d5db871587/raw/update-concrete
+sudo chmod 755 /usr/local/bin/update-concrete
+```
+
+</div>
+
 
 ### Create the `git` user
 
@@ -94,354 +159,202 @@ We need to create a user account on the server. This account will be the one use
 
 With the following command we create that account:
 
-<div class="language-bash highlighter-rouge">
-    <pre class="highlight"><code>sudo adduser --gecos Git --disabled-login --disabled-password --shell /usr/bin/git-shell --home /home/git --ingroup <span class="dwgp-webgroup"></span> git</code></pre>
-</div>
+{% raw %}
+```sh
+sudo adduser \
+    --gecos Git \
+    --disabled-login \
+    --disabled-password \
+    --shell /usr/bin/git-shell \
+    --home /home/git \
+    --ingroup "{{ webUserGroup }}" \
+    git
+```
+{% endraw %}
 
 Here's the explanation of the above options:
 
 - `--gecos Git`: set the full name of the account to `Git` (this essentially in order to avoid asking useless data like the account room number and work/home phone)
-- `--disabled-login`: the user won't be able to use the account until the password is set.
-- `--disabled-password`: disable the login using passwords (we'll access the system with SSH RSA keys)
-- `--shell /usr/bin/git-shell`: when the user access the system, he will use the fake shell provided by git
+- `--disabled-login`: the user won't be able to use the account until the password is set
+- `--disabled-password`: disable the login using passwords (we'll access the system with SSH keys)
+- `--shell /usr/bin/git-shell`: even if, for any reason, the user gain access the system, she will use the fake shell provided by git
 - `--home /home/git`: set the home directory for the user to `/home/git`
-- <code class="highlighter-rouge">--ingroup <span class="dwgp-webgroup"></span></code>:  add the new user to the <code class="highlighter-rouge"><span class="dwgp-webgroup"></span></code> group instead of the default one
+- `--ingroup {% raw %}{{ webUserGroup }}{% endraw %}`: add the new user to the user group used by the web server instead of the default one
 - `git`: the username of the new account
 
-#### Strengthen login security
+We then need to configure the git shell.
 
-We then need to configure the git shell.  
-In order to improve the security of unwanted logins and abort shell sessions, we create a file that is executed when the `git` user logs in the shell and that will abort the session.  
+In order to improve the security of unwanted logins and abort shell sessions, let's create a file that is executed when the `git` user logs in the shell and that will abort the session.  
 
-```bash
-sudo mkdir /home/git/git-shell-commands
-sudo nano /home/git/git-shell-commands/no-interactive-login
-```
+```sh
+sudo mkdir -p /home/git/git-shell-commands
 
-In the editor type in these commands:
-
-```bash
+cat <<'EOF' | sudo tee /home/git/git-shell-commands/no-interactive-login >/dev/null
 #!/bin/sh
-printf '%s\n' "Hi $USER! You've successfully authenticated, but I do not"
-printf '%s\n' "provide interactive shell access."
+
+printf "Hi %s!\nYou've successfully authenticated, but I do not provide interactive shell access.\n" "$USER"
+
 exit 128
-```
 
-To save the new file hit `CTRL`+`o` then `ENTER`.  
-To quit the editor, hit `CTRL`+`x`.
+EOF
 
-We finally have to make the file executable:
-
-```bash
 sudo chmod +x /home/git/git-shell-commands/no-interactive-login
 ```
 
-#### Allow <code class="highlighter-rouge"><span class="dwgp-webuser"></span></code> impersonation
+#### Allow `{% raw %}{{ webUser }}{% endraw %}` Impersonation
 
-The `git` user needs to be able to publish files acting like <code class="highlighter-rouge"><span class="dwgp-webuser"></span></code>.  
+The `git` user needs to be able to publish files acting like `{% raw %}{{ webUser }}{% endraw %}`.
+
 In order to allow this, run this command:
 
-```bash
+```sh
 sudo visudo
 ```
 
 Go to the end of the editor contents and add these lines:
 
-<div class="highlighter-rouge">
-    <pre class="highlight"><code>Defaults!/usr/bin/git env_keep="GIT_DIR GIT_WORK_TREE"
-git ALL=(<span class="dwgp-webuser"></span>) NOPASSWD: /usr/bin/git</code><span class="dwgp-x-composer-on" style="display: none">, /usr/local/bin/composer</span></pre>
-</div>
+```
+# The user git, when accessing from any client (ALL), can run as {% raw %}{{ webUser }}{% endraw %} (without password)
+# the specified commands
+git ALL=({% raw %}{{ webUser }}{% endraw %}) NOPASSWD: {% raw %}{{ visudoCommands }}{% endraw %}
+```
 
-The first line tells the system that when the `git` command is executed with a `sudo`, we need to keep the two environment variables `GIT_DIR` and `GIT_WORK_TREE`.  
-The second line tells the system that the `git` user can execute the `git` command acting as <code class="highlighter-rouge"><span class="dwgp-webuser"></span></code> without any further authentication.
+
+## The script launched by the hook
+
+When you'll push to the git repository, you'll need to perform some operations.
+
+In order to simplify these operations I've created [this gist](https://gist.github.com/mlocati/8b3df1cf72d110cc38ed3ffc70fa0bbd), save it as `/usr/local/bin/git-post-receive-hook`, and make it executable:
+
+```sh
+sudo curl -sSLf -o/usr/local/bin/git-post-receive-hook https://gist.githubusercontent.com/mlocati/8b3df1cf72d110cc38ed3ffc70fa0bbd/raw/update-concrete
+sudo chmod 755 /usr/local/bin/git-post-receive-hook
+```
 
 
 ## Authorized developers
 
-Every developer that should be able to publish needs an SSH-2 RSA key pair.  
+Every developer that should be able to publish needs an Ed25519 (or RSA) key pair.  
 It's possible (and recommended) to use a different key for every developer.
 
 ### Create the keys under Windows
 
-I order to create the key pair, you can use PuTTYgen.  
+I order to create the key pair, you can use `PuTTYgen`.  
 If you already installed [TortoiseGit](https://tortoisegit.org/) you should already have this command, otherwise you can [download it](http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html).
 
 So, open PuTTYgen and:
 
-- in the `Parameters` page be sure to check `SSH-2 RSA` and `2048` for the `Number of bits in a generated key`
+- in the `Parameters` page be sure to select the type of key to generate
+  - `EdDSA` (curve: `Ed25519`)
+  - if your server is old: `RSA` with at least `4096` number of bits in a generated key
 - Hit the `Generate` button and move randomly your mouse over the PuTTYgen window
-- In the `Key comment` field enter `ServerName - DeveloperName` (where `ServerName` is the name of the server where the key will be used, and `DeveloperName` is the name of the developers owning the key)
+- In the `Key comment` field enter the name of the developer (eg `John Doe`)
 - In the `Key passphrase` and `Confirm passphrase` fields enter a password of your choice
 - Hit the `Save private key` button to save the private key to file
 - Copy the contents of the `Public key for pasting into OpenSSH authorized_keys file` and save it: this is the public key that we'll need.
 
-
 ### Create the keys under *nix
 
-Simply run this command:
+Simply run this command to create an Ed25519 key pair
 
-```bash
-ssh-keygen -t rsa -b 2048 -f key-for-git -C 'ServerName - DeveloperName'
+```sh
+ssh-keygen -f key-for-git -C 'Name of the developer' -t ed25519
+```
+
+If your server is old, you can generate an RSA keypair with at least 4096 bits:
+
+```sh
+ssh-keygen -f key-for-git -C 'Name of the developer' -t rsa -b 4096
 ```
 
 Where:
 
-- `-t rsa`: we want public/private key pair in the SSH-2 RSA format
-- `-b 2048`: we want 2048 bits in the key
-- `-f key-for-git`: this is the name of the file that will contain the private key
-- `-C 'ServerName - DeveloperName'`: this is the comment to associate to the key
-  (it's a good practice to specify the name of the server and the one the developer owning the key)
+- `-f key-for-git`: use `key-for-git` as the name of the files that will contain the keys
+- `-C 'Name of the developer'`: this is the comment to associate to the key (use your developer name)
+- `-t ed25519`: generate an Ed25519 key pair
+- `-t rsa -b 4096`: generate an RSA key pair of 4096 bits
 
 Once you run the `ssh-keygen` command and specified a password of your choice, you'll have these two files:
 
 - `key-for-git`: contains the private key
 - `key-for-git.pub`: contains the public key
 
-
 ### Allow the developer to publish to the server
 
 Login to the server and run this command:
 
-```bash
-sudo mkdir /home/git/.ssh
+```sh
+sudo mkdir -p /home/git/.ssh
 sudo nano /home/git/.ssh/authorized_keys
 ```
 
 Go to the end of the editor contents and add a new line containing the previously generated public key.  
 
-The public key is a single line that starts with `ssh-rsa `, followed by a quite long list of characters and ending with the `ServerName - DeveloperName` comments specified during the creation of the key.
-
+The public key is a single line that starts with `ssh-ed25519 ` (for Ed25519 keys) or `ssh-rsa ` (for RSA keys), followed by a quite long list of characters and ending with the developer name you specified in the comments during the creation of the key.
 
 
 ## Create a new repository on the server
 
 We'll end up with:
 
-- Directory to be published: <code class="highlighter-rouge">/var/www/<span class="dwgp-reponame"></span></code>
-- Repository directory: <code class="highlighter-rouge">/var/git/<span class="dwgp-reponame"></span></code>
+- Directory to be published by the web server (apache, nginx, whatever): `/var/www/{% raw %}{{ repositoryName }}{% endraw %}`
+- Repository with the repository: `/var/git/{% raw %}{{ repositoryName }}{% endraw %}.git`
 
-First of all, we create the directory that will contain web site (it will be owned by the <code class="highlighter-rouge"><span class="dwgp-webuser"></span></code> user):
+First of all, we create the directory that will contain web site (it will be owned by the `{% raw %}{{ webUser }}{% endraw %}` user):
 
-<div class="highlighter-rouge">
-    <pre class="highlight"><code>sudo mkdir -p /var/www/<span class="dwgp-reponame"></span>
-sudo chown -R <span class="dwgp-webuser"></span>:<span class="dwgp-webgroup"></span> /var/www/<span class="dwgp-reponame"></span>
-sudo chmod u+rw -R /var/www/<span class="dwgp-reponame"></span></code></pre>
-</div>
+```sh
+sudo mkdir -p '/var/www/{% raw %}{{ repositoryName }}{% endraw %}'
+sudo chown -R '{% raw %}{{ webUser }}:{{ webUserGroup }}{% endraw %}' '/var/www/{% raw %}{{ repositoryName }}{% endraw %}'
+sudo chmod u+rw -R '/var/www/{% raw %}{{ repositoryName }}{% endraw %}'
+```
 
 Then we create the directory that will contain the bare repository data:
 
-<div class="highlighter-rouge">
-    <pre class="highlight"><code>sudo mkdir -p /var/git/<span class="dwgp-reponame"></span>.git
-cd /var/git/<span class="dwgp-reponame"></span>.git
+```sh
+sudo mkdir -p '/var/git/{% raw %}{{ repositoryName }}{% endraw %}.git'
+cd '/var/git/{% raw %}{{ repositoryName }}{% endraw %}.git'
 sudo git init --bare
-sudo git config core.sharedRepository group</code></pre>
-</div>
+sudo git config core.sharedRepository group
+```
 
-The `core.sharedRepository group` option of the git repository is needed in order to grant write access to both the `git` and <code class="highlighter-rouge"><span class="dwgp-webuser"></span></code> users (they both belong to the same user group - <code class="highlighter-rouge"><span class="dwgp-webgroup"></span></code>).
+The `core.sharedRepository group` option of the git repository is needed in order to grant write access to both the `git` and `{% raw %}{{ webUser }}{% endraw %}` users (they both belong to the same user group - `{% raw %}{{ webUserGroup }}{% endraw %}`).
 
-And now the key concept of this whole approach: when someone pushes to this repository, we checkout the repository to the publish folder:
 
-<div class="highlighter-rouge">
-    <pre class="highlight"><code>sudo nano /var/git/<span class="dwgp-reponame"></span>.git/hooks/post-receive</code></pre>
-</div>
+And now the key concept of this whole approach: when someone pushes to this repository, we checkout the repository to the publish folder and run some fancy stuff with our `git-post-receive-hook`:
 
-In the editor type these lines:
+```sh
+cat <<'EOF' | sudo tee var/git/{% raw %}{{ repositoryName }}{% endraw %}.git/hooks/post-receive >/dev/null
+#!/bin/sh
 
-<div class="highlighter-rouge">
-    <pre class="highlight"><code>#!/bin/bash
-currentUser=`whoami`
-currentServer=`hostname`
-repoDirectory=/var/git/<span class="dwgp-reponame"></span>.git
-pubDirectory=/var/www/<span class="dwgp-reponame"></span>
-echo "Hello! I'm $currentUser at $currentServer"
-echo "I'm going to publish from"
-echo "   $repoDirectory"
-echo "to"
-echo "   $pubDirectory"
-rc=0
-sudo -u <span class="dwgp-webuser"></span> git --git-dir=$repoDirectory --work-tree=$pubDirectory checkout master -f
-if [ "$?" -ne "0" ]; then
-    echo "GOSH! GIT FAILED!!!!"
-    rc=1
-fi
-<div class="dwgp-x-composer-on" style="display: none">if [ $rc -eq 0 ]; then
-    echo "Changing directory"
-    pushd $pubDirectory
-    if [ "$?" -ne "0" ]; then
-        echo "GOSH! PUSHD FAILED!!!!"
-        rc=1
-    else
-        echo "Running composer install"
-        sudo -u <span class="dwgp-webuser"></span> composer<span class="dwgp-x-composer-withoutcache-on"> --no-cache</span> install \
-            --prefer-dist --no-dev --no-progress --no-suggest --no-ansi --no-interaction
-        if [ "$?" -ne "0" ]; then
-            echo "GOSH! COMPOSER FAILED!!!!"
-            rc=1
-        else
-            echo "Great! Composer succeeded!"
-        fi
-        popd
-   fi
-fi</div>
-if [ $rc -eq 0 ]; then
-    echo "Don't worry, be happy: everything worked out like a charm ;)"
-fi
-exit $rc
-</code></pre>
-</div>
+/usr/local/bin/git-post-receive-hook {% raw %}{{ hookOptions }}{% endraw %}'/var/git/{% raw %}{{ repositoryName }}{% endraw %}.git' '/var/www/{% raw %}{{ repositoryName }}{% endraw %}'
 
-We finally need to update the permissions of the newly created directory:
+EOF
 
-<div class="highlighter-rouge">
-    <pre class="highlight"><code>sudo chown -R git:<span class="dwgp-webgroup"></span> /var/git/<span class="dwgp-reponame"></span>.git
-sudo chmod -R ug+rwX /var/git/<span class="dwgp-reponame"></span>.git
-sudo chmod -R ug+x /var/git/<span class="dwgp-reponame"></span>.git/hooks/post-receive
-</code></pre>
-</div>
+sudo chown -R '{% raw %}git:{{ webUserGroup }}{% endraw %}' '/var/git/{% raw %}{{ repositoryName }}.git{% endraw %}'
+sudo chmod -R ug+rwX '/var/git/{% raw %}{{ repositoryName }}{% endraw %}.git'
+sudo chmod -R ug+x '/var/git/{% raw %}{{ repositoryName }}{% endraw %}.git/hooks/post-receive'
+```
 
 
 ## Push-to-publish
 
 Everything is almost ready!
+
 The only step required to deploy with a simple `git push` is to add the remote to your repository.
 
 For instance, here's how to add a remote named `deploy` to your local repository:
 
-<div class="highlighter-rouge">
-    <pre class="highlight"><code>git remote add deploy git@<span class="dwgp-serveraddress"></span>:/var/git/<span class="dwgp-reponame"></span>.git</code></pre>
-</div>
+```sh
+git remote add deploy '{% raw %}git@{{ serverAddress }}:/var/git/{{ repositoryName }}.git{% endraw %}'
+```
 
 When you push to the `deploy` remote, the published directory willbe updated automatically.
 
 Nice, isn't it?
 
+</div>
+
 {% include gitter.html handle="deploy-with-git-push" %}
 
-<script>
-$(document).ready(function() {
-    var storage = (function() {
-        var PREFIX = 'ml-dwgp-';
-        var ok = window.localStorage && window.localStorage.setItem && window.localStorage.getItem;
-        return {
-            save: function (key, value) {
-                if (ok) {
-                    try {
-                        window.localStorage.setItem(PREFIX + key, value);
-                        return true;
-                    } catch (e) {
-                    }
-                }
-                return false;
-            },
-            load: function (key, defaultValue) {
-                var result = defaultValue;
-                if (ok) {
-                    try {
-                        var v = window.localStorage.getItem(PREFIX + key);
-                        if (v !== null) {
-                            return v;
-                        }
-                    } catch (e) {
-                    }
-                }
-                return defaultValue;
-            }
-        };
-    })();
-    function Valorizer(key, volatile) {
-        var my = this;
-        my.currentValue = null;
-        my.volatile = volatile;
-        my.$input = $('#dwgp-' + key);
-        my.type = 'text';
-        my.saveEvent = 'blur';
-        switch (key) {
-            case 'reponame':
-                my.normalize = function (v) { return v.replace(/[\\\/]+/g, '/').replace(/^\/|\/$/, '').replace(/[^\w\.\/]+/g, '-').replace(/^-+|-+$/g, ''); };
-                break;
-            case 'serveraddress':
-                my.normalize = function (v) { return v.replace(/\s+/g, ''); };
-                break;
-            case 'webuser':
-            case 'webgroup':
-                my.normalize = function (v) { return v.replace(/[^\w\-]+/g, ''); };
-                break;
-            case 'x-composer':
-            case 'x-composer-withoutcache':
-                my.type = 'checkbox';
-                my.saveEvent = 'change';
-                break;
-            case 'composer-pat':
-                my.normalize = function (v) { return v.replace(/\W+/g, ''); };
-                break;
-            default:
-                my.normalize = function (v) { return v; };
-                break;
-        }
-        switch (my.type) {
-            case 'checkbox':
-                my.$spans = {
-                    on: $('.dwgp-' + key + '-on'),
-                    off: $('.dwgp-' + key + '-off')
-                };
-                break;
-            default:
-                my.$spans = $('.dwgp-' + key);
-                break;
-           }
-        my.$input
-            .on('change keydown keypress keyup mousedown mouseup blur input', function() {
-                var newValue;
-                switch (my.type) {
-                    case 'checkbox':
-                        newValue = my.$input.is(':checked') ? 'on' : 'off';
-                        break;
-                    default:
-                        newValue = my.normalize(my.$input.val());
-                        break;
-                }
-                if (newValue === my.currentValue) {
-                    return;
-                }
-                my.currentValue = newValue;
-                switch (my.type) {
-                    case 'checkbox':
-                        my.$spans.off[newValue === 'off' ? 'show' : 'hide']();
-                        my.$spans.on[newValue === 'on' ? 'show' : 'hide']();
-                        break;
-                    default:
-                        my.$spans.text(newValue);
-                        break;
-                }
-            })
-            .on(my.saveEvent, function() {
-                if (my.volatile) {
-                    return;
-                }
-                setTimeout(function() {
-                    if (my.currentValue !== null) {
-                        storage.save(key, my.currentValue);
-                    }
-                }, 0);
-            })
-        ;
-        if (!my.volatile) {
-            switch (my.type) {
-                case 'checkbox':
-                    my.$input.prop('checked', storage.load(key, my.$input.is(':checked') ? 'on' :'off') === 'on');
-                    break;
-                default:
-                    my.$input.val(storage.load(key, my.$input.val()))
-                    break;
-            }
-        }
-        my.$input.trigger('change');
-    }
-    for (var i = 0, L = ['reponame', 'serveraddress', 'webuser', 'webgroup', 'x-composer', 'x-composer-withoutcache']; i < L.length; i++) {
-        new Valorizer(L[i], false);
-    }
-    for (var i = 0, L = ['composer-pat']; i < L.length; i++) {
-        new Valorizer(L[i], true);
-    }
-});
-</script>
+<script src="{{ "/js/vue.js?3.5.11" | prepend: site.baseurl }}"></script>
+<script src="{{ "/js/deploy-with-git-push.js?1" | prepend: site.baseurl }}"></script>
