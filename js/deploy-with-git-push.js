@@ -83,7 +83,7 @@ function ready() {
                         options.push(`'${this.concreteCMSLocales.join(' ')}'`);
                     }
                 }
-                return options.join(' ') + ' ';
+                return options.join(' ');
             },
         },
         watch: {
