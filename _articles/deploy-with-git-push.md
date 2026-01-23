@@ -296,6 +296,14 @@ Go to the end of the editor contents and add a new line containing the previousl
 
 The public key is a single line that starts with `ssh-ed25519 ` (for Ed25519 keys) or `ssh-rsa ` (for RSA keys), followed by a quite long list of characters and ending with the developer name you specified in the comments during the creation of the key.
 
+For improved security, it's better to prepend the public key with `no-port-forwarding,no-X11-forwarding,no-agent-forwarding,no-pty `.
+
+So, the full line to be added to the `authorized_keys` will be something like
+
+```
+no-port-forwarding,no-X11-forwarding,no-agent-forwarding,no-pty ssh-...
+```
+
 
 ## Create a new repository on the server
 
