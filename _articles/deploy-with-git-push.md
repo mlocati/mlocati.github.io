@@ -179,7 +179,7 @@ Here's the explanation of the above options:
 - `--gecos Git`: set the full name of the account to `Git` (this essentially in order to avoid asking useless data like the account room number and work/home phone)
 - `--disabled-login`: the user won't be able to use the account until the password is set
 - `--disabled-password`: disable the login using passwords (we'll access the system with SSH keys)
-- `--shell /usr/bin/git-shell`: even if, for any reason, the user gain access the system, she will use the fake shell provided by git
+- `--shell /usr/bin/git-shell`: the git user is only allowed to run git commands
 - `--home /home/git`: set the home directory for the user to `/home/git`
 - `--ingroup {% raw %}{{ webUserGroup }}{% endraw %}`: add the new user to the user group used by the web server instead of the default one
 - `git`: the username of the new account
