@@ -222,7 +222,7 @@ git ALL=({% raw %}{{ webUser }}{% endraw %}) NOPASSWD: {% raw %}{{ visudoCommand
 ```
 
 
-## The script launched by the hook
+### Script launched by the hook
 
 When you'll push to the git repository, you'll need to perform some operations.
 
