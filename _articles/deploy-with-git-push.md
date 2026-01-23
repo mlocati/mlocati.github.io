@@ -367,9 +367,9 @@ When you push to the `deploy` remote, the published directory willbe updated aut
 
 Nice, isn't it?
 
-</div>
+Questions or suggestions? [Let's discuss about it!](https://github.com/mlocati/mlocati.github.io/discussions)
 
-{% include gitter.html handle="deploy-with-git-push" %}
+</div>
 
 <script src="{{ "/js/vue.js?3.5.11" | prepend: site.baseurl }}"></script>
 <script src="{{ "/js/deploy-with-git-push.js?2" | prepend: site.baseurl }}"></script>
