@@ -364,4 +364,4 @@ Nice, isn't it?
 {% include gitter.html handle="deploy-with-git-push" %}
 
 <script src="{{ "/js/vue.js?3.5.11" | prepend: site.baseurl }}"></script>
-<script src="{{ "/js/deploy-with-git-push.js?1" | prepend: site.baseurl }}"></script>
+<script src="{{ "/js/deploy-with-git-push.js?2" | prepend: site.baseurl }}"></script>

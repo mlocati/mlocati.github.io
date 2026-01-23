@@ -79,7 +79,7 @@ function ready() {
                 if (this.updateConcreteCMS) {
                     options.push('--concrete');
                     if (this.concreteCMSLocales.length > 0) {
-                        options.push('--concrete-locales');
+                        options.push('--concrete-languages');
                         options.push(`'${this.concreteCMSLocales.join(' ')}'`);
                     }
                 }
