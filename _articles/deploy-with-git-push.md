@@ -231,7 +231,7 @@ In order to simplify these operations I've created [this gist](https://gist.gith
 ```sh
 sudo curl -sSLf \
     -o/usr/local/bin/git-post-receive-hook \
-    https://gist.githubusercontent.com/mlocati/8b3df1cf72d110cc38ed3ffc70fa0bbd/raw/update-concrete
+    https://gist.githubusercontent.com/mlocati/8b3df1cf72d110cc38ed3ffc70fa0bbd/raw/git-post-receive-hook
 sudo chmod 755 /usr/local/bin/git-post-receive-hook
 ```
 
