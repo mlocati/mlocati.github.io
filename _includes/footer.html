@@ -33,13 +33,27 @@
 	</div>
 </footer>
 <script>
-$(document).ready(function() {
-	$('div.highlighter-rouge').append($('<button class="copy-to-clipboard" title="Copy to clipboard"><i class="fa fa-files-o" aria-hidden="true"></i></button>'));
-	new Clipboard('button.copy-to-clipboard', {
-		target: function(button) {
-			return $(button).closest('div.highlighter-rouge')[0];
-		}
+(function() {
+
+function ready() {
+	document.querySelectorAll('div.highlighter-rouge').forEach(function(block) {
+		const button = document.createElement('button');
+		button.className = 'copy-to-clipboard';
+		button.title = 'Copy to clipboard';
+		button.innerHTML = '&#128203;'; // CLIPBOARD'
+		block.appendChild(button);
+		new Clipboard(button, {
+			target: () => block,
+		});
 	});
-});
+}
+
+if (document.readyState !== 'loading') {
+	ready();
+} else {
+	document.addEventListener('DOMContentLoaded', ready);
+}
+
+})();
 </script>
 <script src="{{ "/js/site.js" | prepend: site.baseurl }}"></script>

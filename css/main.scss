@@ -107,6 +107,9 @@ div.highlighter-rouge {
         opacity: 0.2;
         font-size: 0.6em;
         transition: all 0.2s ease;
+        user-select: none;
+        -webkit-user-select: none;
+        -moz-user-select: none;
     }
     &:hover button.copy-to-clipboard {
         opacity: 1;
