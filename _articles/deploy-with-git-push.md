@@ -143,12 +143,12 @@ So, what about creating a script to make it easier to perform all those operatio
 
 I did it for you ;)
 
-Download [this gists](https://gist.github.com/mlocati/2195c70caeca3df1240e35d5db871587), save it as `/usr/local/bin/update-concrete`, and make it executable:
+Download [this gists](https://gist.github.com/mlocati/5db7bb36b4c3ac7676a4ace97b69ab46#file-update-concrete), save it as `/usr/local/bin/update-concrete`, and make it executable:
 
 ```sh
 sudo curl -sSLf \
     -o/usr/local/bin/update-concrete \
-    https://gist.githubusercontent.com/mlocati/2195c70caeca3df1240e35d5db871587/raw/update-concrete
+    https://gist.githubusercontent.com/mlocati/5db7bb36b4c3ac7676a4ace97b69ab46/raw/update-concrete
 sudo chmod 755 /usr/local/bin/update-concrete
 ```
 
@@ -226,12 +226,12 @@ git ALL=({% raw %}{{ webUser }}{% endraw %}) NOPASSWD: {% raw %}{{ visudoCommand
 
 When you'll push to the git repository, you'll need to perform some operations.
 
-In order to simplify these operations I've created [this gist](https://gist.github.com/mlocati/8b3df1cf72d110cc38ed3ffc70fa0bbd), save it as `/usr/local/bin/git-post-receive-hook`, and make it executable:
+In order to simplify these operations I've created [this gist](https://gist.github.com/mlocati/5db7bb36b4c3ac7676a4ace97b69ab46#file-git-post-receive-hook), save it as `/usr/local/bin/git-post-receive-hook`, and make it executable:
 
 ```sh
 sudo curl -sSLf \
     -o/usr/local/bin/git-post-receive-hook \
-    https://gist.githubusercontent.com/mlocati/8b3df1cf72d110cc38ed3ffc70fa0bbd/raw/git-post-receive-hook
+    https://gist.githubusercontent.com/mlocati/5db7bb36b4c3ac7676a4ace97b69ab46/raw/git-post-receive-hook
 sudo chmod 755 /usr/local/bin/git-post-receive-hook
 ```
 
