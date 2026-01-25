@@ -1,0 +1,82 @@
+#!/bin/sh
+
+set -o errexit
+set -o nounset
+
+IFS=' 	
+'
+
+SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+PROJECT_ROOT=$(CDPATH= cd -- "$SCRIPT_DIR/.." && pwd)
+
+DEPENDENCIES="
+$SCRIPT_DIR/$(basename "$0")
+$PROJECT_ROOT/Gemfile
+"
+
+HASH=$(
+    for f in $DEPENDENCIES; do
+        cat "$f"
+    done | sha256sum | awk '{print $1}'
+)
+
+EXISTING_TAGS=$(docker image ls ml-io-watcher --format '{{.Tag}}' || true)
+
+FOUND=0
+
+if [ -n "$EXISTING_TAGS" ]; then
+    for TAG in $EXISTING_TAGS; do
+        if [ "$TAG" = "$HASH" ]; then
+            FOUND=1
+        else
+            echo "Removing old watcher image: $TAG"
+            docker image rm -f "ml-io-watcher:$TAG" >/dev/null
+        fi
+    done
+fi
+
+if [ $FOUND -ne 1 ]; then
+    TEMPDIR=$(mktemp -d)
+    echo "Building watcher image version $HASH in temporary directory $TEMPDIR..."
+
+    cleanup() {
+        rm -rf "$TEMPDIR"
+    }
+    trap cleanup EXIT INT TERM
+
+    cp "$PROJECT_ROOT/Gemfile" "$TEMPDIR/Gemfile"
+
+    cat >"$TEMPDIR/Dockerfile" <<'EOF'
+FROM madduci/docker-github-pages
+
+EXPOSE 4000
+
+ADD Gemfile /site/Gemfile
+
+RUN apk add --no-cache ruby-dev ruby-bundler g++ make nodejs && \
+    cd /site && \
+    bundle install && \
+    cp Gemfile.lock / && \
+    cd / && \
+    rm -rf /site && \
+    mkdir /site && \
+    cd /site
+
+WORKDIR /site
+
+ENTRYPOINT ["/bin/sh", "-c", "cp /Gemfile.lock /site/Gemfile.lock && bundle exec jekyll serve --watch --force_polling --host 0.0.0.0"]
+
+EOF
+
+    docker buildx build \
+        --tag "ml-io-watcher:$HASH" \
+        --file "$TEMPDIR/Dockerfile" \
+        "$TEMPDIR"
+
+    echo 'Watcher image built'
+fi
+
+echo 'Starting watcher container...'
+echo 'Browse to http://localhost:4000 to see the site.'
+docker run --rm -it -p 4000:4000 -v "$PROJECT_ROOT:/site" "ml-io-watcher:$HASH"
+echo 'Watcher container stopped.'
