@@ -216,8 +216,7 @@ sudo visudo
 Go to the end of the editor contents and add these lines:
 
 ```
-# The user git, when accessing from any client (ALL), can run as {% raw %}{{ webUser }}{% endraw %} (without password)
-# the specified commands
+# The user git, on any host (ALL), can run as {% raw %}{{ webUser }}{% endraw %} (without password) these commands
 git ALL=({% raw %}{{ webUser }}{% endraw %}) NOPASSWD: {% raw %}{{ visudoCommands }}{% endraw %}
 ```
 
