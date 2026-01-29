@@ -11,16 +11,160 @@ date: 2026-01-29T15:52:00+02:00
 {% assign iconv_version = "1.17" %}
 {% assign release_prefix = "https://github.com/mlocati/gettext-iconv-windows/releases/download/v1.0-v1.17" %}
 
-{: .table .table-condensed }
-| gettext version | libiconv version | Operating system | Flavor | Download |
-|-----------------|------------------|------------------|--------|----------|
-| {{ gettext_version }} | {{ iconv_version }} | 32 bit | shared<sup>1</sup> | [![Setup]({{ site.baseurl }}/images/icon-setup.png)]({{ release_prefix }}/gettext{{ gettext_version }}-iconv{{ iconv_version }}-shared-32.exe) [![ZIP]({{ site.baseurl }}/images/icon-zip.png)]({{ release_prefix }}/gettext{{ gettext_version }}-iconv{{ iconv_version }}-shared-32.zip) |
-| {{ gettext_version }} | {{ iconv_version }} | 32 bit | static<sup>2</sup> | [![Setup]({{ site.baseurl }}/images/icon-setup.png)]({{ release_prefix }}/gettext{{ gettext_version }}-iconv{{ iconv_version }}-static-32.exe) [![ZIP]({{ site.baseurl }}/images/icon-zip.png)]({{ release_prefix }}/gettext{{ gettext_version }}-iconv{{ iconv_version }}-static-32.zip) |
-| {{ gettext_version }} | {{ iconv_version }} | 64 bit | shared<sup>1</sup> | [![Setup]({{ site.baseurl }}/images/icon-setup.png)]({{ release_prefix }}/gettext{{ gettext_version }}-iconv{{ iconv_version }}-shared-64.exe) [![ZIP]({{ site.baseurl }}/images/icon-zip.png)]({{ release_prefix }}/gettext{{ gettext_version }}-iconv{{ iconv_version }}-shared-64.zip) |
-| {{ gettext_version }} | {{ iconv_version }} | 64 bit | static<sup>2</sup> | [![Setup]({{ site.baseurl }}/images/icon-setup.png)]({{ release_prefix }}/gettext{{ gettext_version }}-iconv{{ iconv_version }}-static-64.exe) [![ZIP]({{ site.baseurl }}/images/icon-zip.png)]({{ release_prefix }}/gettext{{ gettext_version }}-iconv{{ iconv_version }}-static-64.zip) |
+### Download
 
-1: `shared` means that the programs make use of DLL. The setup size is small, but all the executables needs to stay together with the shipped DLL libraries.  
-2: `static` means that the programs do not use DLL. The setup size is much bigger, but all the executables may be moved around as you like, no DLL-dependencies.
+<div id="giw-download-wizard" class="jumbotron" style="padding: 20px" v-cloak>
+    <div class="alert alert-warning">
+        Select the options to pick the right package.
+    </div>
+    <table class="table" style="margin-bottom: 0">
+        <colgroup>
+            <col width="0*" />
+        </colgroup>
+        <tbody>
+            <tr v-if="showBitness" class="success">
+                <th colspan="2">Bitness</th>
+            </tr>
+            <tr v-if="showBitness">
+                <td>
+                    <input type="button" id="giw-wiz-32" class="btn" v-bind:class="bits === 32 ? 'btn-success' : 'btn-default'" v-on:click.prevent="bits = 32" value="32 bits" />
+                </td>
+                <td>
+                    <label for="giw-wiz-32">For 32-bit and 64-bit Windows versions</label>
+                </td>
+            </tr>
+            <tr v-if="showBitness">
+                <td>
+                    <input type="button" id="giw-wiz-64" class="btn" v-bind:class="bits === 64 ? 'btn-success' : 'btn-default'" v-on:click.prevent="bits = 64" value="64 bits" />
+                </td>
+                <td>
+                    <label for="giw-wiz-64">For 64-bit Windows versions only</label>
+                </td>
+            </tr>
+            <tr v-if="showBuild" class="success">
+                <th colspan="2">Build</th>
+            </tr>
+            <tr v-if="showBuild">
+                <td>
+                    <input type="button" id="giw-wiz-shared" class="btn" v-bind:class="build === BUILD.SHARED ? 'btn-success' : 'btn-default'" v-on:click.prevent="build = BUILD.SHARED" value="Shared" />
+                </td>
+                <td>
+                    <label for="giw-wiz-shared">Programs make use of DLL: the setup size is smaller, but all the executables needs to stay together with the shipped DLLs</label>
+                </td>
+            </tr>
+            <tr v-if="showBuild">
+                <td>
+                    <input type="button" id="giw-wiz-static" class="btn" v-bind:class="build === BUILD.STATIC ? 'btn-success' : 'btn-default'" v-on:click.prevent="build = BUILD.STATIC" value="Static" />
+                </td>
+                <td>
+                    <label for="giw-wiz-static">Programs do not use DLL: the setup size is bigger, but all the executables may be moved around as you like, no DLL-dependencies</label>
+                </td>
+            </tr>
+            <tr v-if="showType" class="success">
+                <th colspan="2">Type</th>
+            </tr>
+            <tr v-if="showType">
+                <td>
+                    <input type="button" id="giw-wiz-installer" class="btn" v-bind:class="type === TYPE.EXE ? 'btn-success' : 'btn-default'" v-on:click.prevent="type = TYPE.EXE" value="Installer" />
+                </td>
+                <td>
+                    <label for="giw-wiz-installer">Download an executable that installs the files</label>
+                </td>
+            </tr>
+            <tr v-if="showType">
+                <td>
+                    <input type="button" id="giw-wiz-zip" class="btn" v-bind:class="type === TYPE.ZIP ? 'btn-success' : 'btn-default'" v-on:click.prevent="type = TYPE.ZIP" value="Files" />
+                </td>
+                <td>
+                    <label for="giw-wiz-zip">Download a .zip archive containing the files</label>
+                </td>
+            </tr>
+            <tr v-if="bits !== null && build !== null && type !== null" class="success">
+                <th colspan="2">Download Link</th>
+            </tr>
+            <tr v-if="bits === 32 && build === BUILD.SHARED && type === TYPE.EXE">
+                <td>
+                    <a class="btn btn-primary" href="{{ release_prefix }}/gettext{{ gettext_version }}-iconv{{ iconv_version }}-shared-32.exe">
+                        Download
+                    </a>
+                </td>
+                <td>
+                    <code>gettext{{ gettext_version }}-iconv{{ iconv_version }}-shared-32.exe</code>
+                </td>
+            </tr>
+            <tr v-else-if="bits === 32 && build === BUILD.SHARED && type === TYPE.ZIP">
+                <td>
+                    <a class="btn btn-primary" href="{{ release_prefix }}/gettext{{ gettext_version }}-iconv{{ iconv_version }}-shared-32.zip">
+                        Download
+                    </a>
+                </td>
+                <td>
+                    <code>gettext{{ gettext_version }}-iconv{{ iconv_version }}-shared-32.zip</code>
+                </td>
+            </tr>
+            <tr v-else-if="bits === 32 && build === BUILD.STATIC && type === TYPE.EXE">
+                <td>
+                    <a class="btn btn-primary" href="{{ release_prefix }}/gettext{{ gettext_version }}-iconv{{ iconv_version }}-static-32.exe">
+                        Download
+                    </a>
+                </td>
+                <td>
+                    <code>gettext{{ gettext_version }}-iconv{{ iconv_version }}-static-32.exe</code>
+                </td>
+            </tr>
+            <tr v-else-if="bits === 32 && build === BUILD.STATIC && type === TYPE.ZIP">
+                <td>
+                    <a class="btn btn-primary" href="{{ release_prefix }}/gettext{{ gettext_version }}-iconv{{ iconv_version }}-static-32.zip">
+                        Download
+                    </a>
+                </td>
+                <td>
+                    <code>gettext{{ gettext_version }}-iconv{{ iconv_version }}-static-32.zip</code>
+                </td>
+            </tr>
+            <tr v-else-if="bits === 64 && build === BUILD.SHARED && type === TYPE.EXE">
+                <td>
+                    <a class="btn btn-primary" href="{{ release_prefix }}/gettext{{ gettext_version }}-iconv{{ iconv_version }}-shared-64.exe">
+                        Download
+                    </a>
+                </td>
+                <td>
+                    <code>gettext{{ gettext_version }}-iconv{{ iconv_version }}-shared-64.exe</code>
+                </td>
+            </tr>
+            <tr v-else-if="bits === 64 && build === BUILD.SHARED && type === TYPE.ZIP">
+                <td>
+                    <a class="btn btn-primary" href="{{ release_prefix }}/gettext{{ gettext_version }}-iconv{{ iconv_version }}-shared-64.zip">
+                        Download
+                    </a>
+                </td>
+                <td>
+                    <code>gettext{{ gettext_version }}-iconv{{ iconv_version }}-shared-64.zip</code>
+                </td>
+            </tr>
+            <tr v-else-if="bits === 64 && build === BUILD.STATIC && type === TYPE.EXE">
+                <td>
+                    <a class="btn btn-primary" href="{{ release_prefix }}/gettext{{ gettext_version }}-iconv{{ iconv_version }}-static-64.exe">
+                        Download
+                    </a>
+                </td>
+                <td>
+                    <code>gettext{{ gettext_version }}-iconv{{ iconv_version }}-static-64.exe</code>
+                </td>
+            </tr>
+            <tr v-else-if="bits === 64 && build === BUILD.STATIC && type === TYPE.ZIP">
+                <td>
+                    <a class="btn btn-primary" href="{{ release_prefix }}/gettext{{ gettext_version }}-iconv{{ iconv_version }}-static-64.zip">
+                        Download
+                    </a>
+                </td>
+                <td>
+                    <code>gettext{{ gettext_version }}-iconv{{ iconv_version }}-static-64.zip</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
 
 
 ### Download statistics
@@ -162,4 +306,4 @@ Questions? [Start a discussion](https://github.com/mlocati/gettext-iconv-windows
 Problems? [File an issue](https://github.com/mlocati/gettext-iconv-windows/issues).
 
 <script src="{{ "/js/vue.js?3.5.11" | prepend: site.baseurl }}"></script>
-<script src="{{ "/js/gettext-iconv-windows.js?5" | prepend: site.baseurl }}"></script>
+<script src="{{ "/js/gettext-iconv-windows.js?7" | prepend: site.baseurl }}"></script>
