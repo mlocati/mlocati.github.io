@@ -133,6 +133,9 @@ async function ready() {
 						group[rName] = 0;
 					}
 					item.assets.forEach((asset) => {
+						if (/dev-gcc\.zip$/.test(asset.name)) {
+							return;
+						}
 						var m = asset.name.match(/(shared|static).(32|64)\.(exe|zip)$/);
 						if (m === null) {
 							throw new Error(`Unrecognized asset name: ${asset.name}`);

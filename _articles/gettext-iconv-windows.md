@@ -4,7 +4,7 @@ description: Download gettext & iconv binaries for Windows - 32 and 64 bits - sh
 redirect_from: "/gettext-iconv-windows"
 redirect_from: "/gettext-iconv-windows/"
 redirect_from: "/gettext-iconv-windows/index.html"
-date: 2026-01-29T15:52:00+02:00
+date: 2026-02-03T23:41:00+02:00
 ---
 
 {% assign gettext_version = "1.0" %}
@@ -306,4 +306,4 @@ Questions? [Start a discussion](https://github.com/mlocati/gettext-iconv-windows
 Problems? [File an issue](https://github.com/mlocati/gettext-iconv-windows/issues).
 
 <script src="{{ "/js/vue.js?3.5.11" | prepend: site.baseurl }}"></script>
-<script src="{{ "/js/gettext-iconv-windows.js?7" | prepend: site.baseurl }}"></script>
+<script src="{{ "/js/gettext-iconv-windows.js?8" | prepend: site.baseurl }}"></script>
