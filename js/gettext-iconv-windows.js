@@ -19,17 +19,27 @@ async function ready() {
 		data() {
 			return {
 				BUILD: {
-					SHARED: 1,
-					STATIC: 2,
+					SHARED: 'shared',
+					STATIC: 'static',
 				},
 				TYPE: {
-					EXE: 1,
-					ZIP: 2,
+					EXE: '.exe',
+					ZIP: '.zip',
+					DEV_GCC: '-dev-gcc.zip',
 				},
 				bits: null,
 				build: null,
 				type: null,
+				gettextVersion: '',
+				iconvVersion: '',
+				releasePrefix: '',
 			};
+		},
+		mounted() {
+			const el = this.$el.parentElement;
+			this.releasePrefix = el.dataset.releasePrefix || '';
+			this.gettextVersion = el.dataset.gettextVersion || '';
+			this.iconvVersion = el.dataset.iconvVersion || '';
 		},
 		computed: {
 			showBitness() {
@@ -40,6 +50,21 @@ async function ready() {
 			},
 			showType() {
 				return this.build !== null;
+			},
+			downloadFilename() {
+				if (this.bits === null || this.build === null || this.type === null) {
+					return '';
+				}
+				if (this.gettextVersion === '' || this.iconvVersion === '') {
+					return '';
+				}
+				return `gettext${this.gettextVersion}-iconv${this.iconvVersion}-${this.build}-${this.bits}${this.type}`;
+			},
+			downloadUrl() {
+				if (this.releasePrefix === '' || this.downloadFilename === '') {
+					return '';
+				}
+				return `${this.releasePrefix}/${this.downloadFilename}`;
 			},
 		}
 	}).mount('#giw-download-wizard');

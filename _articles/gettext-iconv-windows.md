@@ -13,13 +13,14 @@ date: 2026-02-03T23:41:00+02:00
 
 ### Download
 
-<div id="giw-download-wizard" class="jumbotron" style="padding: 20px" v-cloak>
+{% raw %}
+<div id="giw-download-wizard" class="jumbotron" style="padding: 20px" v-cloak  data-gettext-version="1.0" data-iconv-version="1.18" data-release-prefix="https://github.com/mlocati/gettext-iconv-windows/releases/download/v1.0-v1.18">
     <div class="alert alert-warning">
         Select the options to pick the right package.
     </div>
     <table class="table" style="margin-bottom: 0">
         <colgroup>
-            <col width="0*" />
+            <col width="130" />
         </colgroup>
         <tbody>
             <tr v-if="showBitness" class="success">
@@ -79,92 +80,31 @@ date: 2026-02-03T23:41:00+02:00
                     <label for="giw-wiz-zip">Download a .zip archive containing the files</label>
                 </td>
             </tr>
-            <tr v-if="bits !== null && build !== null && type !== null" class="success">
+            <tr v-if="showType">
+                <td>
+                    <input type="button" id="giw-wiz-dev-gcc" class="btn" v-bind:class="type === TYPE.DEV_GCC ? 'btn-success' : 'btn-default'" v-on:click.prevent="type = TYPE.DEV_GCC" value="MinGW / gcc" />
+                </td>
+                <td>
+                    <label for="giw-wiz-dev-gcc">Download developer files for MinGW / gcc</label>
+                </td>
+            </tr>
+            <tr v-if="downloadUrl" class="success">
                 <th colspan="2">Download Link</th>
             </tr>
-            <tr v-if="bits === 32 && build === BUILD.SHARED && type === TYPE.EXE">
+            <tr v-if="downloadUrl">
                 <td>
-                    <a class="btn btn-primary" href="{{ release_prefix }}/gettext{{ gettext_version }}-iconv{{ iconv_version }}-shared-32.exe">
+                    <a class="btn btn-primary" v-bind:href="downloadUrl">
                         Download
                     </a>
                 </td>
                 <td>
-                    <code>gettext{{ gettext_version }}-iconv{{ iconv_version }}-shared-32.exe</code>
-                </td>
-            </tr>
-            <tr v-else-if="bits === 32 && build === BUILD.SHARED && type === TYPE.ZIP">
-                <td>
-                    <a class="btn btn-primary" href="{{ release_prefix }}/gettext{{ gettext_version }}-iconv{{ iconv_version }}-shared-32.zip">
-                        Download
-                    </a>
-                </td>
-                <td>
-                    <code>gettext{{ gettext_version }}-iconv{{ iconv_version }}-shared-32.zip</code>
-                </td>
-            </tr>
-            <tr v-else-if="bits === 32 && build === BUILD.STATIC && type === TYPE.EXE">
-                <td>
-                    <a class="btn btn-primary" href="{{ release_prefix }}/gettext{{ gettext_version }}-iconv{{ iconv_version }}-static-32.exe">
-                        Download
-                    </a>
-                </td>
-                <td>
-                    <code>gettext{{ gettext_version }}-iconv{{ iconv_version }}-static-32.exe</code>
-                </td>
-            </tr>
-            <tr v-else-if="bits === 32 && build === BUILD.STATIC && type === TYPE.ZIP">
-                <td>
-                    <a class="btn btn-primary" href="{{ release_prefix }}/gettext{{ gettext_version }}-iconv{{ iconv_version }}-static-32.zip">
-                        Download
-                    </a>
-                </td>
-                <td>
-                    <code>gettext{{ gettext_version }}-iconv{{ iconv_version }}-static-32.zip</code>
-                </td>
-            </tr>
-            <tr v-else-if="bits === 64 && build === BUILD.SHARED && type === TYPE.EXE">
-                <td>
-                    <a class="btn btn-primary" href="{{ release_prefix }}/gettext{{ gettext_version }}-iconv{{ iconv_version }}-shared-64.exe">
-                        Download
-                    </a>
-                </td>
-                <td>
-                    <code>gettext{{ gettext_version }}-iconv{{ iconv_version }}-shared-64.exe</code>
-                </td>
-            </tr>
-            <tr v-else-if="bits === 64 && build === BUILD.SHARED && type === TYPE.ZIP">
-                <td>
-                    <a class="btn btn-primary" href="{{ release_prefix }}/gettext{{ gettext_version }}-iconv{{ iconv_version }}-shared-64.zip">
-                        Download
-                    </a>
-                </td>
-                <td>
-                    <code>gettext{{ gettext_version }}-iconv{{ iconv_version }}-shared-64.zip</code>
-                </td>
-            </tr>
-            <tr v-else-if="bits === 64 && build === BUILD.STATIC && type === TYPE.EXE">
-                <td>
-                    <a class="btn btn-primary" href="{{ release_prefix }}/gettext{{ gettext_version }}-iconv{{ iconv_version }}-static-64.exe">
-                        Download
-                    </a>
-                </td>
-                <td>
-                    <code>gettext{{ gettext_version }}-iconv{{ iconv_version }}-static-64.exe</code>
-                </td>
-            </tr>
-            <tr v-else-if="bits === 64 && build === BUILD.STATIC && type === TYPE.ZIP">
-                <td>
-                    <a class="btn btn-primary" href="{{ release_prefix }}/gettext{{ gettext_version }}-iconv{{ iconv_version }}-static-64.zip">
-                        Download
-                    </a>
-                </td>
-                <td>
-                    <code>gettext{{ gettext_version }}-iconv{{ iconv_version }}-static-64.zip</code>
+                    <code>{{ downloadFilename }}</code>
                 </td>
             </tr>
         </tbody>
     </table>
 </div>
+{% endraw %}
 
 
 ### Download statistics
@@ -306,4 +246,4 @@ Questions? [Start a discussion](https://github.com/mlocati/gettext-iconv-windows
 Problems? [File an issue](https://github.com/mlocati/gettext-iconv-windows/issues).
 
 <script src="{{ "/js/vue.js?3.5.11" | prepend: site.baseurl }}"></script>
-<script src="{{ "/js/gettext-iconv-windows.js?8" | prepend: site.baseurl }}"></script>
+<script src="{{ "/js/gettext-iconv-windows.js?9" | prepend: site.baseurl }}"></script>
