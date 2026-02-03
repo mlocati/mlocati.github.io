@@ -1,6 +1,6 @@
 ---
 title:  "gettext 1.0 and iconv 1.18 for Windows"
-description: Download gettext & iconv Windows - 32 and 64 bits - shared and static - executables and gcc development files.
+description: Download gettext & iconv Windows - 32 and 64 bits - shared and static - executable tools and gcc development files.
 redirect_from: "/gettext-iconv-windows"
 redirect_from: "/gettext-iconv-windows/"
 redirect_from: "/gettext-iconv-windows/index.html"
