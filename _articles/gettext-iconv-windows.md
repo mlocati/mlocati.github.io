@@ -1,20 +1,16 @@
 ---
 title:  "gettext 1.0 and iconv 1.18 for Windows"
-description: Download gettext & iconv Windows - 32 and 64 bits - shared and static - executable tools and gcc development files.
+description: Download gettext & iconv Windows - 32 and 64 bits - shared and static - executable tools, gcc and Microsoft Visual C development files (.h, .a, .lib, .dll, .dll.lib).
 redirect_from: "/gettext-iconv-windows"
 redirect_from: "/gettext-iconv-windows/"
 redirect_from: "/gettext-iconv-windows/index.html"
-date: 2026-02-03T23:41:00+02:00
+date: 2026-02-05T23:02:00+01:00
 ---
-
-{% assign gettext_version = "1.0" %}
-{% assign iconv_version = "1.18" %}
-{% assign release_prefix = "https://github.com/mlocati/gettext-iconv-windows/releases/download/v1.0-v1.18" %}
 
 ### Download
 
 {% raw %}
-<div id="giw-download-wizard" class="jumbotron" style="padding: 20px" v-cloak  data-gettext-version="1.0" data-iconv-version="1.18" data-release-prefix="https://github.com/mlocati/gettext-iconv-windows/releases/download/v1.0-v1.18">
+<div id="giw-download-wizard" class="jumbotron" style="padding: 20px" v-cloak  data-gettext-version="1.0" data-iconv-version="1.18" data-release-prefix="https://github.com/mlocati/gettext-iconv-windows/releases/download/v1.0-v1.18-r1">
     <div class="alert alert-warning">
         Select the options to pick the right package.
     </div>
@@ -69,7 +65,7 @@ date: 2026-02-03T23:41:00+02:00
                     <input type="button" id="giw-wiz-installer" class="btn" v-bind:class="type === TYPE.EXE ? 'btn-success' : 'btn-default'" v-on:click.prevent="type = TYPE.EXE" value="Installer" />
                 </td>
                 <td>
-                    <label for="giw-wiz-installer">Download an executable that installs the files</label>
+                    <label for="giw-wiz-installer">Download an executable that installs the programs</label>
                 </td>
             </tr>
             <tr v-if="showType">
@@ -77,7 +73,7 @@ date: 2026-02-03T23:41:00+02:00
                     <input type="button" id="giw-wiz-zip" class="btn" v-bind:class="type === TYPE.ZIP ? 'btn-success' : 'btn-default'" v-on:click.prevent="type = TYPE.ZIP" value="Files" />
                 </td>
                 <td>
-                    <label for="giw-wiz-zip">Download a .zip archive containing the files</label>
+                    <label for="giw-wiz-zip">Download a .zip archive containing the programs</label>
                 </td>
             </tr>
             <tr v-if="showType">
@@ -85,7 +81,15 @@ date: 2026-02-03T23:41:00+02:00
                     <input type="button" id="giw-wiz-dev-gcc" class="btn" v-bind:class="type === TYPE.DEV_GCC ? 'btn-success' : 'btn-default'" v-on:click.prevent="type = TYPE.DEV_GCC" value="MinGW / gcc" />
                 </td>
                 <td>
-                    <label for="giw-wiz-dev-gcc">Download developer files for MinGW / gcc</label>
+                    <label for="giw-wiz-dev-gcc">Download developer files for MinGW / gcc ({{ gccFileNotes }})</label>
+                </td>
+            </tr>
+            <tr v-if="showType">
+                <td>
+                    <input type="button" id="giw-wiz-dev-msvc" class="btn" v-bind:class="type === TYPE.DEV_MSVC ? 'btn-success' : 'btn-default'" v-on:click.prevent="type = TYPE.DEV_MSVC" value="MS Visual C" />
+                </td>
+                <td>
+                    <label for="giw-wiz-dev-msvc">Download developer files for Microsoft Visual C ({{ msvcFileNotes }})</label>
                 </td>
             </tr>
             <tr v-if="downloadUrl" class="success">
@@ -246,4 +250,4 @@ Questions? [Start a discussion](https://github.com/mlocati/gettext-iconv-windows
 Problems? [File an issue](https://github.com/mlocati/gettext-iconv-windows/issues).
 
 <script src="{{ "/js/vue.js?3.5.11" | prepend: site.baseurl }}"></script>
-<script src="{{ "/js/gettext-iconv-windows.js?9" | prepend: site.baseurl }}"></script>
+<script src="{{ "/js/gettext-iconv-windows.js?10" | prepend: site.baseurl }}"></script>

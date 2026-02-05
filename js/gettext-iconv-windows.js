@@ -26,6 +26,7 @@ async function ready() {
 					EXE: '.exe',
 					ZIP: '.zip',
 					DEV_GCC: '-dev-gcc.zip',
+					DEV_MSVC: '-dev-msvc.zip',
 				},
 				bits: null,
 				build: null,
@@ -50,6 +51,26 @@ async function ready() {
 			},
 			showType() {
 				return this.build !== null;
+			},
+			gccFileNotes() {
+				switch (this.build) {
+					case this.BUILD.SHARED:
+						return 'shared: .h, .dll, and .dll.a files';
+					case this.BUILD.STATIC:
+						return 'static: .h, and .a files';
+					default:
+						return '';
+				}
+			},
+			msvcFileNotes() {
+				switch (this.build) {
+					case this.BUILD.SHARED:
+						return 'shared: .h, .dll, and .dll.lib files';
+					case this.BUILD.STATIC:
+						return 'static: .h, and .lib files';
+					default:
+						return '';
+				}
 			},
 			downloadFilename() {
 				if (this.bits === null || this.build === null || this.type === null) {
@@ -158,7 +179,7 @@ async function ready() {
 						group[rName] = 0;
 					}
 					item.assets.forEach((asset) => {
-						if (/dev-gcc\.zip$/.test(asset.name)) {
+						if (/dev-(gcc|msvc)\.zip$/.test(asset.name)) {
 							return;
 						}
 						var m = asset.name.match(/(shared|static).(32|64)\.(exe|zip)$/);
