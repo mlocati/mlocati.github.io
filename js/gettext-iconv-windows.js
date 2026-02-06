@@ -13,6 +13,93 @@ const FLOAT_NUMBER_FORMAT = new Intl.NumberFormat('en-US', {
 	maximumFractionDigits: 1,
 });
 
+function ReleaseAsset(data) {
+	this.url = data.browser_download_url;
+	this.downloadCount = data.download_count;
+	this.name = data.name;
+	const typeMap = {
+		'-dev-gcc.zip': ReleaseAsset.TYPE.DEV_GCC,
+		'-dev-msvc.zip': ReleaseAsset.TYPE.DEV_MSVC,
+		'.exe': ReleaseAsset.TYPE.INSTALLER,
+		'.zip': ReleaseAsset.TYPE.FILES,
+	}
+	const rx = new RegExp(`.-(shared|static)-(32|64)(${Object.keys(typeMap).map(s => s.replace(/\./g, '\\.')).join('|')})$`);
+	const match = this.name.match(rx);
+	if (!match) {
+		console.warn(`Asset name "${this.name}" does not match expected pattern`);
+	}
+	this.build = match ? match[1] : null;
+	this.bits = match ? Number(match[2]) : null;
+	this.type = match ? typeMap[match[3]] : ReleaseAsset.TYPE.OTHER;
+}
+ReleaseAsset.TYPE = {
+	INSTALLER: 'Installer',
+	FILES: 'Zip archive',
+	DEV_GCC: 'Development files for GCC',
+	DEV_MSVC: 'Development files for MSVC',
+	OTHER: 'Other',
+};
+ReleaseAsset.TYPE_ORDER = {
+	[ReleaseAsset.TYPE.INSTALLER]: 0,
+	[ReleaseAsset.TYPE.FILES]: 1,
+	[ReleaseAsset.TYPE.DEV_GCC]: 2,
+	[ReleaseAsset.TYPE.DEV_MSVC]: 3,
+	[ReleaseAsset.TYPE.OTHER]: 4,
+};
+
+function Release(data, versions) {
+	this.gettextVersion = versions.gettext;
+	this.iconvVersion = versions.iconv;
+	this.tagName = data.tag_name;
+	this.name = data.name || this.tagName;
+	this.createdAt = new Date(data.created_at);
+	this.isPrerelease = data.prerelease;
+	this.url = data.html_url;
+	this.assets = data.assets.map(assetData => new ReleaseAsset(assetData));
+	this.assetTypes = Array.from(this.assets.reduce((types, asset) => types.add(asset.type), new Set()))
+		.sort((a,b) => ReleaseAsset.TYPE_ORDER[a] - ReleaseAsset.TYPE_ORDER[b])
+	;
+	this.assetBits = Array.from(this.assets.reduce((bits, asset) => bits.add(asset.bits), new Set()))
+		.sort((a,b) => (a ?? 999) - (b ?? 999))
+		.map(bits => bits ? bits : 'Unknown')
+	;
+	this.assetBuilds = Array.from(this.assets.reduce((builds, asset) => builds.add(asset.build), new Set()))
+		.sort((a,b) => a === 'shared' ? -1 : (b === 'shared' ? 1 : 0))
+	;
+	this.totalDownloads = this.assets.reduce((sum, asset) => sum + asset.downloadCount, 0);
+	this.setDownloadsPerDayUntilRelease(null);
+}
+Release.extractVersionsFromTagName = (tagName) => {
+	const match = tagName.match(/^v(\d.*?)-v(\d.*)/);
+	if (!match) {
+		return null;
+	}
+	return {
+		gettext: match[1],
+		iconv: match[2].replace(/(-shared-32|-shared-64|-static-32|-static-64|-r\d+)$/, ''),
+	}
+}
+Release.prototype = {
+	setDownloadsPerDayUntilRelease(nextRelease) {
+		if (this.totalDownloads === 0) {
+			this.downloadsPerDay = 0;
+			return;
+		}
+		const untilDate = nextRelease ? nextRelease.createdAt : new Date();
+		const deltaDays = (untilDate.getTime() - this.createdAt.getTime()) / (1000 * 3600 * 24);
+		this.downloadsPerDay = this.totalDownloads / deltaDays;
+	},
+	getDownloadsByType(type) {
+		return this.assets.filter(asset => asset.type === type).reduce((sum, asset) => sum + asset.downloadCount, 0);
+	},
+	getDownloadsByBits(bits) {
+		return this.assets.filter(asset => asset.bits === bits).reduce((sum, asset) => sum + asset.downloadCount, 0);
+	},
+	getDownloadsByBuild(build) {
+		return this.assets.filter(asset => asset.build === build).reduce((sum, asset) => sum + asset.downloadCount, 0);
+	},
+};
+
 async function ready() {
 
 	Vue.createApp({
@@ -94,12 +181,13 @@ async function ready() {
 		data() {
 			return {
 				error: null,
-				stats: null,
+				releases: null,
+				releaseStats: null,
 			};
 		},
 		async mounted() {
 			try {
-				this.stats = await this.fetchStats();
+				this.releases = await this.fetchReleases();
 			} catch (e) {
 				this.error = e?.message || e?.toString() || '?';
 			}
@@ -125,7 +213,7 @@ async function ready() {
 				const deltaDays = (untilDate.getTime() - group.createdOn.getTime()) / (1000 * 3600 * 24);
 				return group.total / deltaDays;
 			},
-			async fetchStats() {
+			async fetchReleases() {
 				const response = await window.fetch(
 					'https://api.github.com/repos/mlocati/gettext-iconv-windows/releases',
 					{
@@ -137,80 +225,29 @@ async function ready() {
 				if (!response.ok) {
 					throw new Error(await response.text);
 				}
-				const data = await response.json();
-				const groups = [];
-				const rNames = [
-					'shared32exe',
-					'shared32zip',
-					'shared64exe',
-					'shared64zip',
-					'static32exe',
-					'static32zip',
-					'static64exe',
-					'static64zip',
-				];
-				const extractVersions = (tagName) => {
-					const [, vGettext, vIconv, tooMany] = tagName.split(/(?<![A-Za-z0-9])v(?=\d)/);
-					if (tooMany !== undefined || vIconv === undefined || vIconv.includes('shared') || vIconv.includes('static')) {
-						return null;
-					}
-					return {
-						gettext: vGettext.replace(/-+$/, ''),
-						iconv: vIconv.replace(/-r\d+$/, ''),
-					};
-				};
-				data.forEach((item) => {
-					if (item.draft) {
+				const releasesData = await response.json();
+				const releases = [];
+				releasesData.forEach((releaseData) => {
+					if (releaseData.draft || !releaseData.assets.length || /.(-shared-32|-shared-64|-static-32|-static-64)$/.test(releaseData.tag_name)) {
 						return;
 					}
-					const versions = extractVersions(item.tag_name);
+					const versions = Release.extractVersionsFromTagName(releaseData.tag_name);
 					if (versions === null) {
+						console.warn(`Unrecognized tag name: ${releaseData.tag_name}`);
 						return;
 					}
-					const group = {
-						link: item.html_url,
-						createdOn: new Date(item.created_at),
-						vGettext: versions.gettext,
-						vIconv: versions.iconv,
-						prerelease: item.prerelease,
-						total: 0,
-					};
-					for (const rName of rNames) {
-						group[rName] = 0;
-					}
-					item.assets.forEach((asset) => {
-						if (/dev-(gcc|msvc)\.zip$/.test(asset.name)) {
-							return;
-						}
-						var m = asset.name.match(/(shared|static).(32|64)\.(exe|zip)$/);
-						if (m === null) {
-							throw new Error(`Unrecognized asset name: ${asset.name}`);
-						}
-						m.shift();
-						group[m.join('')] += asset.download_count;
-					});
-					for (const rName of rNames) {
-						group.total += group[rName];
-					}
-					groups.push(group);
+					releases.push(new Release(releaseData, versions));
 				});
-				groups.sort((a, b) => a.createdOn < b.createdOn);
-				const totals = {
-					total: 0,
-				};
-				for (const rName of rNames) {
-					totals[rName] = 0;
-					groups.forEach((group) => {
-						totals[rName] += group[rName];
-						totals.total += group[rName];
-					})
-				}
-				return {
-					groups,
-					totals,
-				};
-			}
-		}
+				releases.sort((a, b) => b.createdOn - a.createdOn);
+				releases.forEach((release, index) => release.setDownloadsPerDayUntilRelease(releases[index - 1] || null));
+				return releases;
+			},
+			async showReleaseStats(release) {
+				this.releaseStats = release;
+				await this.$nextTick();
+				const dlg = this.$refs.releaseStats.showModal();
+			},
+		},
 	}).mount('#giw-download-stats');
 
 }

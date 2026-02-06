@@ -1,9 +1,10 @@
 ---
 title:  "gettext 1.0 and iconv 1.18 for Windows"
 description: Download gettext & iconv Windows - 32 and 64 bits - shared and static - executable tools, gcc and Microsoft Visual C development files (.h, .a, .lib, .dll, .dll.lib).
-redirect_from: "/gettext-iconv-windows"
-redirect_from: "/gettext-iconv-windows/"
-redirect_from: "/gettext-iconv-windows/index.html"
+redirect_from:
+    - /gettext-iconv-windows
+    - /gettext-iconv-windows/
+    - /gettext-iconv-windows/index.html
 date: 2026-02-05T23:02:00+01:00
 ---
 
@@ -116,116 +117,105 @@ date: 2026-02-05T23:02:00+01:00
 {% raw %}
 <div id="giw-download-stats" v-cloak>
     <div v-if="error !== null" class="alert alert-danger" style="white-space: pre-wrap">{{ error }}</div>
-    <i v-else-if="stats === null" class="fa-solid fa-sync fa-spin"></i>
+    <i v-else-if="releases === null" class="fa-solid fa-sync fa-spin"></i>
     <div v-else>
-        <table class="table table-striped" style="width: auto">
+        <table class="table table-striped">
+            <colgroup>
+                <col />
+                <col />
+                <col />
+                <col />
+                <col />
+                <col />
+                <col width="0*" />
+            </colgroup>
             <thead>
                 <tr>
-                    <th rowspan="3" style="text-align: center">Date</th>
-                    <th rowspan="2" colspan="2" style="text-align: center">Version</th>
-                    <th colspan="4" style="text-align: center">Shared</th>
-				    <th colspan="4" style="text-align: center">Static</th>
-				    <th rowspan="3" style="text-align: center">Total</th>
-				    <th rowspan="3" style="text-align: center">Downloads/day</th>
-			    </tr>
-			    <tr>
-				    <th colspan="2" style="text-align: center">32 bits</th>
-				    <th colspan="2" style="text-align: center">64 bits</th>
-				    <th colspan="2" style="text-align: center">32 bits</th>
-				    <th colspan="2" style="text-align: center">64 bits</th>
-			    </tr>
-			    <tr>
-				    <th rowspan="2" style="text-align: center">gettext</th>
-				    <th rowspan="2" style="text-align: center">iconv</th>
-				    <th style="text-align: center">exe</th>
-				    <th style="text-align: center">zip</th>
-				    <th style="text-align: center">exe</th>
-				    <th style="text-align: center">zip</th>
-				    <th style="text-align: center">exe</th>
-				    <th style="text-align: center">zip</th>
-				    <th style="text-align: center">exe</th>
-				    <th style="text-align: center">zip</th>
-			    </tr>
+                    <th class="text-center">Release</th>
+                    <th class="text-center">Date</th>
+                    <th class="text-center">gettext version</th>
+                    <th class="text-center">iconv version</th>
+                    <th class="text-center">Total downloads</th>
+                    <th class="text-center">Downloads/day</th>
+                    <th>Stats</th>
+                </tr>
             </thead>
             <tbody>
-                <tr v-for="group in stats.groups">
-                    <td style="text-align: center">
-                        <a v-bind:href="group.link" style="white-space: nowrap">{{ formatDate(group.createdOn) }}</a>
-                        <span v-if="group.prerelease">&beta;</span>
+                <tr v-for="release in releases">
+                    <td>
+                        <a v-bind:href="release.url" v-bind:title="release.name === release.tagName ? '' : release.name">{{ release.tagName }}</a><span v-if="release.isPrerelease" title="Pre-release">&nbsp;&beta;</span>
                     </td>
-                    <td style="text-align: center">
-                        {{ group.vGettext }}
+                    <td>
+                        {{ formatDate(release.createdAt) }}
                     </td>
-                    <td style="text-align: center">
-                        {{ group.vIconv }}
+                    <td class="text-center">
+                        {{ release.gettextVersion }}
                     </td>
-                    <td style="text-align: center">
-                        {{ formatInt(group.shared32exe) }}
+                    <td class="text-center">
+                        {{ release.iconvVersion }}
                     </td>
-                    <td style="text-align: center">
-                        {{ formatInt(group.shared32zip) }}
+                    <td class="text-right">
+                        {{ formatInt(release.totalDownloads) }}
                     </td>
-                    <td style="text-align: center">
-                        {{ formatInt(group.shared64exe) }}
+                    <td class="text-right">
+                        {{ formatFloat(release.downloadsPerDay) }}
                     </td>
-                    <td style="text-align: center">
-                        {{ formatInt(group.shared64zip) }}
-                    </td>
-                    <td style="text-align: center">
-                        {{ formatInt(group.static32exe) }}
-                    </td>
-                    <td style="text-align: center">
-                        {{ formatInt(group.static32zip) }}
-                    </td>
-                    <td style="text-align: center">
-                        {{ formatInt(group.static64exe) }}
-                    </td>
-                    <td style="text-align: center">
-                        {{ formatInt(group.static64zip) }}
-                    </td>
-                    <td style="text-align: center">
-                        {{ formatInt(group.total) }}
-                    </td>
-                    <td style="text-align: center">
-                        {{ formatFloat(getGroupdDownloadsPerDay(group)) }}
+                    <td class="text-center">
+                        <button class="btn btn-xs btn-default" v-on:click.prevent="showReleaseStats(release)">&#x1F4CA;<!-- BAR CHART --></button>
                     </td>
                 </tr>
             </tbody>
-            <tfoot>
-                <tr>
-                    <th colspan="3" style="text-align: right">Total</th>
-                    <td style="text-align: center">
-                        {{ formatInt(stats.totals.shared32exe) }}
-                    </td>
-                    <td style="text-align: center">
-                        {{ formatInt(stats.totals.shared32zip) }}
-                    </td>
-                    <td style="text-align: center">
-                        {{ formatInt(stats.totals.shared64exe) }}
-                    </td>
-                    <td style="text-align: center">
-                        {{ formatInt(stats.totals.shared64zip) }}
-                    </td>
-                    <td style="text-align: center">
-                        {{ formatInt(stats.totals.static32exe) }}
-                    </td>
-                    <td style="text-align: center">
-                        {{ formatInt(stats.totals.static32zip) }}
-                    </td>
-                    <td style="text-align: center">
-                        {{ formatInt(stats.totals.static64exe) }}
-                    </td>
-                    <td style="text-align: center">
-                        {{ formatInt(stats.totals.static64zip) }}
-                    </td>
-                    <td style="text-align: center">
-                        {{ formatInt(stats.totals.total) }}
-                    </td>
-                    <td>
-                    </td>
-                </tr>
-            </tfoot>
         </table>
+        <dialog ref="releaseStats" class="ml-flex-dialog" style="padding: 0; border: none; border-radius: 6px; flex-direction: column; max-height: 80vh; min-width: 200px;">
+            <div v-if="releaseStats" style="padding: 16px; overflow-y: auto; flex: 1 1 auto;">
+                <h3>Statistics for {{ releaseStats.name }}</h3>
+                <table class="table table-condensed table-striped">
+                    <thead>
+                        <tr>
+                            <th>By Type</th>
+                            <th>Downloads</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="assetType in releaseStats.assetTypes">
+                            <td>{{ assetType }}</td>
+                            <td>{{ formatInt(releaseStats.getDownloadsByType(assetType)) }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table class="table table-condensed table-striped">
+                    <thead>
+                        <tr>
+                            <th>By Bits</th>
+                            <th>Downloads</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="bits in releaseStats.assetBits">
+                            <td>{{ bits }}</td>
+                            <td>{{ formatInt(releaseStats.getDownloadsByBits(bits)) }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table class="table table-condensed table-striped">
+                    <thead>
+                        <tr>
+                            <th>By Build</th>
+                            <th>Downloads</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="build in releaseStats.assetBuilds">
+                            <td>{{ build }}</td>
+                            <td>{{ formatInt(releaseStats.getDownloadsByBuild(build)) }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div style="padding: 12px 16px; border-top: 1px solid #ddd; display: flex; justify-content: flex-end; flex-shrink: 0;">
+                <button class="btn btn-default" v-on:click.prevent="$refs.releaseStats.close()">Close</button>
+            </div>
+        </dialog>
     </div>
 </div>
 {% endraw %}
@@ -250,4 +240,4 @@ Questions? [Start a discussion](https://github.com/mlocati/gettext-iconv-windows
 Problems? [File an issue](https://github.com/mlocati/gettext-iconv-windows/issues).
 
 <script src="{{ "/js/vue.js?3.5.11" | prepend: site.baseurl }}"></script>
-<script src="{{ "/js/gettext-iconv-windows.js?10" | prepend: site.baseurl }}"></script>
+<script src="{{ "/js/gettext-iconv-windows.js?11" | prepend: site.baseurl }}"></script>
