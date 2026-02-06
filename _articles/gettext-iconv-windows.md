@@ -170,43 +170,52 @@ date: 2026-02-05T23:02:00+01:00
             <div v-if="releaseStats" style="padding: 16px; overflow-y: auto; flex: 1 1 auto;">
                 <h3>Statistics for {{ releaseStats.name }}</h3>
                 <table class="table table-condensed table-striped">
+                    <colgropup>
+                        <col width="50%" />
+                    </colgropup>
                     <thead>
                         <tr>
-                            <th>By Type</th>
+                            <th class="text-right">By Type</th>
                             <th>Downloads</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr v-for="assetType in releaseStats.assetTypes">
-                            <td>{{ assetType }}</td>
+                            <td class="text-right">{{ assetType }}</td>
                             <td>{{ formatInt(releaseStats.getDownloadsByType(assetType)) }}</td>
                         </tr>
                     </tbody>
                 </table>
                 <table class="table table-condensed table-striped">
+                    <colgropup>
+                        <col width="50%" />
+                    </colgropup>
                     <thead>
                         <tr>
-                            <th>By Bits</th>
+                            <th class="text-right">By Bits</th>
                             <th>Downloads</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr v-for="bits in releaseStats.assetBits">
-                            <td>{{ bits }}</td>
+                            <td class="text-right">{{ bits }}</td>
                             <td>{{ formatInt(releaseStats.getDownloadsByBits(bits)) }}</td>
                         </tr>
                     </tbody>
                 </table>
                 <table class="table table-condensed table-striped">
+                    <colgropup>
+                        <col width="50%" />
+                    </colgropup>
                     <thead>
                         <tr>
-                            <th>By Build</th>
+                            <th class="text-right">By Build</th>
                             <th>Downloads</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr v-for="build in releaseStats.assetBuilds">
-                            <td>{{ build }}</td>
+                            <td class="text-right">{{ build }}</td>
                             <td>{{ formatInt(releaseStats.getDownloadsByBuild(build)) }}</td>
                         </tr>
                     </tbody>
