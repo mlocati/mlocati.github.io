@@ -111,3 +111,7 @@ div.highlighter-rouge {
         font-size: 0.9em;
     }
 }
+
+dialog.ml-flex-dialog[open] {
+    display: flex;
+}
