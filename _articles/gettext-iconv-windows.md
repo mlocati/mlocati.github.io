@@ -133,10 +133,11 @@ date: 2026-02-05T23:02:00+01:00
                 <tr>
                     <th class="text-center">Release</th>
                     <th class="text-center">Date</th>
-                    <th class="text-center">gettext version</th>
-                    <th class="text-center">iconv version</th>
-                    <th class="text-center">Total downloads</th>
-                    <th class="text-center">Downloads/day</th>
+                    <th class="text-center hidden-xs">gettext version</th>
+                    <th class="text-center hidden-xs">iconv version</th>
+                    <th class="text-center hidden-xs">Total downloads</th>
+                    <th class="text-center hidden-xs">Downloads/day</th>
+                    <th class="text-center visible-xs">Downloads</th>
                     <th>Stats</th>
                 </tr>
             </thead>
@@ -148,17 +149,21 @@ date: 2026-02-05T23:02:00+01:00
                     <td>
                         {{ formatDate(release.createdAt) }}
                     </td>
-                    <td class="text-center">
+                    <td class="text-center hidden-xs">
                         {{ release.gettextVersion }}
                     </td>
-                    <td class="text-center">
+                    <td class="text-center hidden-xs">
                         {{ release.iconvVersion }}
                     </td>
-                    <td class="text-right">
+                    <td class="text-right hidden-xs">
                         {{ formatInt(release.totalDownloads) }}
                     </td>
-                    <td class="text-right">
+                    <td class="text-right hidden-xs">
                         {{ formatFloat(release.downloadsPerDay) }}
+                    </td>
+                    <td class="text-right visible-xs">
+                        {{ formatInt(release.totalDownloads) }}
+                        <small><br />{{ formatFloat(release.downloadsPerDay) }}/day</small>
                     </td>
                     <td class="text-center">
                         <button class="btn btn-xs btn-default" v-on:click.prevent="showReleaseStats(release)">&#x1F4CA;<!-- BAR CHART --></button>
@@ -175,14 +180,14 @@ date: 2026-02-05T23:02:00+01:00
                     </colgropup>
                     <thead>
                         <tr>
-                            <th class="text-right">By Type</th>
-                            <th>Downloads</th>
+                            <th class="text-right">Downloads</th>
+                            <th>By Type</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr v-for="assetType in releaseStats.assetTypes">
-                            <td class="text-right">{{ assetType }}</td>
-                            <td>{{ formatInt(releaseStats.getDownloadsByType(assetType)) }}</td>
+                            <td class="text-right">{{ formatInt(releaseStats.getDownloadsByType(assetType)) }}</td>
+                            <td>{{ assetType }}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -192,14 +197,14 @@ date: 2026-02-05T23:02:00+01:00
                     </colgropup>
                     <thead>
                         <tr>
-                            <th class="text-right">By Bits</th>
-                            <th>Downloads</th>
+                            <th class="text-right">Downloads</th>
+                            <th>By Bits</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr v-for="bits in releaseStats.assetBits">
-                            <td class="text-right">{{ bits }}</td>
-                            <td>{{ formatInt(releaseStats.getDownloadsByBits(bits)) }}</td>
+                            <td class="text-right">{{ formatInt(releaseStats.getDownloadsByBits(bits)) }}</td>
+                            <td>{{ bits }}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -209,14 +214,14 @@ date: 2026-02-05T23:02:00+01:00
                     </colgropup>
                     <thead>
                         <tr>
-                            <th class="text-right">By Build</th>
-                            <th>Downloads</th>
+                            <th class="text-right">Downloads</th>
+                            <th>By Build</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr v-for="build in releaseStats.assetBuilds">
-                            <td class="text-right">{{ build }}</td>
-                            <td>{{ formatInt(releaseStats.getDownloadsByBuild(build)) }}</td>
+                            <td class="text-right">{{ formatInt(releaseStats.getDownloadsByBuild(build)) }}</td>
+                            <td>{{ build }}</td>
                         </tr>
                     </tbody>
                 </table>
