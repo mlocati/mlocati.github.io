@@ -11,7 +11,7 @@ date: 2026-02-08T21:55:00+01:00
 ### Download
 
 {% raw %}
-<div id="giw-download-wizard" class="jumbotron" style="padding: 20px" v-cloak  data-gettext-version="1.0" data-iconv-version="1.18" data-release-prefix="https://github.com/mlocati/gettext-iconv-windows/releases/download/v1.0-v1.18-r2">
+<div id="giw-download-wizard" class="jumbotron" style="padding: 20px" v-cloak  data-gettext-version="1.0" data-iconv-version="1.18" data-release-prefix="https://github.com/mlocati/gettext-iconv-windows/releases/download/v1.0-v1.18-r3">
     <div class="alert alert-warning">
         Select the options to pick the right package.
     </div>
