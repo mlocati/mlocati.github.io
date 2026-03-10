@@ -1,5 +1,5 @@
 ---
-title:  "gettext 1.0 and iconv 1.18 for Windows"
+title:  "gettext 1.0 and iconv 1.19 for Windows"
 description: Download gettext & iconv Windows - 32 and 64 bits - shared and static - executable tools, gcc and Microsoft Visual C development files (.h, .a, .lib, .dll, .dll.lib).
 redirect_from:
     - /gettext-iconv-windows
@@ -11,7 +11,7 @@ date: 2026-02-08T21:55:00+01:00
 ### Download
 
 {% raw %}
-<div id="giw-download-wizard" class="jumbotron" style="padding: 20px" v-cloak  data-gettext-version="1.0" data-iconv-version="1.18" data-release-prefix="https://github.com/mlocati/gettext-iconv-windows/releases/download/v1.0-v1.18-r3">
+<div id="giw-download-wizard" class="jumbotron" style="padding: 20px" v-cloak  data-gettext-version="1.0" data-iconv-version="1.19" data-release-prefix="https://github.com/mlocati/gettext-iconv-windows/releases/download/v1.0-v1.19">
     <div class="alert alert-warning">
         Select the options to pick the right package.
     </div>
@@ -173,7 +173,7 @@ date: 2026-02-08T21:55:00+01:00
         </table>
         <dialog ref="releaseStats" class="ml-flex-dialog" style="padding: 0; border: none; border-radius: 6px; flex-direction: column; max-height: 80vh; min-width: 200px;">
             <div v-if="releaseStats" style="padding: 16px; overflow-y: auto; flex: 1 1 auto;">
-                <h3>Statistics for {{ releaseStats.name }}</h3>
+                <h3 style="margin-top: 0">Statistics for {{ releaseStats.name }}</h3>
                 <table class="table table-condensed table-striped">
                     <colgropup>
                         <col width="50%" />
